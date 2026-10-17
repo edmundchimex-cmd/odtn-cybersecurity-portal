@@ -68,12 +68,12 @@
             <!-- Login Step 1: Credentials -->
             <form id="form-login-step1" onsubmit="handleLoginStep1(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1" for="login-user">OPERATOR IDENTIFIER</label>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1" for="login-user">USERNAME</label>
                     <input type="email" id="login-user" required maxlength="64" placeholder="commander@odtn-vancouver.org" value="commander@odtn-vancouver.org" autocomplete="username" 
                         class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1" for="login-role">COMMAND ROLE</label>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1" for="login-role">ROLE</label>
                     <select id="login-role" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition">
                         <option value="Incident Commander">Incident Commander (Full Lead)</option>
                         <option value="Lead DFIR Analyst">Lead DFIR Specialist</option>
