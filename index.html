@@ -269,16 +269,9 @@
                 </div>
                 <div>
                     <h3 id="sim-title" class="text-2xl font-bold text-white mb-3">Zero-Day Ransomware Outbreak</h3>
-                    <p id="sim-desc" class="text-slate-300 text-base leading-relaxed">LockBit ransomware has encrypted primary domain controller DC-SRV-02. Staff are fatigued after 14 hours of continuous containment work.</p>
+                    <p id="sim-desc" class="text-slate-300 text-base leading-relaxed"></p>
                 </div>
-                <div id="sim-choices" class="space-y-3">
-                    <button onclick="makeSimChoice(1)" class="w-full text-left p-4 bg-slate-950 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/50 rounded-xl transition text-sm text-slate-200">
-                        <strong>Option A:</strong> Enforce mandatory shift rotation immediately and activate pre-signed MSA retainer.
-                    </button>
-                    <button onclick="makeSimChoice(2)" class="w-full text-left p-4 bg-slate-950 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/50 rounded-xl transition text-sm text-slate-200">
-                        <strong>Option B:</strong> Keep Tier-1 analysts on duty to maintain momentum without legal counsel involvement.
-                    </button>
-                </div>
+                <div id="sim-choices" class="space-y-3"></div>
             </div>
 
             <div id="sim-result" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 text-center space-y-6 shadow-2xl">
@@ -376,4 +369,213 @@
                         <h3 class="text-base font-bold text-white group-hover:text-blue-400 transition">Rotational Shift-Change & Burnout Mitigation</h3>
                         <p class="text-xs text-slate-400 mt-1">Tier-1 responders mandatory off-duty handover enforced by Commander to preserve mental sharpness.</p>
                         
-                        <div id="tl-3" class="hidden mt-3 p-4 bg-slate-950 border border
+                        <div id="tl-3" class="hidden mt-3 p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-2">
+                            <p class="text-slate-300"><strong>Human Factor:</strong> Rested secondary shift caught misconfigured firewall rule created during fatigue hour 12.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative group cursor-pointer" onclick="toggleTimelineDetails('tl-4')">
+                        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-emerald-500 border-4 border-slate-900 group-hover:scale-125 transition"></div>
+                        <span class="text-xs font-mono text-emerald-400">T+24:00 • Next Day 03:42 AM PST</span>
+                        <h3 class="text-base font-bold text-white group-hover:text-emerald-400 transition">Blame-Free Retrospective & Therapeutic Post-Mortem</h3>
+                        <p class="text-xs text-slate-400 mt-1">Incident officially contained. Continuous learning debrief conducted.</p>
+                        
+                        <div id="tl-4" class="hidden mt-3 p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-2">
+                            <p class="text-slate-300"><strong>Post-Mortem Goal:</strong> Hardened active directory trust policies and updated MSA legal contacts list.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 5: USER SUBMISSIONS QUEUE -->
+        <section id="view-submissions" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">Submit Incident Report</h3>
+                    <form id="ticket-form" onsubmit="handleTicketSubmit(event)" class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-400 mb-1" for="ticket-author">REPORTER NAME</label>
+                            <input type="text" id="ticket-author" required maxlength="50" pattern="^[a-zA-Z\s\-]+$" title="Letters, spaces, and hyphens only" placeholder="Alex Vance" 
+                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-400 mb-1" for="ticket-asset">TARGET ASSET / IP</label>
+                            <input type="text" id="ticket-asset" required maxlength="50" pattern="^[\w\.\-\/]+$" title="Alphanumeric, dots, hyphens, slashes only" placeholder="10.0.4.12 / DC-SRV-02" 
+                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-400 mb-1" for="ticket-severity">SEVERITY LEVEL</label>
+                            <select id="ticket-severity" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+                                <option value="Critical">Critical (P0 - Immediate Outbreak)</option>
+                                <option value="High">High (P1 - Unverified Exploitation)</option>
+                                <option value="Medium">Medium (P2 - Policy Breach)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/20">Submit Ticket</button>
+                    </form>
+                </div>
+                <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">Active Ticket Queue</h3>
+                    <div id="ticket-queue" class="space-y-3">
+                        <!-- Populated via Safe DOM Methods -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 6: KNOWLEDGE ASSESSMENT (QUIZ) -->
+        <section id="view-quiz" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl max-w-3xl mx-auto space-y-6">
+                <div class="pb-4 border-b border-slate-800">
+                    <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Module 5 Assessment</span>
+                    <h2 class="text-2xl font-bold text-white mt-2">Crisis Leadership Knowledge Check</h2>
+                </div>
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Quiz Form Content -->
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 7: SECURITY AUDIT -->
+        <section id="view-audit" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl max-w-4xl mx-auto space-y-6">
+                <div class="pb-4 border-b border-slate-800">
+                    <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Compliance & Hardening</span>
+                    <h2 class="text-2xl font-bold text-white mt-2">System Security Audit Log</h2>
+                </div>
+                <div class="space-y-4 font-mono text-xs text-slate-300">
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+                        <span>[AUDIT-001] Client-side input validation and regex constraints enforced</span>
+                        <span class="text-emerald-400 font-bold">PASSED</span>
+                    </div>
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+                        <span>[AUDIT-002] DOM injection protections (textContent / createElement)</span>
+                        <span class="text-emerald-400 font-bold">PASSED</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- SAFE CLIENT SCRIPTING -->
+    <script>
+        lucide.createIcons();
+
+        function switchTab(tabId) {
+            const views = ['briefing', 'simulator', 'chat', 'timeline', 'submissions', 'quiz', 'audit'];
+            views.forEach(v => {
+                const el = document.getElementById('view-' + v);
+                if (el) el.classList.add('hidden');
+                const nav = document.getElementById('nav-' + v);
+                if (nav) {
+                    nav.className = "px-3 py-2 rounded-lg transition text-slate-400 hover:text-white";
+                }
+            });
+            const targetView = document.getElementById('view-' + tabId);
+            if (targetView) targetView.classList.remove('hidden');
+            const targetNav = document.getElementById('nav-' + tabId);
+            if (targetNav) {
+                targetNav.className = "px-3 py-2 rounded-lg transition bg-cyan-500/10 text-cyan-400 border border-cyan-500/30";
+            }
+        }
+
+        function handleLoginStep1(e) {
+            e.preventDefault();
+            document.getElementById('form-login-step1').classList.add('hidden');
+            document.getElementById('form-login-mfa').classList.remove('hidden');
+        }
+
+        function handleMfaSubmit(e) {
+            e.preventDefault();
+            const token = document.getElementById('mfa-token').value;
+            const regex = /^[0-9]{6}$/;
+            if (!regex.test(token)) {
+                document.getElementById('mfa-error').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('login-overlay').classList.add('hidden');
+        }
+
+        function triggerLogout() {
+            document.getElementById('login-overlay').classList.remove('hidden');
+        }
+
+        // Safe DOM Creation for Chat Inputs (Prevents XSS / Injection)
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const feed = document.getElementById('chat-feed');
+            const msgContainer = document.createElement('div');
+            msgContainer.className = "flex items-start space-x-3 justify-end";
+
+            const innerBubble = document.createElement('div');
+            innerBubble.className = "bg-cyan-500/10 border border-cyan-500/30 p-3.5 rounded-2xl text-sm text-slate-200 max-w-xl";
+
+            const strong = document.createElement('strong');
+            strong.className = "text-xs block text-cyan-400 mb-0.5";
+            strong.textContent = "Incident Commander";
+
+            const textNode = document.createTextNode(message);
+
+            innerBubble.appendChild(strong);
+            innerBubble.appendChild(textNode);
+            msgContainer.appendChild(innerBubble);
+            feed.appendChild(msgContainer);
+
+            input.value = '';
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        function sendQuickCommand(cmd) {
+            document.getElementById('chat-input').value = cmd;
+        }
+
+        // Safe DOM Creation for Submissions Queue
+        function handleTicketSubmit(e) {
+            e.preventDefault();
+            const author = document.getElementById('ticket-author').value.trim();
+            const asset = document.getElementById('ticket-asset').value.trim();
+            const severity = document.getElementById('ticket-severity').value;
+
+            const queue = document.getElementById('ticket-queue');
+            const card = document.createElement('div');
+            card.className = "p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between text-xs";
+
+            const infoDiv = document.createElement('div');
+            const title = document.createElement('h4');
+            title.className = "font-bold text-white text-sm";
+            title.textContent = "Asset: " + asset;
+
+            const sub = document.createElement('p');
+            sub.className = "text-slate-400 mt-0.5";
+            sub.textContent = "Reported by: " + author;
+
+            infoDiv.appendChild(title);
+            infoDiv.appendChild(sub);
+
+            const badge = document.createElement('span');
+            badge.className = "px-2.5 py-1 rounded-full font-mono font-bold " + (severity === 'Critical' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30');
+            badge.textContent = severity;
+
+            card.appendChild(infoDiv);
+            card.appendChild(badge);
+            queue.prepend(card);
+
+            document.getElementById('ticket-form').reset();
+        }
+
+        function toggleTimelineDetails(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        function clearChat() {
+            document.getElementById('chat-feed').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
