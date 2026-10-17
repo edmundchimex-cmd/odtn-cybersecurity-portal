@@ -353,7 +353,7 @@
     </div>
 
     <script>
-        // 1. DATA: 5 SIMULATOR SCENARIOS
+        // DATA: 5 SIMULATOR SCENARIOS
         const scenarios = [
             {
                 title: "1. Zero-Day Ransomware Outbreak",
@@ -397,7 +397,7 @@
             }
         ];
 
-        // 2. DATA: 5 QUIZZES
+        // DATA: 5 QUIZZES
         const quizzes = [
             { title: "Quiz 1: Transport Security", q: "Which protocol ensures encrypted payload transit across DWDM optical layers?", options: ["MACsec / OTN-sec", "IPsec Tunnel", "Plain SSL"], correct: 0, exp: "OTN-sec / MACsec encrypts framing layer directly without CPU overhead." },
             { title: "Quiz 2: OT Isolation", q: "What is the primary objective of Purdue Model Level 3.5 DMZ?", options: ["Enforce strict IT/OT segmentation", "Speed up web browsing", "Provide public Wi-Fi"], correct: 0, exp: "Level 3.5 DMZ inspects and isolates IT/OT traffic exchanges." },
@@ -406,7 +406,7 @@
             { title: "Quiz 5: KMS Key Management", q: "How frequently should API keys and certificates be rotated post-breach?", options: ["Immediately upon breach verification", "Once per fiscal year", "Never"], correct: 0, exp: "Emergency key rotation revokes attacker access vectors." }
         ];
 
-        // 3. DATA: TICKETS
+        // DATA: TICKETS
         const tickets = [
             { id: "INC-8901", title: "Ransomware on DC-SRV-02", severity: "CRITICAL", status: "OPEN" },
             { id: "INC-8902", title: "Anomalous OT PLC MODBUS Write", severity: "CRITICAL", status: "OPEN" },
@@ -416,10 +416,10 @@
             { id: "INC-8906", title: "Unexplained Password Resets", severity: "LOW", status: "CLOSED" }
         ];
 
-        // 4. DATA: AUDIT ITEMS
+        // DATA: AUDIT ITEMS
         const auditChecks = [
             { name: "Pre-Signed MSAs for External DFIR", standard: "NIST SP 800-61", weight: 25 },
-            { name: "Mandatory 8-Hour Rotational Resresponder Shift Shifts", standard: "ISO 27035", weight: 25 },
+            { name: "Mandatory 8-Hour Rotational Resresponder Shifts", standard: "ISO 27035", weight: 25 },
             { name: "Blameless Post-Mortem Retrospective Policy", standard: "SRE Best Practice", weight: 25 },
             { name: "Strict IT/OT Purdue Model Air-Gap Segmentation", standard: "IEC 62443", weight: 25 }
         ];
@@ -434,7 +434,7 @@
             renderQuiz();
             renderTickets('ALL');
             renderAudit();
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
         });
 
         // TAB NAVIGATION
