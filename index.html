@@ -210,3 +210,438 @@
                     <div class="flex items-center justify-between mb-4">
                         <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-2xl border border-emerald-500/20">
                             <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">Click for Detail</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-emerald-300">Therapeutic Post-Mortems</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Blame-free incident retrospectives treat breaches as system learning opportunities.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: MULTI-STAGE CRISIS SIMULATOR (5 SCENARIOS) -->
+        <section id="view-simulator" class="hidden space-y-6">
+            <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-800">
+                <button onclick="selectScenario(0)" id="scen-btn-0" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-500 text-slate-950">1. Ransomware Outbreak</button>
+                <button onclick="selectScenario(1)" id="scen-btn-1" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white border border-slate-800">2. OT Network Intrusion</button>
+                <button onclick="selectScenario(2)" id="scen-btn-2" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white border border-slate-800">3. BGP Route Hijacking</button>
+                <button onclick="selectScenario(3)" id="scen-btn-3" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white border border-slate-800">4. Cloud API Key Leak</button>
+                <button onclick="selectScenario(4)" id="scen-btn-4" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white border border-slate-800">5. Edge Gateway DDoS</button>
+            </div>
+
+            <div id="sim-active-card" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+                    <span id="sim-stage" class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20 w-fit">Phase 1 of 3</span>
+                    <span id="sim-timer" class="text-xs text-slate-400 font-mono">Timestamp: Active Incident</span>
+                </div>
+                <div>
+                    <h3 id="sim-title" class="text-2xl font-bold text-white mb-3">Zero-Day Ransomware Outbreak</h3>
+                    <p id="sim-desc" class="text-slate-300 text-base leading-relaxed"></p>
+                </div>
+                <div id="sim-choices" class="space-y-3"></div>
+            </div>
+
+            <div id="sim-result" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 text-center space-y-6 shadow-2xl">
+                <div class="space-y-2">
+                    <h3 id="result-title" class="text-2xl font-bold text-white"></h3>
+                    <p id="result-desc" class="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed"></p>
+                </div>
+                <button onclick="resetSimulator()" class="px-6 py-3 bg-cyan-500 text-slate-950 font-bold rounded-2xl hover:bg-cyan-400 transition">
+                    Restart Scenario
+                </button>
+            </div>
+        </section>
+
+        <!-- VIEW 3: SOC CHAT -->
+        <section id="view-chat" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 sm:p-8 shadow-xl flex flex-col h-[600px]">
+                <div class="flex justify-between items-center pb-4 border-b border-slate-800 mb-4">
+                    <h3 class="text-base font-bold text-white">SOC Tactical Command Channel</h3>
+                    <button onclick="clearChat()" class="text-xs text-slate-400 bg-slate-800 px-3 py-1.5 rounded-lg">Clear</button>
+                </div>
+                <div id="chat-feed" class="flex-1 overflow-y-auto space-y-4 pr-2 mb-4"></div>
+                <form id="chat-form" onsubmit="handleChatSubmit(event)" class="flex gap-2 pt-2 border-t border-slate-800">
+                    <input type="text" id="chat-input" placeholder="Type tactical command..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 font-mono">
+                    <button type="submit" class="px-5 py-3 bg-cyan-500 text-slate-950 font-bold rounded-xl">Send</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- VIEW 4: TIMELINE -->
+        <section id="view-timeline" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl max-w-4xl mx-auto space-y-6">
+                <h2 class="text-2xl font-bold text-white">Chronological Incident Event Timeline</h2>
+                <div class="border-l-2 border-cyan-500/30 pl-6 space-y-6">
+                    <div>
+                        <span class="text-xs font-mono text-cyan-400">T-00:00 • Initial Signal</span>
+                        <h3 class="text-base font-bold text-white">PowerShell Execution & Volume Shadow Copy Deletion</h3>
+                    </div>
+                    <div>
+                        <span class="text-xs font-mono text-amber-400">T+03:30 • External Escalation</span>
+                        <h3 class="text-base font-bold text-white">Pre-Signed MSA Retainer Activated</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 5: TICKETS QUEUE WITH SEVERITY FILTERS -->
+        <section id="view-submissions" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-800">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Incident Ticket Queue</h3>
+                        <p class="text-xs text-slate-400">Filter tickets by severity levels or status.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="filterTickets('ALL')" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-cyan-500 text-slate-950 font-bold">ALL</button>
+                        <button onclick="filterTickets('CRITICAL')" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-rose-500/20 text-rose-300 border border-rose-500/40">CRITICAL</button>
+                        <button onclick="filterTickets('HIGH')" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-amber-500/20 text-amber-300 border border-amber-500/40">HIGH</button>
+                        <button onclick="filterTickets('MEDIUM')" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-yellow-500/20 text-yellow-300 border border-yellow-500/40">MEDIUM</button>
+                        <button onclick="filterTickets('LOW')" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-slate-800 text-slate-300">LOW</button>
+                    </div>
+                </div>
+
+                <div id="tickets-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- VIEW 6: KNOWLEDGE ASSESSMENT (5 QUIZZES) -->
+        <section id="view-quiz" class="hidden space-y-6">
+            <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-800">
+                <button onclick="selectQuiz(0)" id="quiz-btn-0" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-500 text-slate-950">Quiz 1: Transport Security</button>
+                <button onclick="selectQuiz(1)" id="quiz-btn-1" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 border border-slate-800">Quiz 2: OT Isolation</button>
+                <button onclick="selectQuiz(2)" id="quiz-btn-2" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 border border-slate-800">Quiz 3: Containment</button>
+                <button onclick="selectQuiz(3)" id="quiz-btn-3" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 border border-slate-800">Quiz 4: Zero Trust</button>
+                <button onclick="selectQuiz(4)" id="quiz-btn-4" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 border border-slate-800">Quiz 5: KMS Key Management</button>
+            </div>
+
+            <div id="quiz-card" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+                <h3 id="quiz-title" class="text-xl font-bold text-white"></h3>
+                <p id="quiz-question" class="text-sm text-slate-300"></p>
+                <div id="quiz-options" class="space-y-3"></div>
+                <div id="quiz-feedback" class="hidden p-4 rounded-xl text-xs"></div>
+            </div>
+        </section>
+
+        <!-- VIEW 7: INTERACTIVE AUDIT OPTIONS -->
+        <section id="view-audit" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                <div class="flex justify-between items-center pb-4 border-b border-slate-800">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Interactive Compliance & Readiness Audit</h3>
+                        <p class="text-xs text-slate-400">Toggle operational controls to calculate live readiness compliance.</p>
+                    </div>
+                    <div class="text-right font-mono">
+                        <span class="text-xs text-slate-400">Compliance Score</span>
+                        <div id="audit-score" class="text-2xl font-bold text-cyan-400">0%</div>
+                    </div>
+                </div>
+
+                <div id="audit-checks-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PILLAR MODAL -->
+    <div id="pillar-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 space-y-4 relative">
+            <button onclick="closePillarModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">&times;</button>
+            <h3 id="pm-title" class="text-xl font-bold text-white"></h3>
+            <div id="pm-body" class="text-xs text-slate-300 space-y-2"></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. DATA: 5 SIMULATOR SCENARIOS
+        const scenarios = [
+            {
+                title: "1. Zero-Day Ransomware Outbreak",
+                desc: "Ransomware payload execution detected on host DC-SRV-02. Host is attempting lateral SMB movement.",
+                choices: [
+                    { text: "Isolate VLAN 104 and trigger pre-signed MSA DFIR retainer", score: 100, msg: "Optimal decision! Threat contained without SLA delay." },
+                    { text: "Attempt manual AV scan on host while keeping domain connected", score: 30, msg: "Suboptimal. Ransomware propagated across SMB shares." }
+                ]
+            },
+            {
+                title: "2. OT Operational Network Intrusion",
+                desc: "Anomalous MODBUS traffic detected flowing from IT network to SCADA PLC controller.",
+                choices: [
+                    { text: "Sever IT-OT air-gap bridge and switch PLC to offline local mode", score: 100, msg: "Correct! Prevented critical physical process disruption." },
+                    { text: "Monitor traffic for 2 hours to capture full payload traces", score: 20, msg: "Risky. Disrupted turbine physical controllers." }
+                ]
+            },
+            {
+                title: "3. BGP Route Hijacking & Traffic Interception",
+                desc: "Core transit provider BGP updates redirecting core WAN subnets through foreign ASNs.",
+                choices: [
+                    { text: "Enable RPKI strict filtering and failover to secondary optical ring", score: 100, msg: "Success. Restored clean traffic pathways immediately." },
+                    { text: "Wait for ISP support tickets to resolve route flapping", score: 40, msg: "Delayed response resulted in credential exfiltration." }
+                ]
+            },
+            {
+                title: "4. Cloud API Management Key Leakage",
+                desc: "Production AWS root access key leaked in public GitHub repository snippet.",
+                choices: [
+                    { text: "Revoke key instantly, invalidate session tokens, rotate secrets", score: 100, msg: "Excellent response. Nullified unauthorized access." },
+                    { text: "Email the developer to remove the commit repository first", score: 10, msg: "Botnets exploited keys within 45 seconds." }
+                ]
+            },
+            {
+                title: "5. Multi-Vector Edge Gateway DDoS",
+                desc: "Edge optical gateways targeted with 450 Gbps SYN flood and Layer 7 HTTP flood.",
+                choices: [
+                    { text: "Reroute transit traffic to cloud scrubbing centers and enable SYN cookies", score: 100, msg: "Mitigated attack with sub-second latency overhead." },
+                    { text: "Block attacker source IPs manually on border routers", score: 25, msg: "ACL tables overflowed, causing total gateway reboot." }
+                ]
+            }
+        ];
+
+        // 2. DATA: 5 QUIZZES
+        const quizzes = [
+            { title: "Quiz 1: Transport Security", q: "Which protocol ensures encrypted payload transit across DWDM optical layers?", options: ["MACsec / OTN-sec", "IPsec Tunnel", "Plain SSL"], correct: 0, exp: "OTN-sec / MACsec encrypts framing layer directly without CPU overhead." },
+            { title: "Quiz 2: OT Isolation", q: "What is the primary objective of Purdue Model Level 3.5 DMZ?", options: ["Enforce strict IT/OT segmentation", "Speed up web browsing", "Provide public Wi-Fi"], correct: 0, exp: "Level 3.5 DMZ inspects and isolates IT/OT traffic exchanges." },
+            { title: "Quiz 3: Containment Protocols", q: "Why use pre-signed MSAs prior to incident escalation?", options: ["Avoid legal SLA delays during active breach", "Reduce monthly cloud costs", "Skip post-mortems"], correct: 0, exp: "Pre-signed MSAs eliminate legal negotiation lag during emergency calls." },
+            { title: "Quiz 4: Zero Trust", q: "Which statement reflects Zero Trust Network Architecture?", options: ["Never trust, always verify every request", "Trust internal VLAN subnets", "Rely only on perimeter firewalls"], correct: 0, exp: "Zero Trust assumes network compromise and authenticates continuously." },
+            { title: "Quiz 5: KMS Key Management", q: "How frequently should API keys and certificates be rotated post-breach?", options: ["Immediately upon breach verification", "Once per fiscal year", "Never"], correct: 0, exp: "Emergency key rotation revokes attacker access vectors." }
+        ];
+
+        // 3. DATA: TICKETS
+        const tickets = [
+            { id: "INC-8901", title: "Ransomware on DC-SRV-02", severity: "CRITICAL", status: "OPEN" },
+            { id: "INC-8902", title: "Anomalous OT PLC MODBUS Write", severity: "CRITICAL", status: "OPEN" },
+            { id: "INC-8903", title: "BGP Subnet Anomaly Detection", severity: "HIGH", status: "IN_PROGRESS" },
+            { id: "INC-8904", title: "AWS API Access Key Leakage", severity: "HIGH", status: "IN_PROGRESS" },
+            { id: "INC-8905", title: "Edge Optical Gateway DDoS Flood", severity: "MEDIUM", status: "OPEN" },
+            { id: "INC-8906", title: "Unexplained Password Resets", severity: "LOW", status: "CLOSED" }
+        ];
+
+        // 4. DATA: AUDIT ITEMS
+        const auditChecks = [
+            { name: "Pre-Signed MSAs for External DFIR", standard: "NIST SP 800-61", weight: 25 },
+            { name: "Mandatory 8-Hour Rotational Resresponder Shift Shifts", standard: "ISO 27035", weight: 25 },
+            { name: "Blameless Post-Mortem Retrospective Policy", standard: "SRE Best Practice", weight: 25 },
+            { name: "Strict IT/OT Purdue Model Air-Gap Segmentation", standard: "IEC 62443", weight: 25 }
+        ];
+
+        let activeScenarioIndex = 0;
+        let activeQuizIndex = 0;
+        let auditState = [false, false, false, false];
+
+        // INITIALIZATION
+        window.addEventListener('DOMContentLoaded', () => {
+            renderScenario();
+            renderQuiz();
+            renderTickets('ALL');
+            renderAudit();
+            lucide.createIcons();
+        });
+
+        // TAB NAVIGATION
+        function switchTab(tab) {
+            const tabs = ['briefing', 'simulator', 'chat', 'timeline', 'submissions', 'quiz', 'audit'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`view-${t}`);
+                if (el) el.classList.add('hidden');
+                const nav = document.getElementById(`nav-${t}`);
+                if (nav) {
+                    nav.classList.remove('bg-cyan-500/10', 'text-cyan-400', 'border', 'border-cyan-500/30', 'font-semibold');
+                    nav.classList.add('text-slate-400');
+                }
+            });
+            const target = document.getElementById(`view-${tab}`);
+            if (target) target.classList.remove('hidden');
+            const targetNav = document.getElementById(`nav-${tab}`);
+            if (targetNav) {
+                targetNav.classList.add('bg-cyan-500/10', 'text-cyan-400', 'border', 'border-cyan-500/30', 'font-semibold');
+            }
+        }
+
+        // SIMULATOR CONTROLS
+        function selectScenario(idx) {
+            activeScenarioIndex = idx;
+            for (let i = 0; i < 5; i++) {
+                const btn = document.getElementById(`scen-btn-${i}`);
+                if (btn) {
+                    btn.className = (i === idx) 
+                        ? "px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-500 text-slate-950" 
+                        : "px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white border border-slate-800";
+                }
+            }
+            renderScenario();
+        }
+
+        function renderScenario() {
+            const sc = scenarios[activeScenarioIndex];
+            document.getElementById('sim-active-card').classList.remove('hidden');
+            document.getElementById('sim-result').classList.add('hidden');
+            document.getElementById('sim-title').innerText = sc.title;
+            document.getElementById('sim-desc').innerText = sc.desc;
+            const container = document.getElementById('sim-choices');
+            container.innerHTML = '';
+            sc.choices.forEach((c, idx) => {
+                const b = document.createElement('button');
+                b.className = "w-full text-left p-4 rounded-xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 text-sm text-slate-200 transition";
+                b.innerText = `${idx + 1}. ${c.text}`;
+                b.onclick = () => finishScenario(c);
+                container.appendChild(b);
+            });
+        }
+
+        function finishScenario(choice) {
+            document.getElementById('sim-active-card').classList.add('hidden');
+            document.getElementById('sim-result').classList.remove('hidden');
+            document.getElementById('result-title').innerText = `Decision Score: ${choice.score}/100`;
+            document.getElementById('result-desc').innerText = choice.msg;
+        }
+
+        function resetSimulator() { renderScenario(); }
+
+        // QUIZ CONTROLS
+        function selectQuiz(idx) {
+            activeQuizIndex = idx;
+            for (let i = 0; i < 5; i++) {
+                const btn = document.getElementById(`quiz-btn-${i}`);
+                if (btn) {
+                    btn.className = (i === idx)
+                        ? "px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-500 text-slate-950"
+                        : "px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-400 border border-slate-800";
+                }
+            }
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const q = quizzes[activeQuizIndex];
+            document.getElementById('quiz-title').innerText = q.title;
+            document.getElementById('quiz-question').innerText = q.q;
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            const opts = document.getElementById('quiz-options');
+            opts.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const b = document.createElement('button');
+                b.className = "w-full text-left p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 hover:border-cyan-500 transition";
+                b.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                b.onclick = () => answerQuiz(idx);
+                opts.appendChild(b);
+            });
+        }
+
+        function answerQuiz(selected) {
+            const q = quizzes[activeQuizIndex];
+            const fb = document.getElementById('quiz-feedback');
+            fb.classList.remove('hidden');
+            if (selected === q.correct) {
+                fb.className = "p-4 rounded-xl text-xs bg-emerald-500/10 border border-emerald-500/30 text-emerald-300";
+                fb.innerText = `Correct! ${q.exp}`;
+            } else {
+                fb.className = "p-4 rounded-xl text-xs bg-rose-500/10 border border-rose-500/30 text-rose-300";
+                fb.innerText = `Incorrect. ${q.exp}`;
+            }
+        }
+
+        // TICKETS FILTER
+        function filterTickets(severity) { renderTickets(severity); }
+
+        function renderTickets(filter) {
+            const container = document.getElementById('tickets-list');
+            container.innerHTML = '';
+            const filtered = filter === 'ALL' ? tickets : tickets.filter(t => t.severity === filter);
+            filtered.forEach(t => {
+                const card = document.createElement('div');
+                card.className = "p-4 rounded-2xl bg-slate-950 border border-slate-800 flex justify-between items-center";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs font-mono text-cyan-400 font-bold">${t.id}</span>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded ${t.severity === 'CRITICAL' ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300'}">${t.severity}</span>
+                        </div>
+                        <h4 class="text-sm font-semibold text-white mt-1">${t.title}</h4>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">${t.status}</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // INTERACTIVE AUDIT MODULE
+        function renderAudit() {
+            const container = document.getElementById('audit-checks-grid');
+            container.innerHTML = '';
+            let score = 0;
+            auditChecks.forEach((chk, idx) => {
+                if (auditState[idx]) score += chk.weight;
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-2xl border cursor-pointer transition ${auditState[idx] ? 'bg-cyan-500/10 border-cyan-500/50' : 'bg-slate-950 border-slate-800'}`;
+                card.onclick = () => toggleAudit(idx);
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-mono text-slate-400">${chk.standard}</span>
+                        <span class="text-xs font-bold ${auditState[idx] ? 'text-cyan-400' : 'text-slate-500'}">${auditState[idx] ? 'COMPLIANT' : 'PENDING'}</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-white mt-2">${chk.name}</h4>
+                `;
+                container.appendChild(card);
+            });
+            document.getElementById('audit-score').innerText = `${score}%`;
+        }
+
+        function toggleAudit(idx) {
+            auditState[idx] = !auditState[idx];
+            renderAudit();
+        }
+
+        // CHAT & AUTH HELPERS
+        function handleLoginStep1(e) {
+            e.preventDefault();
+            document.getElementById('form-login-step1').classList.add('hidden');
+            document.getElementById('form-login-mfa').classList.remove('hidden');
+        }
+
+        function handleMfaSubmit(e) {
+            e.preventDefault();
+            document.getElementById('login-overlay').classList.add('hidden');
+        }
+
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            if (!input.value.trim()) return;
+            const feed = document.getElementById('chat-feed');
+            const msg = document.createElement('div');
+            msg.className = "bg-slate-800/80 p-3 rounded-2xl text-xs text-slate-200 max-w-xl self-end";
+            msg.innerText = input.value;
+            feed.appendChild(msg);
+            input.value = '';
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        function clearChat() { document.getElementById('chat-feed').innerHTML = ''; }
+        function triggerLogout() { document.getElementById('login-overlay').classList.remove('hidden'); }
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function scrollToBottom() { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }
+
+        // PILLAR MODAL
+        function openPillarModal(type) {
+            const modal = document.getElementById('pillar-modal');
+            const title = document.getElementById('pm-title');
+            const body = document.getElementById('pm-body');
+            modal.classList.remove('hidden');
+            if (type === 'psychological') {
+                title.innerText = "Psychological Safety & Rotational Shifts";
+                body.innerHTML = "<p>Enforcing strict 8-hour shift rotations prevents responder cognitive overload and reduces operational configuration errors during critical containment operations.</p>";
+            } else if (type === 'msa') {
+                title.innerText = "Pre-Incident MSAs & Vendor Readiness";
+                body.innerHTML = "<p>Pre-negotiated Master Services Agreements allow immediate onboarding of external forensic experts within 20 minutes, bypassing emergency legal negotiations.</p>";
+            } else {
+                title.innerText = "Therapeutic Blameless Post-Mortems";
+                body.innerHTML = "<p>Blameless retrospectives encourage transparent event reporting and focus on systemic engineering hardening rather than individual disciplinary actions.</p>";
+            }
+        }
+        function closePillarModal() { document.getElementById('pillar-modal').classList.add('hidden'); }
+        function openTelemetryModal() { alert("Payload SHA-256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"); }
+        function cycleAlert() {}
+        function dismissAlert() { document.getElementById('alert-banner').classList.add('hidden'); }
+    </script>
+</body>
+</html>
