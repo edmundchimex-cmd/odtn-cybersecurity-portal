@@ -413,5 +413,528 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block font-semibold text-sl
+                            <label class="block font-semibold text-slate-400 mb-1" for="ticket-notes">DETAILED OBSERVATION</label>
+                            <textarea id="ticket-notes" required maxlength="300" rows="3" placeholder="Describe anomaly or human factor observation..." 
+                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/20">
+                            Submit Ticket to Queue
+                        </button>
+                    </form>
+                </div>
 
+                <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                        <h3 class="text-lg font-bold text-white">Active Incident Queue</h3>
+                        <div class="flex items-center space-x-2 text-xs">
+                            <span class="text-slate-400">Filter:</span>
+                            <button onclick="filterTickets('All')" id="filter-all" class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 transition">All</button>
+                            <button onclick="filterTickets('Critical')" id="filter-critical" class="px-2.5 py-1 rounded bg-slate-800 text-slate-400 hover:text-white transition">Critical</button>
+                            <button onclick="filterTickets('High')" id="filter-high" class="px-2.5 py-1 rounded bg-slate-800 text-slate-400 hover:text-white transition">High</button>
+                        </div>
+                    </div>
+                    <div id="tickets-container" class="space-y-3 max-h-[420px] overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 6: KNOWLEDGE ASSESSMENT QUIZ -->
+        <section id="view-quiz" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl max-w-3xl mx-auto space-y-6">
+                <div class="pb-4 border-b border-slate-800 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Module 5 Assessment</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Crisis Management & Human Dynamics Quiz</h2>
+                    </div>
+                    <span id="quiz-progress" class="text-xs font-mono text-slate-400">Question 1 of 3</span>
+                </div>
+
+                <div id="quiz-card" class="space-y-4">
+                    <p id="quiz-question" class="text-base font-semibold text-slate-200"></p>
+                    <div id="quiz-options" class="space-y-3"></div>
+                </div>
+
+                <div id="quiz-result-card" class="hidden text-center space-y-4">
+                    <div class="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
+                    <h3 class="text-2xl font-bold text-white">Assessment Complete</h3>
+                    <p id="quiz-score-text" class="text-slate-300 text-sm"></p>
+                    <button onclick="resetQuiz()" class="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition text-xs">Retake Quiz</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 7: SECURITY AUDIT CHECKLIST -->
+        <section id="view-audit" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl max-w-4xl mx-auto space-y-6">
+                <div class="pb-4 border-b border-slate-800 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Resilience Checklist</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Executive Audit & Preparedness Matrix</h2>
+                    </div>
+                    <span id="audit-score" class="text-xs font-mono bg-cyan-500/10 text-cyan-400 px-3 py-1.5 rounded-lg border border-cyan-500/20">0 / 4 Completed</span>
+                </div>
+
+                <div class="space-y-3" id="audit-checklist">
+                    <label class="flex items-start space-x-3 p-4 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-cyan-500/40 transition">
+                        <input type="checkbox" onchange="updateAuditProgress()" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-700 text-cyan-500 focus:ring-cyan-500">
+                        <div class="text-xs space-y-1">
+                            <strong class="text-white text-sm">Pre-Signed Master Services Agreements (MSAs)</strong>
+                            <p class="text-slate-400">External DFIR retainer contracts pre-approved by legal counsel to ensure instant emergency response onboarding.</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start space-x-3 p-4 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-cyan-500/40 transition">
+                        <input type="checkbox" onchange="updateAuditProgress()" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-700 text-cyan-500 focus:ring-cyan-500">
+                        <div class="text-xs space-y-1">
+                            <strong class="text-white text-sm">Mandatory Rotational Shift Schedules</strong>
+                            <p class="text-slate-400">Strict off-duty handover enforcement after 8-12 hours to prevent cognitive fatigue and tunnel vision.</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start space-x-3 p-4 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-cyan-500/40 transition">
+                        <input type="checkbox" onchange="updateAuditProgress()" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-700 text-cyan-500 focus:ring-cyan-500">
+                        <div class="text-xs space-y-1">
+                            <strong class="text-white text-sm">Psychological Safety & Blame-Free Retrospectives</strong>
+                            <p class="text-slate-400">Post-mortems framed around systemic gap analysis rather than employee punishment or finger-pointing.</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start space-x-3 p-4 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-cyan-500/40 transition">
+                        <input type="checkbox" onchange="updateAuditProgress()" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-700 text-cyan-500 focus:ring-cyan-500">
+                        <div class="text-xs space-y-1">
+                            <strong class="text-white text-sm">Isolated Out-of-Band Communications Channel</strong>
+                            <p class="text-slate-400">Encrypted war room channels independent of primary corporate Active Directory infrastructure.</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900/50 border-t border-slate-800 py-6 text-center text-xs text-slate-500 font-mono">
+        ODTN Vancouver Module 5 • Human Dynamics & Cyber Incident Command Portal © 2026
+    </footer>
+
+    <!-- TELEMETRY MODAL -->
+    <div id="telemetry-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="text-base font-bold text-white flex items-center space-x-2">
+                    <i data-lucide="terminal" class="w-5 h-5 text-cyan-400"></i>
+                    <span>EDR Payload Telemetry Inspection</span>
+                </h3>
+                <button onclick="closeTelemetryModal()" class="text-slate-400 hover:text-white text-lg font-bold" aria-label="Close telemetry modal">&times;</button>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-xl font-mono text-xs text-cyan-300 space-y-2 border border-slate-800/80 overflow-x-auto">
+                <p class="text-slate-400"># Process Tree Inspection (DC-SRV-02)</p>
+                <p>Parent: <span class="text-white">C:\Windows\System32\wbem\WmiPrvSE.exe</span></p>
+                <p>Target: <span class="text-rose-400">C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe</span></p>
+                <p>Arguments: <span class="text-amber-300">-enc VwBzAHMAYQBkAG0AZQBuACAAZABlAGwAZQB0AGUAIABzAGgAYQBkAG8AdwBzACAALwBhAGwAbAA=</span></p>
+            </div>
+            <div class="flex justify-end pt-2">
+                <button onclick="closeTelemetryModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl font-semibold transition">Close Modal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT CONTROLLER -->
+    <script>
+        lucide.createIcons();
+
+        // DOM Sanitizer function (Mitigates DOM-based XSS)
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // Session State & Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            const activeSession = sessionStorage.getItem('odtn_session_active');
+            if (activeSession === 'true') {
+                document.getElementById('login-overlay').classList.add('hidden');
+                document.getElementById('badge-user').innerText = escapeHTML(sessionStorage.getItem('odtn_user') || 'Commander');
+                document.getElementById('badge-role').innerText = escapeHTML(sessionStorage.getItem('odtn_role') || 'Incident Commander');
+            }
+        });
+
+        // Scroll Control Listener
+        window.addEventListener('scroll', () => {
+            const scroller = document.getElementById('scroll-controls');
+            if (window.scrollY > 250) {
+                scroller.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scroller.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Authentication Flow
+        function handleLoginStep1(e) {
+            e.preventDefault();
+            document.getElementById('form-login-step1').classList.add('hidden');
+            document.getElementById('form-login-mfa').classList.remove('hidden');
+        }
+
+        function handleMfaSubmit(e) {
+            e.preventDefault();
+            const tokenInput = document.getElementById('mfa-token').value.trim();
+            const errDiv = document.getElementById('mfa-error');
+
+            if (!/^\d{6}$/.test(tokenInput)) {
+                errDiv.classList.remove('hidden');
+                return;
+            }
+            errDiv.classList.add('hidden');
+
+            const rawUser = document.getElementById('login-user').value.trim();
+            const rawRole = document.getElementById('login-role').value;
+            const cleanUser = rawUser.split('@')[0] || 'Commander';
+
+            sessionStorage.setItem('odtn_session_active', 'true');
+            sessionStorage.setItem('odtn_user', cleanUser);
+            sessionStorage.setItem('odtn_role', rawRole);
+
+            document.getElementById('badge-user').innerText = escapeHTML(cleanUser);
+            document.getElementById('badge-role').innerText = escapeHTML(rawRole);
+            document.getElementById('login-overlay').classList.add('hidden');
+        }
+
+        function triggerLogout() {
+            sessionStorage.removeItem('odtn_session_active');
+            sessionStorage.removeItem('odtn_user');
+            sessionStorage.removeItem('odtn_role');
+
+            document.getElementById('mfa-token').value = '849201';
+            document.getElementById('form-login-mfa').classList.add('hidden');
+            document.getElementById('form-login-step1').classList.remove('hidden');
+            document.getElementById('login-overlay').classList.remove('hidden');
+        }
+
+        // Tab Navigation Controller
+        const views = ['briefing', 'simulator', 'chat', 'timeline', 'submissions', 'quiz', 'audit'];
+        function switchTab(viewId) {
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (el) el.classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${v}`);
+                if (navBtn) {
+                    navBtn.className = "px-3 py-2 rounded-lg transition text-slate-400 hover:text-white";
+                }
+            });
+            const target = document.getElementById(`view-${viewId}`);
+            if (target) target.classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${viewId}`);
+            if (activeNav) {
+                activeNav.className = "px-3 py-2 rounded-lg transition bg-cyan-500/10 text-cyan-400 border border-cyan-500/30";
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Alert Banner Ticker
+        const alerts = [
+            "[03:42:11 PST] LockBit ransomware payload execution detected on Host DC-SRV-02 (VLAN 104).",
+            "[04:15:00 PST] Unauthorized privilege escalation attempt blocked on Domain Controller AD-01.",
+            "[05:22:40 PST] External legal counsel notified; pre-signed MSA retainer activation pending."
+        ];
+        let alertIdx = 0;
+        function cycleAlert() {
+            alertIdx = (alertIdx + 1) % alerts.length;
+            document.getElementById('alert-text').innerHTML = `<strong>[Alert]</strong> ${escapeHTML(alerts[alertIdx])}`;
+        }
+        function dismissAlert() {
+            document.getElementById('alert-banner').style.display = 'none';
+        }
+
+        // Modal Controls & Escape Key Listener
+        function openTelemetryModal() {
+            document.getElementById('telemetry-modal').classList.remove('hidden');
+        }
+        function closeTelemetryModal() {
+            document.getElementById('telemetry-modal').classList.add('hidden');
+        }
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeTelemetryModal();
+        });
+
+        // Crisis Simulator State Engine
+        let simState = { stage: 1, morale: 80, legal: 50, containment: 30 };
+        const simStages = {
+            1: {
+                title: "Zero-Day Ransomware Outbreak",
+                desc: "EDR telemetry confirms active encryption across 40% of host endpoints. Threat actors are demanding 50 BTC. Your tier-2 SOC team has been awake for 14 hours straight. What is your immediate tactical directive?",
+                choices: [
+                    { text: "Isolate affected VLANs immediately & activate pre-signed MSA retainer", morale: +10, legal: +30, containment: +40, next: 2 },
+                    { text: "Pay the 50 BTC ransom immediately to restore operations without downtime", morale: -20, legal: -10, containment: +10, result: { success: false, title: "Extortion Failure", desc: "Paying without vetting leads to secondary double-extortion and legal compliance penalties." } },
+                    { text: "Keep tired Tier-1 team working through the night without shift handover", morale: -40, legal: 0, containment: +10, result: { success: false, title: "Fatigue Collapse", desc: "Exhausted analysts misconfigure firewall rules, allowing lateral threat movement across networks." } }
+                ]
+            },
+            2: {
+                title: "External DFIR Onboarding & Legal Coordination",
+                desc: "External incident response specialists have arrived via pre-negotiated MSAs. Legal counsel recommends preserving forensic evidence before shutting down infected servers.",
+                choices: [
+                    { text: "Enforce mandatory 8-hour shift rotations and conduct joint forensic scoping", morale: +20, legal: +20, containment: +30, next: 3 },
+                    { text: "Bypass shift handover and let analysts work continuously until containment", morale: -30, legal: +10, containment: +20, result: { success: false, title: "Burnout Incident", desc: "Key incident lead suffers cognitive burnout, missing critical lateral movement artifacts." } }
+                ]
+            },
+            3: {
+                title: "Blame-Free Post-Mortem & Containment Finalization",
+                desc: "Active ransomware payload neutralized. Executive board demands disciplinary termination of the employee who opened the initial phishing vector.",
+                choices: [
+                    { text: "Push back with a blame-free therapeutic post-mortem focused on system hardening", morale: +30, legal: +25, containment: +30, result: { success: true, title: "Complete Resilience Success", desc: "Exemplary crisis management! Psychological safety preserved, legal retainers honored, and infrastructure fully hardened." } },
+                    { text: "Publicly scapegoat and fire the employee to satisfy executive optics", morale: -50, legal: -20, containment: +10, result: { success: false, title: "Cultural Failure", desc: "Employee fear destroys future incident reporting channels, crippling organizational security posture." } }
+                ]
+            }
+        };
+
+        function renderSimulator() {
+            const stageData = simStages[simState.stage];
+            if (!stageData) return;
+
+            document.getElementById('sim-stage').innerText = `Phase ${simState.stage} of 3`;
+            document.getElementById('sim-title').innerText = stageData.title;
+            document.getElementById('sim-desc').innerText = stageData.desc;
+
+            document.getElementById('metric-morale').innerText = `${simState.morale}%`;
+            document.getElementById('bar-morale').style.width = `${simState.morale}%`;
+            document.getElementById('metric-legal').innerText = `${simState.legal}%`;
+            document.getElementById('bar-legal').style.width = `${simState.legal}%`;
+            document.getElementById('metric-containment').innerText = `${simState.containment}%`;
+            document.getElementById('bar-containment').style.width = `${simState.containment}%`;
+
+            const choicesDiv = document.getElementById('sim-choices');
+            choicesDiv.innerHTML = '';
+            stageData.choices.forEach((choice) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 bg-slate-950 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/50 rounded-xl transition text-sm text-slate-200 flex items-center justify-between group";
+                btn.innerHTML = `<span>${escapeHTML(choice.text)}</span> <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 shrink-0 ml-2"></i>`;
+                btn.onclick = () => handleChoice(choice);
+                choicesDiv.appendChild(btn);
+            });
+            lucide.createIcons();
+        }
+
+        function handleChoice(choice) {
+            simState.morale = Math.max(0, Math.min(100, simState.morale + choice.morale));
+            simState.legal = Math.max(0, Math.min(100, simState.legal + choice.legal));
+            simState.containment = Math.max(0, Math.min(100, simState.containment + choice.containment));
+
+            if (choice.result) {
+                document.getElementById('sim-active-card').classList.add('hidden');
+                const resCard = document.getElementById('sim-result');
+                resCard.classList.remove('hidden');
+                document.getElementById('result-title').innerText = choice.result.title;
+                document.getElementById('result-desc').innerText = choice.result.desc;
+                const iconDiv = document.getElementById('result-icon');
+                if (choice.result.success) {
+                    iconDiv.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-3xl font-bold";
+                    iconDiv.innerText = "✓";
+                } else {
+                    iconDiv.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center bg-rose-500/20 text-rose-400 border border-rose-500/40 text-3xl font-bold";
+                    iconDiv.innerText = "✕";
+                }
+            } else if (choice.next) {
+                simState.stage = choice.next;
+                renderSimulator();
+            }
+        }
+
+        function resetSimulator() {
+            simState = { stage: 1, morale: 80, legal: 50, containment: 30 };
+            document.getElementById('sim-result').classList.add('hidden');
+            document.getElementById('sim-active-card').classList.remove('hidden');
+            renderSimulator();
+        }
+        renderSimulator();
+
+        // SOC Chat Command Handler
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendChatMessage("Commander", text, "cyan");
+            input.value = '';
+
+            setTimeout(() => {
+                let response = "Acknowledged commander. Executing directive across active nodes.";
+                const lower = text.toLowerCase();
+                if (lower.includes("subnet")) response = "Subnet isolation protocols initiated. Segment firewall rules updated.";
+                else if (lower.includes("msa")) response = "External DFIR vendor notified via pre-signed MSA retainer. Onboarding in progress.";
+                else if (lower.includes("rotate")) response = "Shift crew handover complete. Rested secondary analysts are online.";
+                appendChatMessage("DFIR Lead", response, "slate");
+            }, 750);
+        }
+
+        function sendQuickCommand(cmd) {
+            document.getElementById('chat-input').value = cmd;
+        }
+
+        function appendChatMessage(sender, text, tone) {
+            const feed = document.getElementById('chat-feed');
+            const div = document.createElement('div');
+            div.className = "flex items-start space-x-3";
+            const isCommander = tone === "cyan";
+            div.innerHTML = `
+                <div class="${isCommander ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' : 'bg-slate-800 text-slate-300 border-slate-700'} p-2 rounded-xl font-mono font-bold text-xs shrink-0 border">${isCommander ? 'CMD' : 'SOC'}</div>
+                <div class="bg-slate-800/80 border border-slate-700/50 p-3.5 rounded-2xl text-sm text-slate-200 max-w-xl">
+                    <strong class="text-xs block text-slate-400 mb-0.5">${escapeHTML(sender)}</strong>
+                    ${escapeHTML(text)}
+                </div>
+            `;
+            feed.appendChild(div);
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        function clearChat() {
+            document.getElementById('chat-feed').innerHTML = '';
+        }
+
+        // Timeline Accordion Toggle
+        function toggleTimelineDetails(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        // Incident Submissions Queue
+        let tickets = [
+            { id: 1, author: "Alex Vance", asset: "DC-SRV-02", severity: "Critical", notes: "Shadow copies deleted via encrypted PowerShell payload." },
+            { id: 2, author: "Sarah Connor", asset: "VLAN 104 Gateway", severity: "High", notes: "Unusual outbound beaconing detected on port 443." }
+        ];
+
+        function renderTickets(filter = 'All') {
+            const container = document.getElementById('tickets-container');
+            container.innerHTML = '';
+            const filtered = filter === 'All' ? tickets : tickets.filter(t => t.severity === filter);
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 font-mono">No matching tickets in queue.</p>`;
+                return;
+            }
+
+            filtered.forEach(t => {
+                const card = document.createElement('div');
+                card.className = "p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2 text-xs";
+                const sevColor = t.severity === 'Critical' ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-white">${escapeHTML(t.asset)}</span>
+                        <span class="px-2 py-0.5 rounded border text-[10px] font-mono ${sevColor}">${escapeHTML(t.severity)}</span>
+                    </div>
+                    <p class="text-slate-300">${escapeHTML(t.notes)}</p>
+                    <div class="text-[10px] text-slate-500 font-mono flex justify-between pt-1 border-t border-slate-900">
+                        <span>Reporter: ${escapeHTML(t.author)}</span>
+                        <span>Ticket #${t.id}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function handleTicketSubmit(e) {
+            e.preventDefault();
+            const author = document.getElementById('ticket-author').value.trim();
+            const asset = document.getElementById('ticket-asset').value.trim();
+            const severity = document.getElementById('ticket-severity').value;
+            const notes = document.getElementById('ticket-notes').value.trim();
+
+            tickets.unshift({ id: tickets.length + 1, author, asset, severity, notes });
+            document.getElementById('ticket-form').reset();
+            renderTickets('All');
+        }
+
+        function filterTickets(level) {
+            ['All', 'Critical', 'High'].forEach(l => {
+                const btn = document.getElementById(`filter-${l.toLowerCase()}`);
+                if (btn) {
+                    btn.className = l === level ? "px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 transition" : "px-2.5 py-1 rounded bg-slate-800 text-slate-400 hover:text-white transition";
+                }
+            });
+            renderTickets(level);
+        }
+        renderTickets('All');
+
+        // Assessment Quiz State
+        const quizData = [
+            {
+                q: "Why are pre-signed Master Services Agreements (MSAs) critical during a ransomware crisis?",
+                options: [
+                    ["They eliminate legal delays and guarantee rapid vendor onboarding.", true],
+                    ["They guarantee the threat actors will decrypt files for free.", false],
+                    ["They replace the need for internal firewalls.", false]
+                ]
+            },
+            {
+                q: "What is the primary risk of forcing SOC analysts to work 18+ hour continuous shifts?",
+                options: [
+                    ["Cognitive fatigue, tunnel vision, and catastrophic configuration mistakes.", true],
+                    ["Higher coffee consumption expenses.", false],
+                    ["Improved threat actor attribution speed.", false]
+                ]
+            },
+            {
+                q: "What is the goal of a blame-free post-mortem after an incident?",
+                options: [
+                    ["To treat breaches as system learning opportunities rather than employee disciplinary actions.", true],
+                    ["To ensure no one ever reports security anomalies again.", false],
+                    ["To legally protect executive leadership from liability.", false]
+                ]
+            }
+        ];
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+
+        function renderQuiz() {
+            if (currentQuizIdx >= quizData.length) {
+                document.getElementById('quiz-card').classList.add('hidden');
+                document.getElementById('quiz-result-card').classList.remove('hidden');
+                document.getElementById('quiz-score-text').innerText = `You scored ${quizScore} out of ${quizData.length} correct answers!`;
+                return;
+            }
+            const qObj = quizData[currentQuizIdx];
+            document.getElementById('quiz-progress').innerText = `Question ${currentQuizIdx + 1} of ${quizData.length}`;
+            document.getElementById('quiz-question').innerText = qObj.q;
+            
+            const optsDiv = document.getElementById('quiz-options');
+            optsDiv.innerHTML = '';
+            qObj.options.forEach(([text, isCorrect]) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl transition text-xs text-slate-200";
+                btn.innerText = text;
+                btn.onclick = () => {
+                    if (isCorrect) quizScore++;
+                    currentQuizIdx++;
+                    renderQuiz();
+                };
+                optsDiv.appendChild(btn);
+            });
+        }
+
+        function resetQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result-card').classList.add('hidden');
+            document.getElementById('quiz-card').classList.remove('hidden');
+            renderQuiz();
+        }
+        renderQuiz();
+
+        // Audit Progress Calculator
+        function updateAuditProgress() {
+            const checkboxes = document.querySelectorAll('#view-audit input[type="checkbox"]');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            document.getElementById('audit-score').innerText = `${checkedCount} / ${checkboxes.length} Completed`;
+        }
+    </script>
+</body>
+</html>
