@@ -157,6 +157,7 @@
                <nav class="hidden lg:flex space-x-1 font-medium text-xs">
                    <button onclick="switchTab('briefing')" id="nav-briefing" class="px-3 py-2 rounded-lg transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-semibold shadow-sm">Home</button>
                    <button onclick="switchTab('simulator')" id="nav-simulator" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Simulator</button>
+                   <button onclick="switchTab('chat')" id="nav-chat" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">SOC Chat</button>
                    <button onclick="switchTab('quiz')" id="nav-quiz" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Quiz</button>
                </nav>
 
@@ -182,7 +183,7 @@
                        Human Dynamics in High-Stress Cyber Crisis
                    </h2>
                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
-                       Technical playbooks and firewalls alone cannot protect an organization. ODTN Vancouver Module 5 explores psychological safety, operational burnout, and robust incident management.
+                       Technical playbooks and firewalls alone cannot protect an organization. ODTN Vancouver Module 5 explores how psychological safety, operational burnout, pre-incident legal retainers (MSAs/NDAs), and non-punitive post-mortems determine true organizational resilience.
                    </p>
                    <div class="pt-3 flex flex-wrap gap-3.5">
                        <button onclick="switchTab('simulator')" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-2xl transition-all shadow-lg shadow-cyan-500/25 flex items-center space-x-2">
@@ -191,23 +192,40 @@
                        </button>
                        <button onclick="switchTab('quiz')" class="px-6 py-3 bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 border border-slate-700/80 font-semibold rounded-2xl transition-all flex items-center space-x-2">
                            <i data-lucide="help-circle" class="w-4 h-4 text-cyan-400"></i>
-                           <span>Take Knowledge Quiz</span>
+                           <span>Take Knowledge Assessment</span>
                        </button>
                    </div>
                </div>
             </div>
         </section>
 
-        <!-- VIEW 2: CRISIS SIMULATOR -->
+        <!-- VIEW 2: SIMULATOR -->
         <section id="view-simulator" class="hidden space-y-6">
             <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
-                <h3 class="text-2xl font-bold text-white mb-3">Multi-Stage Crisis Simulator Active</h3>
-                <p class="text-slate-300">Simulate response protocols and team decision-making workflows under pressure.</p>
-                <button onclick="switchTab('briefing')" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-semibold">Back to Briefing</button>
+                <h3 class="text-2xl font-bold text-white mb-3">Multi-Stage Crisis Simulator</h3>
+                <p class="text-slate-300">Simulate team responses and containment decisions during an active outbreak scenario.</p>
+                <button onclick="switchTab('briefing')" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-semibold">Back to Home</button>
             </div>
         </section>
 
-        <!-- VIEW 6: KNOWLEDGE ASSESSMENT QUIZ -->
+        <!-- VIEW 3: SOC WAR ROOM CHAT -->
+        <section id="view-chat" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col h-[500px]">
+                <div class="pb-4 border-b border-slate-800 mb-4 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">SOC Tactical Command Channel</h3>
+                        <p class="text-xs text-slate-400">Encrypted incident response coordination feed.</p>
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto space-y-3 font-mono text-xs text-slate-300">
+                    <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                        <span class="text-cyan-400 font-bold">[03:42:15 PST] Lead DFIR Analyst:</span> Initial triage confirms LockBit payload execution on DC-SRV-02. Isolating subnet segment.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 6: KNOWLEDGE ASSESSMENT QUIZ (Remade to match specifications) -->
         <section id="view-quiz" class="hidden space-y-6">
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl max-w-3xl mx-auto space-y-6">
                 <div class="pb-4 border-b border-slate-800 flex items-center justify-between">
@@ -234,17 +252,15 @@
 
     </main>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- CORE SCRIPT LOGIC -->
     <script>
-        // Initialize Lucide Icons
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
             initQuiz();
         });
 
-        // Tab Switching Logic
         function switchTab(tabId) {
-            const views = ['briefing', 'simulator', 'quiz'];
+            const views = ['briefing', 'simulator', 'chat', 'quiz'];
             views.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 if (el) el.classList.add('hidden');
@@ -263,7 +279,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Login Authentication Steps
         function handleLoginStep1(event) {
             event.preventDefault();
             document.getElementById('form-login-step1').classList.add('hidden');
@@ -287,7 +302,11 @@
             document.getElementById('form-login-step1').classList.remove('hidden');
         }
 
-        // Quiz Data & State Logic
+        function dismissAlert() {
+            document.getElementById('alert-banner').style.display = 'none';
+        }
+
+        // Quiz Data & Interactive State
         const quizData = [
             {
                 question: "What is the primary operational risk of requiring cybersecurity incident response teams to work continuous 18-hour shifts without rotation?",
