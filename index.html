@@ -740,6 +740,18 @@
 
         <section id="view-simulator" class="hidden space-y-6">
 
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
+                <label for="simulator-selector" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Choose a Crisis Simulator</label>
+                <select id="simulator-selector" onchange="loadSimulator(this.value)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-500">
+                    <option value="ransomware">1. Ransomware Outbreak &amp; Team Fatigue</option>
+                    <option value="exfiltration">2. Data Exfiltration &amp; Privacy Response</option>
+                    <option value="vendor">3. Third-Party Vendor Compromise</option>
+                    <option value="recovery">4. Recovery, Communications &amp; Post-Mortem</option>
+                    <option value="insider">5. Insider Threat &amp; Credential Compromise</option>
+                </select>
+                <p class="text-xs text-slate-500 mt-2">Each scenario contains three decision stages. Your choices change containment, legal readiness, and team morale.</p>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-900/80 border border-slate-800 p-4 rounded-2xl shadow-lg backdrop-blur-md">
 
                 <div>
@@ -1686,237 +1698,182 @@
 
 
 
-        // Simulator Logic
-
-        const simStages = [
-
-            {
-
-                stage: "Phase 1 of 3",
-
-                timer: "Timestamp: T+00:15 (03:42 AM PST)",
-
-                title: "Zero-Day Ransomware Outbreak",
-
-                desc: "Ransomware encryption is actively spreading across VLAN 104. The Tier-1 analyst on duty has been working 16 hours straight and recommends shutting down all domain controllers immediately without isolating subnet B-4 first.",
-
-                choices: [
-
-                    {
-
-                        text: "Approve total shutdown immediately (Fatigued advice)",
-
-                        morale: -20, legal: 0, containment: +10,
-
-                        next: 1
-
-                    },
-
-                    {
-
-                        text: "Enforce analyst shift rotation & systematically isolate VLAN 104",
-
-                        morale: +15, legal: +10, containment: +30,
-
-                        next: 1
-
-                    }
-
+        // Simulator Logic: five selectable, three-stage crisis simulations.
+        const simulatorScenarios = {
+            ransomware: {
+                initial: { morale: 80, legal: 50, containment: 30 },
+                stages: [
+                    { stage: "Phase 1 of 3", timer: "Timestamp: T+00:15 (03:42 AM PST)", title: "Ransomware Outbreak: Initial Containment", desc: "Ransomware is spreading across VLAN 104. A fatigued analyst recommends shutting down every domain controller immediately.", choices: [
+                        { text: "Shut down all domain controllers without scoping the incident", morale: -15, legal: -5, containment: 10 },
+                        { text: "Isolate affected hosts and VLAN 104; preserve critical evidence", morale: 5, legal: 10, containment: 30 }
+                    ]},
+                    { stage: "Phase 2 of 3", timer: "Timestamp: T+00:45 (04:12 AM PST)", title: "Ransomware: Specialist Support", desc: "Several systems are encrypted. The team needs incident-response support and a clear record of actions taken.", choices: [
+                        { text: "Activate the pre-approved DFIR retainer and document actions", morale: 10, legal: 25, containment: 20 },
+                        { text: "Search for a new vendor and delay formal incident documentation", morale: -10, legal: -20, containment: -5 }
+                    ]},
+                    { stage: "Phase 3 of 3", timer: "Timestamp: T+02:00 (05:27 AM PST)", title: "Ransomware: Recovery Decision", desc: "Containment is improving. Select the recovery approach that reduces the chance of reinfection.", choices: [
+                        { text: "Validate clean backups, eradicate persistence, and restore in stages", morale: 10, legal: 10, containment: 25 },
+                        { text: "Restore everything immediately without validating backups or systems", morale: -10, legal: -5, containment: -10 }
+                    ]}
                 ]
-
             },
-
-            {
-
-                stage: "Phase 2 of 3",
-
-                timer: "Timestamp: T+02:00 (05:27 AM PST)",
-
-                title: "External Forensics Onboarding",
-
-                desc: "The attacker claims exfiltration of employee data. You need external DFIR assistance immediately. Do you have pre-negotiated MSAs ready?",
-
-                choices: [
-
-                    {
-
-                        text: "Activate pre-signed MSA retainer (Instant 20-min onboarding)",
-
-                        morale: +10, legal: +40, containment: +30,
-
-                        next: 2
-
-                    },
-
-                    {
-
-                        text: "Contact new vendor and begin contract negotiations now",
-
-                        morale: -15, legal: -30, containment: -10,
-
-                        next: 2
-
-                    }
-
+            exfiltration: {
+                initial: { morale: 75, legal: 45, containment: 25 },
+                stages: [
+                    { stage: "Phase 1 of 3", timer: "Timestamp: T+00:10", title: "Data Exfiltration: Confirm the Signal", desc: "DLP alerts show a large outbound transfer from a server containing employee records. The scope is not yet confirmed.", choices: [
+                        { text: "Preserve logs and network evidence; investigate the source and scope", morale: 5, legal: 10, containment: 25 },
+                        { text: "Delete the alert and logs to avoid disrupting business", morale: -10, legal: -20, containment: -10 }
+                    ]},
+                    { stage: "Phase 2 of 3", timer: "Timestamp: T+00:40", title: "Data Exfiltration: Privacy Coordination", desc: "Initial evidence suggests personal information may have been accessed. Legal and privacy teams need reliable facts.", choices: [
+                        { text: "Engage privacy/legal leads and document confirmed facts and uncertainties", morale: 5, legal: 30, containment: 10 },
+                        { text: "Send a public statement before verifying the incident details", morale: -5, legal: -15, containment: 0 }
+                    ]},
+                    { stage: "Phase 3 of 3", timer: "Timestamp: T+01:30", title: "Data Exfiltration: Reduce Further Exposure", desc: "The suspected transfer path is identified. Decide how to prevent further loss while maintaining evidence.", choices: [
+                        { text: "Restrict the compromised account and egress path; monitor for repeat transfers", morale: 5, legal: 10, containment: 25 },
+                        { text: "Leave access unchanged until the full investigation is complete", morale: -5, legal: -5, containment: -15 }
+                    ]}
                 ]
-
+            },
+            vendor: {
+                initial: { morale: 80, legal: 40, containment: 30 },
+                stages: [
+                    { stage: "Phase 1 of 3", timer: "Timestamp: T+00:20", title: "Vendor Compromise: Limit Trust", desc: "A managed service provider reports suspicious activity on an account that can access your environment.", choices: [
+                        { text: "Disable or restrict the affected vendor access and review active sessions", morale: 5, legal: 10, containment: 25 },
+                        { text: "Keep the vendor account enabled to avoid delaying service", morale: -5, legal: -5, containment: -15 }
+                    ]},
+                    { stage: "Phase 2 of 3", timer: "Timestamp: T+01:00", title: "Vendor Compromise: Contract and Evidence", desc: "The vendor is investigating. Your team must coordinate securely and understand contractual notification and evidence obligations.", choices: [
+                        { text: "Use the approved incident contact, review contract terms, and exchange evidence securely", morale: 5, legal: 25, containment: 15 },
+                        { text: "Share sensitive logs through an unapproved channel and skip contract review", morale: -5, legal: -20, containment: -5 }
+                    ]},
+                    { stage: "Phase 3 of 3", timer: "Timestamp: T+03:00", title: "Vendor Compromise: Restore Access Safely", desc: "The vendor claims the issue is fixed and requests that all access be restored.", choices: [
+                        { text: "Require validation, rotate credentials, and restore least-privilege access gradually", morale: 10, legal: 10, containment: 25 },
+                        { text: "Restore all previous permissions based only on the vendor's assurance", morale: -5, legal: -5, containment: -15 }
+                    ]}
+                ]
+            },
+            recovery: {
+                initial: { morale: 70, legal: 50, containment: 55 },
+                stages: [
+                    { stage: "Phase 1 of 3", timer: "Timestamp: T+00:30", title: "Recovery: Validate the Environment", desc: "The immediate threat appears contained. Some business services are still offline and executives want them restored quickly.", choices: [
+                        { text: "Verify eradication, system integrity, and clean backups before staged restoration", morale: 5, legal: 10, containment: 20 },
+                        { text: "Reconnect all affected systems immediately to meet the deadline", morale: -5, legal: -5, containment: -20 }
+                    ]},
+                    { stage: "Phase 2 of 3", timer: "Timestamp: T+02:00", title: "Recovery: Communicate Clearly", desc: "Staff and customers are asking what happened. Confirmed facts are available, but some details remain under investigation.", choices: [
+                        { text: "Provide an approved, factual update and a clear next-update time", morale: 10, legal: 15, containment: 5 },
+                        { text: "Speculate about the attacker and promise a recovery time you cannot verify", morale: -10, legal: -15, containment: 0 }
+                    ]},
+                    { stage: "Phase 3 of 3", timer: "Timestamp: T+24:00", title: "Recovery: Learn from the Incident", desc: "Core services are stable. The team needs to turn lessons learned into measurable improvements.", choices: [
+                        { text: "Run a blameless post-mortem with owners, deadlines, and tracked corrective actions", morale: 15, legal: 10, containment: 10 },
+                        { text: "Close the incident without reviewing root cause or assigning follow-up actions", morale: -10, legal: -10, containment: -5 }
+                    ]}
+                ]
+            },
+            insider: {
+                initial: { morale: 75, legal: 45, containment: 35 },
+                stages: [
+                    { stage: "Phase 1 of 3", timer: "Timestamp: T+00:15", title: "Insider Threat: Protect Accounts", desc: "A user account shows unusual downloads and sign-ins from an unfamiliar location. The cause is not yet known.", choices: [
+                        { text: "Preserve audit logs and apply proportionate temporary access restrictions", morale: 5, legal: 10, containment: 25 },
+                        { text: "Publicly accuse the employee and wipe their device immediately", morale: -15, legal: -15, containment: 5 }
+                    ]},
+                    { stage: "Phase 2 of 3", timer: "Timestamp: T+00:50", title: "Insider Threat: Investigate Fairly", desc: "The activity could indicate a compromised account or policy violation. HR and legal guidance may be needed.", choices: [
+                        { text: "Use authorized evidence collection and coordinate with HR/legal on a need-to-know basis", morale: 5, legal: 25, containment: 10 },
+                        { text: "Search personal information outside the approved scope and share rumors broadly", morale: -10, legal: -20, containment: 0 }
+                    ]},
+                    { stage: "Phase 3 of 3", timer: "Timestamp: T+02:00", title: "Insider Threat: Secure and Monitor", desc: "The suspicious account is contained. Choose a measured plan to prevent recurrence.", choices: [
+                        { text: "Rotate credentials, enforce MFA, review least privilege, and monitor for recurrence", morale: 10, legal: 10, containment: 25 },
+                        { text: "Re-enable the account with the same credentials and no additional monitoring", morale: -5, legal: -5, containment: -15 }
+                    ]}
+                ]
             }
+        };
 
-        ];
-
-
-
+        let activeSimulator = 'ransomware';
+        let simStages = simulatorScenarios[activeSimulator].stages;
         let currentSimStage = 0;
-
         let morale = 80, legal = 50, containment = 30;
 
-
+        function loadSimulator(simulatorId) {
+            if (!simulatorScenarios[simulatorId]) return;
+            activeSimulator = simulatorId;
+            simStages = simulatorScenarios[activeSimulator].stages;
+            resetSimulator();
+        }
 
         function renderSim() {
-
             if (currentSimStage < simStages.length) {
-
-                const s = simStages[currentSimStage];
-
-                document.getElementById('sim-stage').innerText = s.stage;
-
-                document.getElementById('sim-timer').innerText = s.timer;
-
-                document.getElementById('sim-title').innerText = s.title;
-
-                document.getElementById('sim-desc').innerText = s.desc;
-
-
-
+                const stage = simStages[currentSimStage];
+                document.getElementById('sim-stage').innerText = stage.stage;
+                document.getElementById('sim-timer').innerText = stage.timer;
+                document.getElementById('sim-title').innerText = stage.title;
+                document.getElementById('sim-desc').innerText = stage.desc;
                 const choicesContainer = document.getElementById('sim-choices');
-
-                choicesContainer.innerHTML = s.choices.map((c, idx) => `
-
-                    <button onclick="makeSimChoice(${idx})" class="w-full text-left p-4 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 rounded-xl transition text-xs text-slate-200 flex items-center justify-between group">
-
-                        <span>${c.text}</span>
-
+                choicesContainer.innerHTML = stage.choices.map((choice, idx) => `
+                    <button type="button" onclick="makeSimChoice(${idx})" class="w-full text-left p-4 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 rounded-xl transition text-xs text-slate-200 flex items-center justify-between group">
+                        <span>${choice.text}</span>
                         <i data-lucide="arrow-right" class="w-4 h-4 text-cyan-400 opacity-0 group-hover:opacity-100 transition"></i>
-
                     </button>
-
                 `).join('');
-
                 lucide.createIcons();
-
             } else {
-
                 showSimResult();
-
             }
-
         }
-
-
 
         function makeSimChoice(choiceIdx) {
-
             const choice = simStages[currentSimStage].choices[choiceIdx];
-
+            if (!choice) return;
             morale = Math.min(100, Math.max(0, morale + choice.morale));
-
             legal = Math.min(100, Math.max(0, legal + choice.legal));
-
             containment = Math.min(100, Math.max(0, containment + choice.containment));
-
-
-
             updateMetrics();
-
             currentSimStage++;
-
             renderSim();
-
         }
-
-
 
         function updateMetrics() {
-
             document.getElementById('metric-morale').innerText = `${morale}%`;
-
             document.getElementById('bar-morale').style.width = `${morale}%`;
-
             document.getElementById('metric-legal').innerText = `${legal}%`;
-
             document.getElementById('bar-legal').style.width = `${legal}%`;
-
             document.getElementById('metric-containment').innerText = `${containment}%`;
-
             document.getElementById('bar-containment').style.width = `${containment}%`;
-
         }
-
-
 
         function showSimResult() {
-
             document.getElementById('sim-active-card').classList.add('hidden');
-
-            const res = document.getElementById('sim-result');
-
-            res.classList.remove('hidden');
-
-
-
+            const result = document.getElementById('sim-result');
+            result.classList.remove('hidden');
             const iconBox = document.getElementById('result-icon');
-
             const title = document.getElementById('result-title');
-
             const desc = document.getElementById('result-desc');
-
-
+            const scenarioName = document.getElementById('simulator-selector').selectedOptions[0].textContent.replace(/^\d+\.\s*/, '');
 
             if (morale >= 60 && legal >= 60 && containment >= 60) {
-
                 iconBox.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
-
                 iconBox.innerHTML = `<i data-lucide="check-circle-2" class="w-10 h-10"></i>`;
-
-                title.innerText = "Crisis Successfully Contained";
-
-                desc.innerText = "By prioritizing team shift rotations and leveraging pre-signed MSAs, you contained the breach efficiently while mitigating staff burnout and legal risks.";
-
+                title.innerText = "Crisis Objectives Achieved";
+                desc.innerText = `${scenarioName}: Your decisions supported effective containment, legal readiness, and team resilience. Review the decision-making process and record any follow-up actions.`;
             } else {
-
                 iconBox.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center bg-amber-500/20 text-amber-400 border border-amber-500/40";
-
                 iconBox.innerHTML = `<i data-lucide="alert-octagon" class="w-10 h-10"></i>`;
-
-                title.innerText = "High Operational Friction Experienced";
-
-                desc.innerText = "The incident was partially controlled, but delays in legal onboarding or responder fatigue led to increased damage. Review Module 5 pillars to refine your response strategy.";
-
+                title.innerText = "Operational Gaps Identified";
+                desc.innerText = `${scenarioName}: The response has gaps in containment, legal readiness, or team resilience. Restart the scenario and try choices that preserve evidence, coordinate stakeholders, and reduce ongoing risk.`;
             }
-
             lucide.createIcons();
-
         }
-
-
 
         function resetSimulator() {
-
             currentSimStage = 0;
-
-            morale = 80; legal = 50; containment = 30;
-
+            const initial = simulatorScenarios[activeSimulator].initial;
+            morale = initial.morale;
+            legal = initial.legal;
+            containment = initial.containment;
+            simStages = simulatorScenarios[activeSimulator].stages;
             updateMetrics();
-
             document.getElementById('sim-result').classList.add('hidden');
-
             document.getElementById('sim-active-card').classList.remove('hidden');
-
             renderSim();
-
         }
-
-
 
         // SOC Chat Script
 
