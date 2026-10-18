@@ -432,19 +432,15 @@
     <header class="bg-slate-900/80 border-b border-slate-800/80 sticky top-[37px] z-40 backdrop-blur-lg">
 
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="absolute left-[4.25rem] right-[4.25rem] sm:left-20 sm:right-20 lg:left-20 lg:right-[27rem] flex items-center justify-center gap-1 sm:gap-1.5 pointer-events-none min-w-0 overflow-hidden">
-                <span class="shrink-0 bg-cyan-500/10 p-1 sm:p-1.5 rounded-lg border border-cyan-500/20 text-cyan-400 shadow-sm">
-                    <i data-lucide="shield-check" class="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true"></i>
+            <div class="absolute left-14 right-36 sm:left-20 sm:right-64 flex items-center justify-center gap-1.5 pointer-events-none min-w-0 overflow-hidden">
+                <span class="shrink-0 bg-cyan-500/10 p-1 rounded-lg border border-cyan-500/20 text-cyan-400">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5" aria-hidden="true"></i>
                 </span>
-                <h1 class="min-w-0 whitespace-nowrap flex items-center justify-center gap-1 sm:gap-1.5 text-center text-[7px] sm:text-[9px] md:text-[10px] lg:text-[12px] xl:text-[13px] font-extrabold tracking-tight text-white leading-none uppercase drop-shadow-sm">
-                    <span>ODTN VANCOUVER (OCTOBER 2025) - LESSONS THAT REDEFINE CYBER RESILIENCE</span>
-                    <span class="inline-flex shrink-0 items-center gap-1 rounded-md border border-amber-300/60 bg-gradient-to-r from-amber-400/20 via-yellow-300/15 to-cyan-400/20 px-1.5 py-1 text-amber-200 shadow-[0_0_12px_rgba(251,191,36,0.18)] ring-1 ring-amber-200/10" title="Module 5">
-                        <i data-lucide="shield-check" class="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true"></i>
-                        <span class="tracking-wider">MOD 5</span>
-                    </span>
+                <h1 class="min-w-0 whitespace-normal sm:whitespace-nowrap text-center text-[8px] sm:text-[10px] md:text-xs font-bold tracking-tight text-white leading-tight uppercase">
+                    ODTN VANCOUVER (OCTOBER 2025) - LESSONS THAT REDEFINE CYBER RESILIENCE
                 </h1>
+                <span class="hidden sm:inline-flex shrink-0 items-center rounded-md border border-amber-300/40 bg-amber-400/10 px-1.5 py-1 text-[8px] font-semibold text-amber-200">MOD 5</span>
             </div>
-
             <div class="flex items-center space-x-3">
 
                 <!-- Far-left Home shortcut -->
@@ -461,18 +457,24 @@
             <!-- Active User Session Badge & Top Right Controls -->
 
             <div class="flex items-center space-x-3">
-<div id="session-badge" class="hidden sm:flex items-center space-x-2.5 bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-xl text-xs shadow-inner">
-
-                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-
-                    <div>
-
-                        <span id="badge-user" class="font-bold text-slate-200">Commander</span>
-
-                        <span id="badge-role" class="text-slate-400 block text-[10px]">Incident Commander</span>
-
+<div class="relative">
+                    <button type="button" id="session-menu-button" onclick="toggleSessionMenu()" aria-label="Open account details" aria-expanded="false" aria-controls="session-badge" title="Account details" class="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-950/90 p-2.5 text-slate-200 shadow-sm transition hover:border-cyan-400/60 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">
+                        <i data-lucide="menu" class="h-5 w-5" aria-hidden="true"></i>
+                    </button>
+                    <div id="session-badge" class="hidden absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-slate-700 bg-slate-950 p-4 text-xs shadow-2xl">
+                        <div class="mb-3 flex items-center gap-2 text-emerald-300">
+                            <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="font-semibold">Active session</span>
+                        </div>
+                        <div class="border-t border-slate-800 pt-3">
+                            <div class="mb-1 text-[10px] uppercase tracking-wider text-slate-500">Email address</div>
+                            <div id="badge-user" class="break-all font-bold text-slate-100">Commander</div>
+                        </div>
+                        <div class="mt-3 border-t border-slate-800 pt-3">
+                            <div class="mb-1 text-[10px] uppercase tracking-wider text-slate-500">Designation</div>
+                            <div id="badge-role" class="text-slate-300">Incident Commander</div>
+                        </div>
                     </div>
-
                 </div>
 
 
@@ -505,19 +507,19 @@
 
                     <select onchange="switchTab(this.value)" class="bg-slate-950 border border-slate-800 text-xs text-white rounded-lg px-2.5 py-1.5 focus:outline-none" aria-label="Navigate Portal Sections">
 
-                        <option value="briefing">1. Home</option>
+                        <option value="briefing">Home</option>
 
-                        <option value="simulator">2. Crisis Simulator</option>
+                        <option value="simulator">Crisis Simulator</option>
 
-                        <option value="chat">3. SOC War Room Chat</option>
+                        <option value="chat">SOC War Room Chat</option>
 
-                        <option value="timeline">4. Incident Timeline</option>
+                        <option value="timeline">Incident Timeline</option>
 
-                        <option value="submissions">5. Submissions Queue</option>
+                        <option value="submissions">Submissions Queue</option>
 
-                        <option value="quiz">6. Knowledge Assessment</option>
+                        <option value="quiz">Knowledge Assessment</option>
 
-                        <option value="audit">7. Security Audit</option>
+                        <option value="audit">Security Audit</option>
 
                     </select>
 
@@ -543,14 +545,17 @@
 
     <!-- Compact learning activity shortcuts -->
     <nav aria-label="Learning activity shortcuts" class="sticky top-[101px] z-30 border-b border-slate-800/80 bg-slate-950/95 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center gap-2 overflow-x-auto">
-            <span class="hidden md:inline shrink-0 pr-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">Activities</span>
-            <button type="button" onclick="switchTab('simulator')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/25 bg-cyan-500/10 px-3 py-1.5 text-xs font-medium text-cyan-200 hover:bg-cyan-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"><i data-lucide="workflow" class="h-3.5 w-3.5" aria-hidden="true"></i> Simulators</button>
-            <button type="button" onclick="switchTab('quiz')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-violet-500/25 bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-200 hover:bg-violet-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"><i data-lucide="clipboard-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Quizzes</button>
-            <button type="button" onclick="switchTab('timeline')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-200 hover:bg-emerald-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"><i data-lucide="list-ordered" class="h-3.5 w-3.5" aria-hidden="true"></i> Timeline</button>
-            <button type="button" onclick="switchTab('chat')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-sky-500/25 bg-sky-500/10 px-3 py-1.5 text-xs font-medium text-sky-200 hover:bg-sky-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"><i data-lucide="messages-square" class="h-3.5 w-3.5" aria-hidden="true"></i> SOC Chat</button>
-            <button type="button" onclick="switchTab('submissions')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-200 hover:bg-amber-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"><i data-lucide="ticket-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Tickets</button>
-            <button type="button" onclick="switchTab('audit')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-200 hover:bg-rose-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"><i data-lucide="shield-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Audit</button>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-4">
+            <div class="flex min-w-0 items-center gap-2 overflow-x-auto">
+                <span class="hidden md:inline shrink-0 pr-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">Activities</span>
+                <button type="button" onclick="switchTab('simulator')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/25 bg-cyan-500/10 px-3 py-1.5 text-xs font-medium text-cyan-200 hover:bg-cyan-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"><i data-lucide="workflow" class="h-3.5 w-3.5" aria-hidden="true"></i> Simulators</button>
+                <button type="button" onclick="switchTab('quiz')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-violet-500/25 bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-200 hover:bg-violet-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"><i data-lucide="clipboard-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Quizzes</button>
+                <button type="button" onclick="switchTab('timeline')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-200 hover:bg-emerald-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"><i data-lucide="list-ordered" class="h-3.5 w-3.5" aria-hidden="true"></i> Timeline</button>
+                <button type="button" onclick="switchTab('chat')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-sky-500/25 bg-sky-500/10 px-3 py-1.5 text-xs font-medium text-sky-200 hover:bg-sky-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"><i data-lucide="messages-square" class="h-3.5 w-3.5" aria-hidden="true"></i> SOC Chat</button>
+                <button type="button" onclick="switchTab('submissions')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-200 hover:bg-amber-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"><i data-lucide="ticket-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Tickets</button>
+                <button type="button" onclick="switchTab('audit')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-200 hover:bg-rose-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"><i data-lucide="shield-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Audit</button>
+            </div>
+
         </div>
     </nav>
 
@@ -1500,25 +1505,68 @@
         // NEVER place a service_role key or a user password in this public HTML file.
         const SUPABASE_URL = 'https://mfisjiyuqeigdcpfqkwn.supabase.co';
         const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_unBj7Ml0r5xkhH-KltkPmA_8EcK8o0f';
-        const supabaseReady = Boolean(
-            window.supabase &&
-            /^https:\/\/[A-Za-z0-9-]+\.supabase\.co$/.test(SUPABASE_URL) &&
-            !SUPABASE_URL.includes('YOUR_PROJECT_REF') &&
-            SUPABASE_PUBLISHABLE_KEY &&
-            !SUPABASE_PUBLISHABLE_KEY.includes('YOUR_SUPABASE_')
-        );
-        const authClient = supabaseReady
-            ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-                auth: {
-                    persistSession: true,
-                    autoRefreshToken: true,
-                    detectSessionInUrl: true
-                }
-            })
-            : null;
+        let authClient = null;
+        let supabaseLoadPromise = null;
+
+        function getSupabaseConfigError() {
+            if (!/^https:\/\/[A-Za-z0-9-]+\.supabase\.co$/.test(SUPABASE_URL) ||
+                SUPABASE_URL.includes('YOUR_PROJECT_REF')) {
+                return 'Supabase project URL is missing or invalid. Check SUPABASE_URL.';
+            }
+            if (!SUPABASE_PUBLISHABLE_KEY ||
+                SUPABASE_PUBLISHABLE_KEY.includes('YOUR_SUPABASE_')) {
+                return 'Supabase publishable key is missing. Check SUPABASE_PUBLISHABLE_KEY.';
+            }
+            return 'Supabase client library could not load. Check internet/CDN access and the browser console.';
+        }
+
+        function createSupabaseClientIfAvailable() {
+            if (authClient) return authClient;
+            if (!window.supabase || typeof window.supabase.createClient !== 'function') return null;
+            authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+                auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+            });
+            return authClient;
+        }
+
+        async function ensureSupabaseClient() {
+            if (createSupabaseClientIfAvailable()) return authClient;
+            if (!supabaseLoadPromise) {
+                supabaseLoadPromise = new Promise((resolve) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://unpkg.com/@supabase/supabase-js@2';
+                    script.async = true;
+                    script.onload = () => resolve(createSupabaseClientIfAvailable());
+                    script.onerror = () => resolve(null);
+                    document.head.appendChild(script);
+                });
+            }
+            return await supabaseLoadPromise;
+        }
+
+        createSupabaseClientIfAvailable();
 
         let loginFailureCount = 0;
         let authStateSubscription = null;
+
+        function toggleSessionMenu() {
+            const panel = document.getElementById('session-badge');
+            const button = document.getElementById('session-menu-button');
+            if (!panel || !button) return;
+            const willOpen = panel.classList.contains('hidden');
+            panel.classList.toggle('hidden', !willOpen);
+            button.setAttribute('aria-expanded', String(willOpen));
+        }
+
+        document.addEventListener('click', function(event) {
+            const panel = document.getElementById('session-badge');
+            const button = document.getElementById('session-menu-button');
+            if (!panel || !button || panel.classList.contains('hidden')) return;
+            if (!panel.contains(event.target) && !button.contains(event.target)) {
+                panel.classList.add('hidden');
+                button.setAttribute('aria-expanded', 'false');
+            }
+        });
 
         function dismissRecovery(id) {
             const panel = document.getElementById(id);
@@ -1536,10 +1584,9 @@
             const overlay = document.getElementById('login-overlay');
             const badge = document.getElementById('session-badge');
             if (overlay) overlay.classList.remove('hidden');
-            if (badge) {
-                badge.classList.add('hidden');
-                badge.classList.remove('flex');
-            }
+            if (badge) badge.classList.add('hidden');
+            const menuButton = document.getElementById('session-menu-button');
+            if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
             const password = document.getElementById('login-password');
             if (password) password.value = '';
             const error = document.getElementById('login-error');
@@ -1562,10 +1609,11 @@
             document.getElementById('badge-user').textContent = user.email || 'Authenticated user';
             // The selected role is only a simulation label; it does not grant privileges.
             const roleInput = document.getElementById('login-role');
-            document.getElementById('badge-role').textContent = (roleInput.value || 'Simulation user') + ' · Display only';
+            document.getElementById('badge-role').textContent = roleInput.value || 'Simulation user';
             document.getElementById('login-overlay').classList.add('hidden');
-            document.getElementById('session-badge').classList.remove('hidden');
-            document.getElementById('session-badge').classList.add('flex');
+            document.getElementById('session-badge').classList.add('hidden');
+            document.getElementById('session-menu-button').classList.remove('hidden');
+            document.getElementById('session-menu-button').setAttribute('aria-expanded', 'false');
             document.getElementById('login-password').value = '';
         }
 
@@ -1577,8 +1625,9 @@
             const submitButton = form.querySelector('button[type="submit"]');
             if (!form.reportValidity()) return;
 
-            if (!authClient) {
-                setLoginError('Supabase is not configured. Add your project URL and publishable key before signing in.');
+            const client = await ensureSupabaseClient();
+            if (!client) {
+                setLoginError(getSupabaseConfigError());
                 return;
             }
 
@@ -1587,7 +1636,7 @@
             submitButton.disabled = true;
             submitButton.setAttribute('aria-busy', 'true');
             try {
-                const { data, error } = await authClient.auth.signInWithPassword({ email, password });
+                const { data, error } = await client.auth.signInWithPassword({ email, password });
                 if (error || !data?.session?.user) {
                     loginFailureCount += 1;
                     passwordInput.value = '';
