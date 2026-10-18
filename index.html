@@ -309,7 +309,7 @@
 
                 <h2 class="text-2xl font-bold text-white tracking-tight">ODTN Secure Portal</h2>
 
-                <p class="text-xs text-slate-400">Enter your work email to continue. Secure account verification must be configured before live use.</p>
+                <p class="text-xs text-slate-400">Enter your authorized email and password to continue.</p>
 
             </div>
 
@@ -330,6 +330,13 @@
                 </div>
 
                 <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-password">PASSWORD</label>
+                    <input type="password" id="login-password" required maxlength="128" autocomplete="current-password"
+                        placeholder="Enter your password"
+                        class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner">
+                </div>
+
+                <div>
 
                     <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-role">ROLE</label>
 
@@ -347,7 +354,7 @@
 
                 </div>
 
-                <div id="login-error" class="hidden text-xs text-rose-400 font-mono text-center" role="alert">Sign-in is restricted to the authorized email address.</div>
+                <div id="login-error" class="hidden text-xs text-rose-400 font-mono text-center" role="alert">Invalid username or password.</div>
                 <div id="password-recovery-popup" class="hidden rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-100" role="dialog" aria-live="polite" aria-labelledby="password-recovery-title">
                     <div class="flex items-center gap-3"><i data-lucide="mail-check" class="w-5 h-5 shrink-0 text-amber-300"></i><div class="flex-1"><h3 id="password-recovery-title" class="font-bold">Need a recovery link?</h3>
                     <p class="mt-1 text-xs text-amber-100/90">Request password recovery by email.</p>
@@ -357,7 +364,7 @@
 
                 <button type="submit" class="w-full py-3.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2">
 
-                    <span>Proceed to MFA Verification</span>
+                    <span>Sign In Securely</span>
 
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
 
@@ -1485,13 +1492,9 @@
 
 
 
-        // Login Step Handlers
-
-        const allowedDemoRoles = new Set([
-            'Incident Commander', 'Lead DFIR Analyst', 'Legal Counsel', 'Security Auditor'
-        ]);
-
-        // Recovery guidance appears only after the first failed attempt in its corresponding step.
+        // Login handlers
+        // IMPORTANT: This is a front-end-only demonstration check. Credentials embedded
+        // in HTML/JavaScript are visible to visitors. Use Supabase Auth for real security.
         let loginFailureCount = 0;
         let tokenFailureCount = 0;
 
@@ -1502,60 +1505,58 @@
 
         function handleLoginStep1(e) {
             e.preventDefault();
+
             const form = document.getElementById('form-login-step1');
             const emailInput = document.getElementById('login-user');
+            const passwordInput = document.getElementById('login-password');
             const roleInput = document.getElementById('login-role');
-            const email = emailInput.value.trim();
             const loginError = document.getElementById('login-error');
-            if (!form.reportValidity() || email.length > 254 || !allowedDemoRoles.has(roleInput.value)) return;
-            if (email.toLowerCase() !== 'edmundchimex@gmail.com') {
-                loginError.textContent = 'Access denied. Use the authorized email address.';
+
+            if (!form.reportValidity()) return;
+
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
+            const validEmail = 'edmundchimex@gmail.com';
+            const validPassword = 'Gire!@%7';
+            const allowedRoles = new Set([
+                'Incident Commander', 'Lead DFIR Analyst',
+                'Legal Counsel', 'Security Auditor'
+            ]);
+
+            if (email !== validEmail || password !== validPassword ||
+                !allowedRoles.has(roleInput.value)) {
+                loginError.textContent = 'Invalid username or password.';
                 loginError.classList.remove('hidden');
                 loginFailureCount += 1;
-                if (loginFailureCount === 1) {
-                    document.getElementById('password-recovery-popup').classList.remove('hidden');
+                passwordInput.value = '';
+                passwordInput.focus();
+                if (loginFailureCount >= 3) {
+                    const recovery = document.getElementById('password-recovery-popup');
+                    if (recovery) recovery.classList.remove('hidden');
                     if (window.lucide) window.lucide.createIcons();
                 }
-                emailInput.focus();
                 return;
             }
-            loginError.classList.add('hidden');
-            emailInput.value = 'edmundchimex@gmail.com';
-            document.getElementById('form-login-step1').classList.add('hidden');
-            document.getElementById('form-login-mfa').classList.remove('hidden');
-            document.getElementById('mfa-token').focus();
-        }
 
-        function handleMfaSubmit(e) {
-            e.preventDefault();
-            const form = document.getElementById('form-login-mfa');
-            const tokenInput = document.getElementById('mfa-token');
-            const token = tokenInput.value.trim();
-            const error = document.getElementById('mfa-error');
-            if (!form.reportValidity() || token !== '123456') {
-                error.textContent = 'Access denied. Enter the configured six-digit token.';
-                error.classList.remove('hidden');
-                tokenFailureCount += 1;
-                if (tokenFailureCount === 1) {
-                    document.getElementById('token-recovery-popup').classList.remove('hidden');
-                    if (window.lucide) window.lucide.createIcons();
-                }
-                tokenInput.focus();
-                return;
-            }
-            // This client-side check is not authentication or authorization; enforce identity and roles on the server.
-            error.classList.add('hidden');
-            const email = document.getElementById('login-user').value.trim();
-            const role = document.getElementById('login-role').value;
-            document.getElementById('badge-user').textContent = email || 'Training Operator';
-            document.getElementById('badge-role').textContent = role + ' · Session';
+            loginError.classList.add('hidden');
+            document.getElementById('password-recovery-popup').classList.add('hidden');
+            document.getElementById('badge-user').textContent = validEmail;
+            document.getElementById('badge-role').textContent = roleInput.value + ' · Session';
             document.getElementById('login-overlay').classList.add('hidden');
             document.getElementById('session-badge').classList.remove('hidden');
             document.getElementById('session-badge').classList.add('flex');
-            tokenInput.value = '';
+            passwordInput.value = '';
         }
 
-
+        // Kept only for compatibility with the existing hidden legacy MFA form.
+        function handleMfaSubmit(e) {
+            e.preventDefault();
+            const error = document.getElementById('mfa-error');
+            if (error) {
+                error.textContent = 'Please sign in using your username and password.';
+                error.classList.remove('hidden');
+            }
+        }
 
         function triggerLogout() {
             document.getElementById('login-overlay').classList.remove('hidden');
@@ -1563,6 +1564,9 @@
             document.getElementById('form-login-mfa').classList.add('hidden');
             document.getElementById('session-badge').classList.add('hidden');
             document.getElementById('session-badge').classList.remove('flex');
+            document.getElementById('login-user').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-error').classList.add('hidden');
             document.getElementById('mfa-token').value = '';
             document.getElementById('mfa-error').classList.add('hidden');
             document.getElementById('password-recovery-popup').classList.add('hidden');
@@ -1570,7 +1574,6 @@
             loginFailureCount = 0;
             tokenFailureCount = 0;
         }
-
 
 
         // Alert Ticker Logic
