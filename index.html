@@ -228,10 +228,11 @@
 
 
 <style>
-.activity-bounce { transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
-.activity-bounce:hover, .activity-bounce:focus-visible { transform: translateY(-1px); filter: brightness(1.08); box-shadow: 0 3px 10px rgba(34,211,238,.10); }
-.activity-bounce:focus-visible { outline: 2px solid rgba(103,232,249,.8); outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) { .activity-bounce { transition: none; } .activity-bounce:hover, .activity-bounce:focus-visible { transform: none; } }
+.activity-bounce { transform: translateY(0); transform-origin: center bottom; transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+.activity-bounce:hover { animation: shortcut-tab-bounce 420ms ease-out; filter: brightness(1.09); box-shadow: 0 4px 12px rgba(34,211,238,.14); }
+.activity-bounce:focus-visible { transform: translateY(-1px); outline: 2px solid rgba(103,232,249,.8); outline-offset: 2px; box-shadow: 0 3px 10px rgba(34,211,238,.10); }
+@keyframes shortcut-tab-bounce { 0% { transform: translateY(0) scale(1); } 38% { transform: translateY(-3px) scale(1.025); } 68% { transform: translateY(1px) scale(.995); } 100% { transform: translateY(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .activity-bounce { transition: none; animation: none !important; } .activity-bounce:hover, .activity-bounce:focus-visible { transform: none; } }
 </style>
 </head>
 
@@ -570,7 +571,7 @@
                 <button type="button" onclick="switchTab('timeline')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-200 hover:bg-emerald-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="list-ordered" class="h-3.5 w-3.5" aria-hidden="true"></i> Timeline</button>
                 <button type="button" onclick="switchTab('chat')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-sky-500/25 bg-sky-500/10 px-3 py-1.5 text-xs font-medium text-sky-200 hover:bg-sky-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="messages-square" class="h-3.5 w-3.5" aria-hidden="true"></i> SOC Chat</button>
                 <button type="button" onclick="switchTab('submissions')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-200 hover:bg-amber-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="ticket-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Tickets</button>
-                <button type="button" onclick="switchTab('audit')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-200 hover:bg-rose-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="shield-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Audit</button>
+                <button type="button" onclick="switchTab('audit')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-200 hover:bg-rose-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="shield-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Audits</button>
             </div>
 
         </div>
