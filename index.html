@@ -324,9 +324,9 @@
 
                 <div>
 
-                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-user">OPERATOR ID</label>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-user">EMAIL ADDRESS</label>
 
-                    <input type="email" id="login-user" required maxlength="64" placeholder="edmundchimex@gmail.com" autocomplete="username"&#x20;
+                    <input type="email" id="login-user" required maxlength="64" placeholder="edmundchimex@gmail.com" autocomplete="username"
 
                         class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner">
 
@@ -341,7 +341,7 @@
 
                 <div>
 
-                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-role">ROLE</label>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-role">SIMULATION ROLE (DISPLAY ONLY)</label>
 
                     <select id="login-role" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition">
 
@@ -357,7 +357,7 @@
 
                 </div>
 
-                <div id="login-error" class="hidden text-xs text-rose-400 font-mono text-center" role="alert">Invalid username or password.</div>
+                <div id="login-error" class="hidden text-xs text-rose-400 font-mono text-center" role="alert" aria-live="polite">Invalid email or password. Please try again.</div>
                 <div id="password-recovery-popup" class="hidden rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-100" role="dialog" aria-live="polite" aria-labelledby="password-recovery-title">
                     <div class="flex items-center gap-3"><i data-lucide="mail-check" class="w-5 h-5 shrink-0 text-amber-300"></i><div class="flex-1"><h3 id="password-recovery-title" class="font-bold">Need a recovery link?</h3>
                     <p class="mt-1 text-xs text-amber-100/90">Request password recovery by email.</p>
@@ -368,7 +368,7 @@
 
                 <button type="submit" class="w-full py-3.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2">
 
-                    <span>Sign In Securely</span>
+                    <span>Sign in securely</span>
 
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
 
@@ -1497,23 +1497,29 @@
 
 
         // Supabase authentication configuration.
-        // Replace these two placeholders with your Supabase Project URL and publishable/anon key.
-        // NEVER place a Supabase service_role key or a user password in this public HTML file.
+        // Replace these placeholders with your Supabase Project URL and publishable key.
+        // NEVER place a service_role key or a user password in this public HTML file.
         const SUPABASE_URL = 'https://YOUR_PROJECT_REF.supabase.co';
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY';
+        const SUPABASE_PUBLISHABLE_KEY = 'YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY';
         const supabaseReady = Boolean(
-            window.supabase && SUPABASE_URL.startsWith('https://') &&
+            window.supabase &&
+            /^https:\/\/[A-Za-z0-9-]+\.supabase\.co$/.test(SUPABASE_URL) &&
             !SUPABASE_URL.includes('YOUR_PROJECT_REF') &&
-            SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('YOUR_SUPABASE_')
+            SUPABASE_PUBLISHABLE_KEY &&
+            !SUPABASE_PUBLISHABLE_KEY.includes('YOUR_SUPABASE_')
         );
         const authClient = supabaseReady
-            ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-                auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-              })
+            ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: true
+                }
+            })
             : null;
 
         let loginFailureCount = 0;
-        let tokenFailureCount = 0;
+        let authStateSubscription = null;
 
         function dismissRecovery(id) {
             const panel = document.getElementById(id);
@@ -1522,26 +1528,50 @@
 
         function setLoginError(message) {
             const error = document.getElementById('login-error');
+            if (!error) return;
             error.textContent = message;
             error.classList.remove('hidden');
         }
 
-        function showAuthenticatedPortal(user) {
-            // Authentication is verified by Supabase, not by values embedded in this page.
+        function showLoginScreen(message = '') {
+            const overlay = document.getElementById('login-overlay');
+            const badge = document.getElementById('session-badge');
+            if (overlay) overlay.classList.remove('hidden');
+            if (badge) {
+                badge.classList.add('hidden');
+                badge.classList.remove('flex');
+            }
+            const password = document.getElementById('login-password');
+            if (password) password.value = '';
+            const error = document.getElementById('login-error');
+            if (error) {
+                error.textContent = message || 'Invalid email or password. Please try again.';
+                error.classList.toggle('hidden', !message);
+            }
+        }
+
+        function showAuthenticatedPortal(sessionOrUser) {
+            const user = sessionOrUser && sessionOrUser.user
+                ? sessionOrUser.user
+                : sessionOrUser;
+            if (!user) {
+                showLoginScreen();
+                return;
+            }
             document.getElementById('login-error').classList.add('hidden');
             document.getElementById('password-recovery-popup').classList.add('hidden');
             document.getElementById('badge-user').textContent = user.email || 'Authenticated user';
-            // This is a display label only. Enforce actual roles with trusted server-side/RLS policies.
+            // The selected role is only a simulation label; it does not grant privileges.
             const roleInput = document.getElementById('login-role');
-            document.getElementById('badge-role').textContent = (roleInput.value || 'Authorized User') + ' · Session';
+            document.getElementById('badge-role').textContent = (roleInput.value || 'Simulation user') + ' · Display only';
             document.getElementById('login-overlay').classList.add('hidden');
             document.getElementById('session-badge').classList.remove('hidden');
             document.getElementById('session-badge').classList.add('flex');
             document.getElementById('login-password').value = '';
         }
 
-        async function handleLoginStep1(e) {
-            e.preventDefault();
+        async function handleLoginStep1(event) {
+            event.preventDefault();
             const form = document.getElementById('form-login-step1');
             const emailInput = document.getElementById('login-user');
             const passwordInput = document.getElementById('login-password');
@@ -1549,7 +1579,7 @@
             if (!form.reportValidity()) return;
 
             if (!authClient) {
-                setLoginError('Authentication is not configured. Add the Supabase project URL and publishable/anon key to this file.');
+                setLoginError('Supabase is not configured. Add your project URL and publishable key before signing in.');
                 return;
             }
 
@@ -1559,10 +1589,10 @@
             submitButton.setAttribute('aria-busy', 'true');
             try {
                 const { data, error } = await authClient.auth.signInWithPassword({ email, password });
-                if (error || !data.user) {
+                if (error || !data?.session?.user) {
                     loginFailureCount += 1;
                     passwordInput.value = '';
-                    setLoginError('Invalid username or password.');
+                    setLoginError('Invalid email or password. Please try again.');
                     passwordInput.focus();
                     if (loginFailureCount >= 3) {
                         document.getElementById('password-recovery-popup').classList.remove('hidden');
@@ -1571,9 +1601,10 @@
                     return;
                 }
                 loginFailureCount = 0;
-                showAuthenticatedPortal(data.user);
-            } catch (err) {
-                setLoginError('Sign-in could not be completed. Check your connection and Supabase configuration.');
+                showAuthenticatedPortal(data.session);
+            } catch (error) {
+                console.error('Authentication request failed.');
+                setLoginError('Unable to sign in right now. Please check your connection and try again.');
             } finally {
                 submitButton.disabled = false;
                 submitButton.removeAttribute('aria-busy');
@@ -1581,75 +1612,93 @@
         }
 
         async function requestPasswordRecovery() {
-            const email = document.getElementById('login-user').value.trim().toLowerCase();
+            const emailInput = document.getElementById('login-user');
+            const email = emailInput.value.trim().toLowerCase();
             const status = document.getElementById('recovery-status');
             if (!authClient) {
-                status.textContent = 'Recovery is not configured. Add the Supabase project URL and publishable/anon key.';
+                status.textContent = 'Password recovery is not configured. Add the Supabase project URL and publishable key.';
                 return;
             }
-            if (!email || !document.getElementById('login-user').checkValidity()) {
-                status.textContent = 'Enter your account email above first.';
-                document.getElementById('login-user').focus();
+            if (!email || !emailInput.checkValidity()) {
+                status.textContent = 'Enter a valid account email address above first.';
+                emailInput.focus();
                 return;
             }
             status.textContent = 'Requesting a secure recovery link…';
             try {
                 const redirectTo = window.location.origin + window.location.pathname;
                 const { error } = await authClient.auth.resetPasswordForEmail(email, { redirectTo });
-                // Use a generic message so the page does not reveal whether an account exists.
                 status.textContent = error
                     ? 'Unable to send the recovery link. Check Supabase email and redirect settings.'
                     : 'If an account exists for that email, a secure recovery link will be sent.';
-            } catch (err) {
+            } catch (error) {
                 status.textContent = 'Unable to request a recovery link right now. Please try again later.';
             }
         }
 
-        // Retained only for compatibility with the old hidden MFA form; it is not used for sign-in.
-        function handleMfaSubmit(e) {
-            e.preventDefault();
+        // The old MFA screen is retained in the markup for layout compatibility only.
+        // It is not part of this sign-in flow; do not treat a browser-checked code as MFA.
+        function handleMfaSubmit(event) {
+            event.preventDefault();
             setLoginError('Please sign in using your email and password.');
         }
 
         async function triggerLogout() {
-            try {
-                if (authClient) await authClient.auth.signOut();
-            } catch (err) {
-                console.error('Sign-out request failed.');
+            if (!authClient) {
+                showLoginScreen('Supabase is not configured.');
+                return;
             }
-            document.getElementById('login-overlay').classList.remove('hidden');
-            document.getElementById('form-login-step1').classList.remove('hidden');
-            document.getElementById('form-login-mfa').classList.add('hidden');
-            document.getElementById('session-badge').classList.add('hidden');
-            document.getElementById('session-badge').classList.remove('flex');
-            document.getElementById('login-user').value = '';
-            document.getElementById('login-password').value = '';
-            document.getElementById('login-error').classList.add('hidden');
-            document.getElementById('mfa-token').value = '';
-            document.getElementById('mfa-error').classList.add('hidden');
-            document.getElementById('password-recovery-popup').classList.add('hidden');
-            document.getElementById('token-recovery-popup').classList.add('hidden');
-            const recoveryStatus = document.getElementById('recovery-status');
-            if (recoveryStatus) recoveryStatus.textContent = '';
-            loginFailureCount = 0;
-            tokenFailureCount = 0;
+            try {
+                const { error } = await authClient.auth.signOut();
+                if (error) {
+                    alert('Sign-out failed. Please try again.');
+                    return;
+                }
+                // SIGNED_OUT event also returns the UI to the login screen.
+                showLoginScreen();
+                document.getElementById('form-login-step1').classList.remove('hidden');
+                document.getElementById('form-login-mfa').classList.add('hidden');
+                document.getElementById('password-recovery-popup').classList.add('hidden');
+                document.getElementById('token-recovery-popup').classList.add('hidden');
+                const recoveryStatus = document.getElementById('recovery-status');
+                if (recoveryStatus) recoveryStatus.textContent = '';
+                loginFailureCount = 0;
+            } catch (error) {
+                console.error('Sign-out request failed.');
+                alert('Sign-out failed. Please try again.');
+            }
         }
 
-        // Restore an existing Supabase session on reload and react to auth changes.
         async function initializePortalAuth() {
-            if (!authClient) return;
-            const { data } = await authClient.auth.getSession();
-            if (data.session && data.session.user) showAuthenticatedPortal(data.session.user);
-            authClient.auth.onAuthStateChange((event, session) => {
-                if (event === 'SIGNED_IN' && session && session.user) showAuthenticatedPortal(session.user);
-                if (event === 'SIGNED_OUT') {
-                    document.getElementById('login-overlay').classList.remove('hidden');
-                    document.getElementById('session-badge').classList.add('hidden');
-                    document.getElementById('session-badge').classList.remove('flex');
+            if (!authClient) {
+                showLoginScreen('Authentication is not configured. Add your Supabase project URL and publishable key.');
+                return;
+            }
+            try {
+                const { data, error } = await authClient.auth.getSession();
+                if (error) throw error;
+                if (data.session?.user) showAuthenticatedPortal(data.session);
+                else showLoginScreen();
+            } catch (error) {
+                console.error('Could not restore authentication session.');
+                showLoginScreen('Could not restore your session. Please sign in again.');
+            }
+
+            // Keep this callback synchronous; do not await Supabase calls inside it.
+            const { data: listener } = authClient.auth.onAuthStateChange((event, session) => {
+                if (session?.user && ['INITIAL_SESSION', 'SIGNED_IN', 'TOKEN_REFRESHED', 'USER_UPDATED'].includes(event)) {
+                    showAuthenticatedPortal(session);
+                } else if (event === 'SIGNED_OUT' || !session) {
+                    showLoginScreen();
                 }
             });
+            authStateSubscription = listener.subscription;
         }
+
         document.addEventListener('DOMContentLoaded', initializePortalAuth);
+        window.addEventListener('beforeunload', () => {
+            authStateSubscription?.unsubscribe();
+        });
 
 
         // Alert Ticker Logic
