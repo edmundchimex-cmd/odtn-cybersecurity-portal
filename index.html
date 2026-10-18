@@ -37,6 +37,7 @@
         }
     </script>
     <style>
+        /* Custom scrollbar for cyber aesthetic */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #070a14; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
@@ -80,51 +81,51 @@
             <div class="absolute -right-12 -top-12 w-36 h-36 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
             
             <div class="text-center space-y-2">
-               <div class="bg-cyan-500/10 p-3.5 rounded-2xl border border-cyan-500/20 w-fit mx-auto text-cyan-400 shadow-inner">
-                   <i data-lucide="shield-check" class="w-8 h-8"></i>
-               </div>
+                <div class="bg-cyan-500/10 p-3.5 rounded-2xl border border-cyan-500/20 w-fit mx-auto text-cyan-400 shadow-inner">
+                    <i data-lucide="shield-check" class="w-8 h-8"></i>
+                </div>
                 <h2 class="text-2xl font-bold text-white tracking-tight">ODTN Secure Portal</h2>
                 <p class="text-xs text-slate-400">Incident Command Authentication Gate</p>
-           </div>
+            </div>
 
             <!-- Login Step 1 -->
             <form id="form-login-step1" onsubmit="handleLoginStep1(event)" class="space-y-4">
-               <div>
-                   <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-user">OPERATOR ID</label>
-                   <input type="email" id="login-user" required maxlength="64" placeholder="operator@odtn-vancouver.ca" value="operator@odtn-vancouver.ca" autocomplete="username" 
-                       class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner">
-               </div>
-               <div>
-                   <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-role">ROLE</label>
-                   <select id="login-role" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition">
-                       <option value="Incident Commander">Incident Manager (Full Lead)</option>
-                       <option value="Lead DFIR Analyst">Lead DFIR Specialist</option>
-                       <option value="Legal Counsel">Legal & Compliance Counsel</option>
-                       <option value="Security Auditor">Security Auditor</option>
-                   </select>
-               </div>
-               <button type="submit" class="w-full py-3.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2">
-                   <span>Proceed to MFA Verification</span>
-                   <i data-lucide="arrow-right" class="w-4 h-4"></i>
-               </button>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-user">OPERATOR ID</label>
+                    <input type="email" id="login-user" required maxlength="64" placeholder="operator@odtn-vancouver.ca" value="operator@odtn-vancouver.ca" autocomplete="username" 
+                        class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-role">ROLE</label>
+                    <select id="login-role" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition">
+                        <option value="Incident Commander">Incident Manager (Full Lead)</option>
+                        <option value="Lead DFIR Analyst">Lead DFIR Specialist</option>
+                        <option value="Legal Counsel">Legal & Compliance Counsel</option>
+                        <option value="Security Auditor">Security Auditor</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2">
+                    <span>Proceed to MFA Verification</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
             </form>
 
             <!-- Login Step 2 -->
             <form id="form-login-mfa" onsubmit="handleMfaSubmit(event)" class="hidden space-y-4">
-               <div class="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-xl text-xs text-cyan-300 flex items-center space-x-2">
-                   <i data-lucide="smartphone" class="w-4 h-4 shrink-0"></i>
-                   <span>Authenticator token generated. Enter 6-digit MFA code below.</span>
-               </div>
-               <div>
-                   <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="mfa-token">6-DIGIT MFA TOKEN</label>
-                   <input type="text" id="mfa-token" required maxlength="6" pattern="[0-9]{6}" placeholder="849201" value="849201" autocomplete="one-time-code"
-                       class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-center text-lg font-mono tracking-widest text-cyan-400 focus:outline-none focus:border-cyan-500 transition shadow-inner">
-               </div>
-               <div id="mfa-error" class="hidden text-xs text-rose-400 font-mono text-center">Invalid token format. Must be 6 numeric digits.</div>
-               <button type="submit" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2">
-                   <i data-lucide="key" class="w-4 h-4"></i>
-                   <span>Verify & Authenticate Session</span>
-               </button>
+                <div class="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-xl text-xs text-cyan-300 flex items-center space-x-2">
+                    <i data-lucide="smartphone" class="w-4 h-4 shrink-0"></i>
+                    <span>Authenticator token generated. Enter 6-digit MFA code below.</span>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="mfa-token">6-DIGIT MFA TOKEN</label>
+                    <input type="text" id="mfa-token" required maxlength="6" pattern="[0-9]{6}" placeholder="849201" value="849201" autocomplete="one-time-code"
+                        class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-center text-lg font-mono tracking-widest text-cyan-400 focus:outline-none focus:border-cyan-500 transition shadow-inner">
+                </div>
+                <div id="mfa-error" class="hidden text-xs text-rose-400 font-mono text-center">Invalid token format. Must be 6 numeric digits.</div>
+                <button type="submit" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2">
+                    <i data-lucide="key" class="w-4 h-4"></i>
+                    <span>Verify & Authenticate Session</span>
+                </button>
             </form>
 
             <p class="text-center text-[11px] text-slate-500 font-mono">ODTN Module 5 Protocol • Session-Bounded Auth</p>
@@ -135,56 +136,56 @@
     <header class="bg-slate-900/80 border-b border-slate-800/80 sticky top-[37px] z-40 backdrop-blur-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-               <div class="bg-cyan-500/10 p-2.5 rounded-xl border border-cyan-500/20 text-cyan-400 shadow-sm">
-                   <i data-lucide="shield-alert" class="w-5 h-5"></i>
-               </div>
-               <div>
-                   <h1 class="text-base font-bold tracking-tight text-white flex items-center space-x-2">
-                       <span>ODTN Vancouver</span>
-                       <span class="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/30">Mod 5</span>
-                   </h1>
-                   <p class="text-[11px] text-slate-400 hidden sm:block">Lessons That Redefine Cyber Resilience</p>
-               </div>
+                <div class="bg-cyan-500/10 p-2.5 rounded-xl border border-cyan-500/20 text-cyan-400 shadow-sm">
+                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h1 class="text-base font-bold tracking-tight text-white flex items-center space-x-2">
+                        <span>ODTN Vancouver</span>
+                        <span class="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/30">Mod 5</span>
+                    </h1>
+                    <p class="text-[11px] text-slate-400 hidden sm:block">Lessons That Redefine Cyber Resilience</p>
+                </div>
             </div>
 
             <!-- Active User Session Badge & Top Right Controls -->
             <div class="flex items-center space-x-3">
-               <div id="session-badge" class="hidden sm:flex items-center space-x-2.5 bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-xl text-xs shadow-inner">
-                   <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                   <div>
-                       <span id="badge-user" class="font-bold text-slate-200">Commander</span>
-                       <span id="badge-role" class="text-slate-400 block text-[10px]">Incident Commander</span>
-                   </div>
-               </div>
+                <div id="session-badge" class="hidden sm:flex items-center space-x-2.5 bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-xl text-xs shadow-inner">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <div>
+                        <span id="badge-user" class="font-bold text-slate-200">Commander</span>
+                        <span id="badge-role" class="text-slate-400 block text-[10px]">Incident Commander</span>
+                    </div>
+                </div>
 
-               <!-- Desktop Navigation Tabs -->
-               <nav class="hidden lg:flex space-x-1 font-medium text-xs">
-                   <button onclick="switchTab('briefing')" id="nav-briefing" class="px-3 py-2 rounded-lg transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-semibold shadow-sm">Home</button>
-                   <button onclick="switchTab('simulators')" id="nav-simulators" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Simulators (4)</button>
-                   <button onclick="switchTab('chat')" id="nav-chat" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">SOC Chat</button>
-                   <button onclick="switchTab('timeline')" id="nav-timeline" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Timeline</button>
-                   <button onclick="switchTab('submissions')" id="nav-submissions" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Tickets</button>
-                   <button onclick="switchTab('quizzes')" id="nav-quizzes" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Quizzes (3)</button>
-                   <button onclick="switchTab('audit')" id="nav-audit" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Audit</button>
-               </nav>
+                <!-- Desktop Navigation Tabs -->
+                <nav class="hidden lg:flex space-x-1 font-medium text-xs">
+                    <button onclick="switchTab('briefing')" id="nav-briefing" class="px-3 py-2 rounded-lg transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-semibold shadow-sm">Home</button>
+                    <button onclick="switchTab('simulator')" id="nav-simulator" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Simulator</button>
+                    <button onclick="switchTab('chat')" id="nav-chat" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">SOC Chat</button>
+                    <button onclick="switchTab('timeline')" id="nav-timeline" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Timeline</button>
+                    <button onclick="switchTab('submissions')" id="nav-submissions" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Tickets</button>
+                    <button onclick="switchTab('quiz')" id="nav-quiz" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Quiz</button>
+                    <button onclick="switchTab('audit')" id="nav-audit" class="px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">Audit</button>
+                </nav>
 
-               <!-- Mobile Dropdown Navigation -->
-               <div class="lg:hidden">
-                   <select onchange="switchTab(this.value)" class="bg-slate-950 border border-slate-800 text-xs text-white rounded-lg px-2.5 py-1.5 focus:outline-none" aria-label="Navigate Portal Sections">
-                       <option value="briefing">1. Home</option>
-                       <option value="simulators">2. Crisis Simulators (4)</option>
-                       <option value="chat">3. SOC War Room Chat</option>
-                       <option value="timeline">4. Incident Timeline</option>
-                       <option value="submissions">5. Submissions Queue</option>
-                       <option value="quizzes">6. Knowledge Quizzes (3)</option>
-                       <option value="audit">7. Security Audit</option>
-                   </select>
-               </div>
+                <!-- Mobile Dropdown Navigation -->
+                <div class="lg:hidden">
+                    <select onchange="switchTab(this.value)" class="bg-slate-950 border border-slate-800 text-xs text-white rounded-lg px-2.5 py-1.5 focus:outline-none" aria-label="Navigate Portal Sections">
+                        <option value="briefing">1. Home</option>
+                        <option value="simulator">2. Crisis Simulator</option>
+                        <option value="chat">3. SOC War Room Chat</option>
+                        <option value="timeline">4. Incident Timeline</option>
+                        <option value="submissions">5. Submissions Queue</option>
+                        <option value="quiz">6. Knowledge Assessment</option>
+                        <option value="audit">7. Security Audit</option>
+                    </select>
+                </div>
 
-               <button onclick="triggerLogout()" class="flex items-center space-x-1.5 px-3 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-xl transition text-xs font-semibold shadow-sm" title="Log Out Session">
-                   <i data-lucide="log-out" class="w-4 h-4"></i>
-                   <span class="hidden sm:inline">Logout</span>
-               </button>
+                <button onclick="triggerLogout()" class="flex items-center space-x-1.5 px-3 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-xl transition text-xs font-semibold shadow-sm" title="Log Out Session">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Logout</span>
+                </button>
             </div>
         </div>
     </header>
@@ -192,791 +193,882 @@
     <!-- MAIN PORTAL CONTAINER -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <!-- VIEW 1: HOME (EXECUTIVE BRIEFING) -->
+        <!-- VIEW 1: HOME (EXECUTIVE BRIEFING REDESIGNED) -->
         <section id="view-briefing" class="space-y-8 animate-fadeIn">
+            
+            <!-- Hero Banner -->
             <div class="bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800/90 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden group">
-               <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-500/15 transition-all duration-700"></div>
-               <div class="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-500/15 transition-all duration-700"></div>
+                <div class="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent pointer-events-none"></div>
 
-               <div class="max-w-3xl space-y-5 relative z-10">
-                   <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-sm">
-                       <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> Executive Scenario Context
-                   </span>
-                   <h2 class="text-3xl font-extrabold text-white tracking-tight sm:text-5xl leading-tight">
-                       Human Dynamics in High-Stress Cyber Crisis
-                   </h2>
-                   <p class="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
-                       Technical playbooks and firewalls alone cannot protect an organization. ODTN Vancouver Module 5 explores how psychological safety, operational burnout, pre-incident legal retainers (MSAs/NDAs), and non-punitive post-mortems determine true organizational resilience.
-                   </p>
-                   <div class="pt-3 flex flex-wrap gap-3.5">
-                       <button onclick="switchTab('simulators')" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-2xl transition-all shadow-lg shadow-cyan-500/25 flex items-center space-x-2 transform hover:-translate-y-0.5">
-                           <span>Launch Crisis Simulators (4)</span>
-                           <i data-lucide="play" class="w-4 h-4 fill-slate-950"></i>
-                       </button>
-                       <button onclick="switchTab('quizzes')" class="px-6 py-3 bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 border border-slate-700/80 font-semibold rounded-2xl transition-all flex items-center space-x-2 transform hover:-translate-y-0.5 backdrop-blur-md">
-                           <i data-lucide="award" class="w-4 h-4 text-cyan-400"></i>
-                           <span>Take Quizzes (3)</span>
-                       </button>
-                   </div>
-               </div>
+                <div class="max-w-3xl space-y-5 relative z-10">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> Executive Scenario Context
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight sm:text-5xl leading-tight">
+                        Human Dynamics in High-Stress Cyber Crisis
+                    </h2>
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
+                        Technical playbooks and firewalls alone cannot protect an organization. ODTN Vancouver Module 5 explores how psychological safety, operational burnout, pre-incident legal retainers (MSAs/NDAs), and non-punitive post-mortems determine true organizational resilience.
+                    </p>
+                    <div class="pt-3 flex flex-wrap gap-3.5">
+                        <button onclick="switchTab('simulator')" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-2xl transition-all shadow-lg shadow-cyan-500/25 flex items-center space-x-2 transform hover:-translate-y-0.5">
+                            <span>Launch Crisis Simulation</span>
+                            <i data-lucide="play" class="w-4 h-4 fill-slate-950"></i>
+                        </button>
+                        <button onclick="switchTab('chat')" class="px-6 py-3 bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 border border-slate-700/80 font-semibold rounded-2xl transition-all flex items-center space-x-2 transform hover:-translate-y-0.5 backdrop-blur-md">
+                            <i data-lucide="message-square" class="w-4 h-4 text-cyan-400"></i>
+                            <span>Enter SOC War Room</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
+            <!-- Header for Key Pillars Section -->
             <div class="flex items-center justify-between pt-2">
-               <div>
-                   <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                       <i data-lucide="layers" class="w-5 h-5 text-cyan-400"></i>
-                       Core Resilience Pillars
-                   </h3>
-                   <p class="text-xs text-slate-400 mt-1">Select any pillar to inspect tactical playbooks, SLAs, and operational guidelines.</p>
-               </div>
-               <span class="text-xs font-mono text-cyan-400/80 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20 hidden sm:inline-block">
-                   Interactive Knowledge Nodes
-               </span>
+                <div>
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i data-lucide="layers" class="w-5 h-5 text-cyan-400"></i>
+                        Core Resilience Pillars
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">Select any pillar to inspect tactical playbooks, SLAs, and operational guidelines.</p>
+                </div>
+                <span class="text-xs font-mono text-cyan-400/80 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20 hidden sm:inline-block">
+                    Interactive Knowledge Nodes
+                </span>
             </div>
 
+            <!-- Key Pillars Grid (CLICKABLE / INTERACTIVE CARDS) -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-               <div onclick="openPillarModal('psychological')" class="group relative bg-gradient-to-b from-slate-900/90 to-slate-900/60 border border-slate-800 rounded-2xl p-6 hover:border-cyan-500/60 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-cyan-500/10 transform hover:-translate-y-1 backdrop-blur-md flex flex-col justify-between overflow-hidden">
-                   <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-xl group-hover:bg-cyan-500/10 transition-all"></div>
-                   <div>
-                       <div class="flex items-center justify-between mb-4">
-                           <div class="bg-blue-500/10 text-blue-400 p-3 rounded-2xl border border-blue-500/20 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all shadow-inner">
+
+                <!-- Pillar 1 -->
+                <div onclick="openPillarModal('psychological')" 
+                     class="group relative bg-gradient-to-b from-slate-900/90 to-slate-900/60 border border-slate-800 rounded-2xl p-6 hover:border-cyan-500/60 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-cyan-500/10 transform hover:-translate-y-1 backdrop-blur-md flex flex-col justify-between overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-xl group-hover:bg-cyan-500/10 transition-all"></div>
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="bg-blue-500/10 text-blue-400 p-3 rounded-2xl border border-blue-500/20 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all shadow-inner">
                                 <i data-lucide="brain" class="w-6 h-6"></i>
-                           </div>
-                           <span class="text-[11px] font-mono font-medium text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/20 opacity-90 group-hover:opacity-100 flex items-center gap-1">
+                            </div>
+                            <span class="text-[11px] font-mono font-medium text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/20 opacity-90 group-hover:opacity-100 flex items-center gap-1">
                                 Click for Playbook <i data-lucide="chevron-right" class="w-3 h-3"></i>
-                           </span>
-                       </div>
-                       <h3 class="text-lg font-bold text-white mb-2.5 group-hover:text-cyan-300 transition-colors">
-                           Psychological Safety & Rotational Shifts
-                       </h3>
-                       <p class="text-slate-400 text-sm leading-relaxed">
-                           Continuous 18-hour shifts cause cognitive fatigue, tunnel vision, and catastrophic configuration mistakes. Rotational shifts preserve decision-making capability.
-                       </p>
-                   </div>
-                   <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                       <span class="font-mono text-[11px] text-slate-500">ISO/IEC 27035-2</span>
-                       <span class="text-cyan-400 font-medium group-hover:underline flex items-center gap-1">
-                           Explore Framework <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-                       </span>
-                   </div>
-               </div>
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2.5 group-hover:text-cyan-300 transition-colors">
+                            Psychological Safety & Rotational Shifts
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Continuous 18-hour shifts cause cognitive fatigue, tunnel vision, and catastrophic configuration mistakes. Rotational shifts preserve decision-making capability.
+                        </p>
+                    </div>
 
-               <div onclick="openPillarModal('msa')" class="group relative bg-gradient-to-b from-slate-900/90 to-slate-900/60 border border-slate-800 rounded-2xl p-6 hover:border-amber-500/60 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-amber-500/10 transform hover:-translate-y-1 backdrop-blur-md flex flex-col justify-between overflow-hidden">
-                   <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all"></div>
-                   <div>
-                       <div class="flex items-center justify-between mb-4">
-                           <div class="bg-amber-500/10 text-amber-400 p-3 rounded-2xl border border-amber-500/20 group-hover:scale-110 group-hover:bg-amber-500/20 transition-all shadow-inner">
+                    <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+                        <span class="font-mono text-[11px] text-slate-500">ISO/IEC 27035-2</span>
+                        <span class="text-cyan-400 font-medium group-hover:underline flex items-center gap-1">
+                            Explore Framework <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div onclick="openPillarModal('msa')" 
+                     class="group relative bg-gradient-to-b from-slate-900/90 to-slate-900/60 border border-slate-800 rounded-2xl p-6 hover:border-amber-500/60 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-amber-500/10 transform hover:-translate-y-1 backdrop-blur-md flex flex-col justify-between overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all"></div>
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="bg-amber-500/10 text-amber-400 p-3 rounded-2xl border border-amber-500/20 group-hover:scale-110 group-hover:bg-amber-500/20 transition-all shadow-inner">
                                 <i data-lucide="scale" class="w-6 h-6"></i>
-                           </div>
-                           <span class="text-[11px] font-mono font-medium text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20 opacity-90 group-hover:opacity-100 flex items-center gap-1">
+                            </div>
+                            <span class="text-[11px] font-mono font-medium text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20 opacity-90 group-hover:opacity-100 flex items-center gap-1">
                                 Click for Playbook <i data-lucide="chevron-right" class="w-3 h-3"></i>
-                           </span>
-                       </div>
-                       <h3 class="text-lg font-bold text-white mb-2.5 group-hover:text-amber-300 transition-colors">
-                           Pre-Incident MSAs & Vendor Readiness
-                       </h3>
-                       <p class="text-slate-400 text-sm leading-relaxed">
-                           Negotiating contracts during an active breach creates critical delays. Pre-signed Master Services Agreements (MSAs) guarantee rapid external DFIR onboarding.
-                       </p>
-                   </div>
-                   <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                       <span class="font-mono text-[11px] text-slate-500">NIST SP 800-61 Rev 2</span>
-                       <span class="text-amber-400 font-medium group-hover:underline flex items-center gap-1">
-                           Explore SLA Terms <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-                       </span>
-                   </div>
-               </div>
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2.5 group-hover:text-amber-300 transition-colors">
+                            Pre-Incident MSAs & Vendor Readiness
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Negotiating contracts during an active breach creates critical delays. Pre-signed Master Services Agreements (MSAs) guarantee rapid external DFIR onboarding.
+                        </p>
+                    </div>
 
-               <div onclick="openPillarModal('postmortem')" class="group relative bg-gradient-to-b from-slate-900/90 to-slate-900/60 border border-slate-800 rounded-2xl p-6 hover:border-emerald-500/60 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-emerald-500/10 transform hover:-translate-y-1 backdrop-blur-md flex flex-col justify-between overflow-hidden">
-                   <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl group-hover:bg-emerald-500/10 transition-all"></div>
-                   <div>
-                       <div class="flex items-center justify-between mb-4">
-                           <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-2xl border border-emerald-500/20 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all shadow-inner">
+                    <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+                        <span class="font-mono text-[11px] text-slate-500">NIST SP 800-61 Rev 2</span>
+                        <span class="text-amber-400 font-medium group-hover:underline flex items-center gap-1">
+                            Explore SLA Terms <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div onclick="openPillarModal('postmortem')" 
+                     class="group relative bg-gradient-to-b from-slate-900/90 to-slate-900/60 border border-slate-800 rounded-2xl p-6 hover:border-emerald-500/60 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-emerald-500/10 transform hover:-translate-y-1 backdrop-blur-md flex flex-col justify-between overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl group-hover:bg-emerald-500/10 transition-all"></div>
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-2xl border border-emerald-500/20 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all shadow-inner">
                                 <i data-lucide="refresh-cw" class="w-6 h-6"></i>
-                           </div>
-                           <span class="text-[11px] font-mono font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 opacity-90 group-hover:opacity-100 flex items-center gap-1">
+                            </div>
+                            <span class="text-[11px] font-mono font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 opacity-90 group-hover:opacity-100 flex items-center gap-1">
                                 Click for Playbook <i data-lucide="chevron-right" class="w-3 h-3"></i>
-                           </span>
-                       </div>
-                       <h3 class="text-lg font-bold text-white mb-2.5 group-hover:text-emerald-300 transition-colors">
-                           Therapeutic Post-Mortems
-                       </h3>
-                       <p class="text-slate-400 text-sm leading-relaxed">
-                           Blame-free incident retrospectives treat breaches as system learning opportunities rather than employee disciplinary actions.
-                       </p>
-                   </div>
-                   <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                       <span class="font-mono text-[11px] text-slate-500">SRE Blameless Culture</span>
-                       <span class="text-emerald-400 font-medium group-hover:underline flex items-center gap-1">
-                           Explore Template <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-                       </span>
-                   </div>
-               </div>
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2.5 group-hover:text-emerald-300 transition-colors">
+                            Therapeutic Post-Mortems
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Blame-free incident retrospectives treat breaches as system learning opportunities rather than employee disciplinary actions.
+                        </p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+                        <span class="font-mono text-[11px] text-slate-500">SRE Blameless Culture</span>
+                        <span class="text-emerald-400 font-medium group-hover:underline flex items-center gap-1">
+                            Explore Template <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                        </span>
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- VIEW 2: 4 CRISIS SIMULATORS -->
-        <section id="view-simulators" class="hidden space-y-6">
-            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-900/90 border border-slate-800 p-6 rounded-3xl shadow-xl backdrop-blur-md">
-                <div>
-                    <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Interactive Training Suite</span>
-                    <h2 class="text-2xl font-bold text-white mt-2">Cyber Crisis Simulators (4 Scenarios)</h2>
-                    <p class="text-slate-400 text-xs mt-1">Test your decision-making across distinct threat vectors and operational domains.</p>
+        <!-- PILLAR DETAIL MODAL / SLIDE-OVER -->
+        <div id="pillar-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
+                
+                <button onclick="closePillarModal()" class="absolute top-5 right-5 p-2 bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-700 rounded-full transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+
+                <div class="flex items-center space-x-3">
+                    <div id="pm-icon-container" class="p-3 rounded-2xl border"></div>
+                    <div>
+                        <span id="pm-badge" class="text-[10px] font-mono px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold"></span>
+                        <h2 id="pm-title" class="text-2xl font-bold text-white mt-1"></h2>
+                    </div>
                 </div>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="selectSimulator(0)" id="sim-btn-0" class="px-4 py-2 rounded-xl text-xs font-semibold transition bg-cyan-500 text-slate-950 shadow-md">1. Ransomware Outbreak</button>
-                    <button onclick="selectSimulator(1)" id="sim-btn-1" class="px-4 py-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700">2. Insider Threat & Data Leak</button>
-                    <button onclick="selectSimulator(2)" id="sim-btn-2" class="px-4 py-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700">3. DDoS & Gateway Saturation</button>
-                    <button onclick="selectSimulator(3)" id="sim-btn-3" class="px-4 py-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700">4. Supply Chain Compromise</button>
+
+                <div class="space-y-4 text-sm leading-relaxed text-slate-300 border-t border-b border-slate-800/80 py-4">
+                    <div id="pm-body" class="space-y-4"></div>
+                </div>
+
+                <div id="pm-takeaways" class="bg-slate-950/80 border border-slate-800/80 p-4 rounded-2xl space-y-2">
+                    <h4 class="text-xs font-mono text-cyan-400 uppercase font-bold tracking-wider">Key Executive Takeaways</h4>
+                    <ul id="pm-list" class="list-disc list-inside text-xs text-slate-300 space-y-1.5"></ul>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button onclick="closePillarModal()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs rounded-xl transition">
+                        Close Tactical Deep Dive
+                    </button>
                 </div>
             </div>
+        </div>
 
+        <!-- VIEW 2: MULTI-STAGE CRISIS SIMULATOR -->
+        <section id="view-simulator" class="hidden space-y-6">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-900/80 border border-slate-800 p-4 rounded-2xl shadow-lg backdrop-blur-md">
-               <div>
-                   <div class="flex justify-between text-xs font-semibold mb-1">
-                       <span class="text-slate-400">Team Energy & Morale</span>
-                       <span id="metric-morale" class="text-cyan-400 font-mono">80%</span>
-                   </div>
-                   <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
-                       <div id="bar-morale" class="bg-cyan-500 h-full transition-all duration-500" style="width: 80%"></div>
-                   </div>
-               </div>
-               <div>
-                   <div class="flex justify-between text-xs font-semibold mb-1">
-                       <span class="text-slate-400">Legal & MSA Preparedness</span>
-                       <span id="metric-legal" class="text-amber-400 font-mono">50%</span>
-                   </div>
-                   <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
-                       <div id="bar-legal" class="bg-amber-500 h-full transition-all duration-500" style="width: 50%"></div>
-                   </div>
-               </div>
-               <div>
-                   <div class="flex justify-between text-xs font-semibold mb-1">
-                       <span class="text-slate-400">Incident Containment</span>
-                       <span id="metric-containment" class="text-emerald-400 font-mono">30%</span>
-                   </div>
-                   <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
-                       <div id="bar-containment" class="bg-emerald-500 h-full transition-all duration-500" style="width: 30%"></div>
-                   </div>
-               </div>
+                <div>
+                    <div class="flex justify-between text-xs font-semibold mb-1">
+                        <span class="text-slate-400">Team Energy & Morale</span>
+                        <span id="metric-morale" class="text-cyan-400 font-mono">80%</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
+                        <div id="bar-morale" class="bg-cyan-500 h-full transition-all duration-500" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs font-semibold mb-1">
+                        <span class="text-slate-400">Legal & MSA Preparedness</span>
+                        <span id="metric-legal" class="text-amber-400 font-mono">50%</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
+                        <div id="bar-legal" class="bg-amber-500 h-full transition-all duration-500" style="width: 50%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs font-semibold mb-1">
+                        <span class="text-slate-400">Incident Containment</span>
+                        <span id="metric-containment" class="text-emerald-400 font-mono">30%</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
+                        <div id="bar-containment" class="bg-emerald-500 h-full transition-all duration-500" style="width: 30%"></div>
+                    </div>
+                </div>
             </div>
 
             <div id="sim-active-card" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
-               <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
-                   <span id="sim-stage" class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20 w-fit">Phase 1 of 3</span>
-                   <span id="sim-timer" class="text-xs text-slate-400 font-mono">Timestamp: T+00:15 (03:42 AM PST)</span>
-               </div>
-               <div>
-                   <h3 id="sim-title" class="text-2xl font-bold text-white mb-3">Zero-Day Ransomware Outbreak</h3>
-                   <p id="sim-desc" class="text-slate-300 text-base leading-relaxed"></p>
-               </div>
-               <div id="sim-choices" class="space-y-3"></div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+                    <span id="sim-stage" class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20 w-fit">Phase 1 of 3</span>
+                    <span id="sim-timer" class="text-xs text-slate-400 font-mono">Timestamp: T+00:15 (03:42 AM PST)</span>
+                </div>
+                <div>
+                    <h3 id="sim-title" class="text-2xl font-bold text-white mb-3">Zero-Day Ransomware Outbreak</h3>
+                    <p id="sim-desc" class="text-slate-300 text-base leading-relaxed"></p>
+                </div>
+                <div id="sim-choices" class="space-y-3"></div>
             </div>
 
             <div id="sim-result" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 text-center space-y-6 shadow-2xl">
-               <div id="result-icon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center"></div>
-               <div class="space-y-2">
-                   <h3 id="result-title" class="text-2xl font-bold text-white"></h3>
-                   <p id="result-desc" class="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed"></p>
-               </div>
-               <button onclick="resetCurrentSimulator()" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-2xl transition shadow-lg shadow-cyan-500/20 inline-flex items-center space-x-2">
-                   <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                   <span>Restart Simulator</span>
-               </button>
+                <div id="result-icon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center"></div>
+                <div class="space-y-2">
+                    <h3 id="result-title" class="text-2xl font-bold text-white"></h3>
+                    <p id="result-desc" class="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed"></p>
+                </div>
+                <button onclick="resetSimulator()" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-2xl transition shadow-lg shadow-cyan-500/20 inline-flex items-center space-x-2">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    <span>Restart Crisis Simulation</span>
+                </button>
             </div>
         </section>
 
-        <!-- VIEW 3: SOC WAR ROOM CHAT -->
+        <!-- VIEW 3: SOC WAR ROOM CHAT INTERFACE -->
         <section id="view-chat" class="hidden space-y-6">
             <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 sm:p-8 shadow-xl flex flex-col h-[650px] backdrop-blur-md">
-               <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 mb-4 gap-2">
-                   <div class="flex items-center space-x-3">
-                       <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse shrink-0"></div>
-                       <div>
-                           <h3 class="text-base font-bold text-white">SOC Tactical Command Channel</h3>
-                           <p class="text-xs text-slate-400">Direct encrypted feed with DFIR Lead & Legal Counsel</p>
-                       </div>
-                   </div>
-                   <button onclick="clearChat()" class="text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition font-mono w-fit">Clear Feed</button>
-               </div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 mb-4 gap-2">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse shrink-0"></div>
+                        <div>
+                            <h3 class="text-base font-bold text-white">SOC Tactical Command Channel</h3>
+                            <p class="text-xs text-slate-400">Direct encrypted feed with DFIR Lead & Legal Counsel</p>
+                        </div>
+                    </div>
+                    <button onclick="clearChat()" class="text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition font-mono w-fit">Clear Feed</button>
+                </div>
 
-               <div id="chat-feed" class="flex-1 overflow-y-auto space-y-4 pr-2 mb-4 font-sans text-sm">
-                   <div class="flex items-start space-x-3">
-                       <div class="bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 p-2.5 rounded-xl shrink-0"><i data-lucide="bot" class="w-4 h-4"></i></div>
-                       <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-4 space-y-1 max-w-2xl shadow-inner">
-                           <div class="flex items-center justify-between text-[11px] font-mono text-slate-400">
-                               <span class="font-bold text-cyan-400">SOC Automation Bot</span>
-                               <span>03:42 AM PST</span>
-                           </div>
-                           <p class="text-slate-300">Channel initialized. Incident Commander connected. You can query team members or request telemetry analysis using quick prompts below.</p>
-                       </div>
-                   </div>
-               </div>
+                <div id="chat-feed" class="flex-1 overflow-y-auto space-y-4 pr-2 mb-4 font-sans">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-slate-800 text-slate-300 p-2 rounded-xl font-mono font-bold text-xs shrink-0 border border-slate-700">SOC</div>
+                        <div class="bg-slate-800/80 border border-slate-700/50 p-3.5 rounded-2xl text-sm text-slate-200 max-w-xl">
+                            <strong class="text-xs block text-slate-400 mb-0.5">DFIR Lead</strong>
+                            Commander, host DC-SRV-02 is isolated. Ransom note requests 50 BTC. Awaiting tactical decision on external DFIR retainer deployment.
+                        </div>
+                    </div>
+                </div>
 
-               <div class="flex flex-wrap gap-2 mb-3">
-                   <button onclick="sendQuickPrompt('Status update on VLAN 104 containment?')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl border border-slate-700 transition">Status VLAN 104?</button>
-                   <button onclick="sendQuickPrompt('Are legal retainers activated?')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl border border-slate-700 transition">Legal Retainers?</button>
-                   <button onclick="sendQuickPrompt('Rotate shift for Tier 2 analysts')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl border border-slate-700 transition">Rotate Shifts</button>
-               </div>
+                <div class="py-2 border-t border-slate-800 flex flex-wrap gap-2 text-xs">
+                    <span class="text-slate-500 font-mono text-[11px] self-center mr-1">Quick Directives:</span>
+                    <button onclick="sendQuickCommand('Isolate Subnet B-4 completely')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">Isolate Subnet B-4</button>
+                    <button onclick="sendQuickCommand('Activate pre-signed MSA retainer')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">Activate MSA Retainer</button>
+                    <button onclick="sendQuickCommand('Rotate Tier-1 analysts immediately')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">Rotate Shift Crew</button>
+                    <button onclick="sendQuickCommand('Brief Executive Board with draft status')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">Brief Board</button>
+                </div>
 
-               <form onsubmit="handleChatSubmit(event)" class="flex gap-2">
-                   <input type="text" id="chat-input" placeholder="Type command or message to war room..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner">
-                   <button type="submit" class="px-5 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/20 flex items-center justify-center">
-                       <i data-lucide="send" class="w-4 h-4"></i>
-                   </button>
-               </form>
+                <form id="chat-form" onsubmit="handleChatSubmit(event)" class="flex gap-2 pt-2 border-t border-slate-800">
+                    <input type="text" id="chat-input" autocomplete="off" maxlength="280" placeholder="Type tactical directive..." 
+                        class="flex-1 bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 font-mono transition">
+                    <button type="submit" class="px-5 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/20 flex items-center space-x-2 shrink-0">
+                        <span>Send</span>
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
             </div>
         </section>
 
         <!-- VIEW 4: INCIDENT TIMELINE -->
         <section id="view-timeline" class="hidden space-y-6">
-            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-md space-y-6">
-                <div>
-                    <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Chronological Logging</span>
-                    <h2 class="text-2xl font-bold text-white mt-2">Incident Audit Timeline</h2>
-                    <p class="text-slate-400 text-xs mt-1">Real-time event tracking from initial intrusion detection to restorative validation.</p>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl max-w-4xl mx-auto space-y-6 backdrop-blur-md">
+                <div class="pb-4 border-b border-slate-800">
+                    <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Chronological Event Map</span>
+                    <h2 class="text-2xl font-bold text-white mt-2">ODTN Vancouver Module 5 Incident Sequence</h2>
+                    <p class="text-xs text-slate-400 mt-1">Click any timeline node to inspect forensic telemetry, indicators of compromise (IoCs), and leadership decisions.</p>
                 </div>
-                <div class="border-l-2 border-cyan-500/30 pl-4 space-y-6 ml-2">
-                    <div class="relative">
-                        <div class="absolute -left-[23px] top-1 w-3.5 h-3.5 rounded-full bg-amber-500 border-2 border-slate-900"></div>
-                        <span class="text-xs font-mono text-amber-400">03:42:11 PST</span>
-                        <h4 class="text-base font-bold text-white">LockBit Payload Detected</h4>
-                        <p class="text-xs text-slate-300">Host DC-SRV-02 triggered anomalous behavior alerts. Endpoint isolation initiated automatically.</p>
+
+                <div class="border-l-2 border-cyan-500/30 pl-6 space-y-8 ml-2">
+                    <div class="relative group cursor-pointer" onclick="toggleTimelineDetails('tl-1')">
+                        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-cyan-500 border-4 border-slate-900 group-hover:scale-125 transition"></div>
+                        <span class="text-xs font-mono text-cyan-400">T-00:00 • 03:42 AM PST</span>
+                        <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition">Outbreak Detection & Endpoint Isolation</h3>
+                        <p class="text-xs text-slate-400 mt-1">EDR flags unauthorized PowerShell invocations and shadow copy deletion.</p>
+                        
+                        <div id="tl-1" class="hidden mt-3 p-4 bg-slate-950 border border-slate-800 rounded-2xl text-xs space-y-2">
+                            <p class="text-slate-300"><strong>Forensic Detail:</strong> Process <code>powershell.exe -enc vssadmin delete shadows /all /quiet</code> executed on DC-SRV-02.</p>
+                            <p class="text-amber-400"><strong>IoC SHA-256:</strong> <code>e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</code></p>
+                        </div>
                     </div>
-                    <div class="relative">
-                        <div class="absolute -left-[23px] top-1 w-3.5 h-3.5 rounded-full bg-cyan-500 border-2 border-slate-900"></div>
-                        <span class="text-xs font-mono text-cyan-400">04:15:00 PST</span>
-                        <h4 class="text-base font-bold text-white">Incident Command Assembled</h4>
-                        <p class="text-xs text-slate-300">Operator authenticated via MFA. War room channel opened with DFIR lead and legal counsel.</p>
+
+                    <div class="relative group cursor-pointer" onclick="toggleTimelineDetails('tl-2')">
+                        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-amber-500 border-4 border-slate-900 group-hover:scale-125 transition"></div>
+                        <span class="text-xs font-mono text-amber-400">T+03:30 • 07:12 AM PST</span>
+                        <h3 class="text-base font-bold text-white group-hover:text-amber-400 transition">Pre-Signed MSA Activation & DFIR Onboarding</h3>
+                        <p class="text-xs text-slate-400 mt-1">External incident response team onboarded within 20 minutes thanks to pre-negotiated MSAs/NDAs.</p>
+                        
+                        <div id="tl-2" class="hidden mt-3 p-4 bg-slate-950 border border-slate-800 rounded-2xl text-xs space-y-2">
+                            <p class="text-slate-300"><strong>Resilience Metric:</strong> Avoided 8-hour legal SLA delay compared to non-prepared organizations.</p>
+                        </div>
                     </div>
-                    <div class="relative">
-                        <div class="absolute -left-[23px] top-1 w-3.5 h-3.5 rounded-full bg-slate-700 border-2 border-slate-900"></div>
-                        <span class="text-xs font-mono text-slate-400">05:00:00 PST</span>
-                        <h4 class="text-base font-bold text-white">Pending Action Required</h4>
-                        <p class="text-xs text-slate-300">Awaiting operator decision regarding external notification thresholds and forensic image backup.</p>
+
+                    <div class="relative group cursor-pointer" onclick="toggleTimelineDetails('tl-3')">
+                        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-900 group-hover:scale-125 transition"></div>
+                        <span class="text-xs font-mono text-blue-400">T+08:00 • 11:42 AM PST</span>
+                        <h3 class="text-base font-bold text-white group-hover:text-blue-400 transition">Rotational Shift-Change & Burnout Mitigation</h3>
+                        <p class="text-xs text-slate-400 mt-1">Tier-1 responders mandatory off-duty handover enforced by Commander to preserve mental sharpness.</p>
+                        
+                        <div id="tl-3" class="hidden mt-3 p-4 bg-slate-950 border border-slate-800 rounded-2xl text-xs space-y-2">
+                            <p class="text-slate-300"><strong>Human Factor:</strong> Rested secondary shift caught misconfigured firewall rule created during fatigue hour 12.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative group cursor-pointer" onclick="toggleTimelineDetails('tl-4')">
+                        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-emerald-500 border-4 border-slate-900 group-hover:scale-125 transition"></div>
+                        <span class="text-xs font-mono text-emerald-400">T+24:00 - Next Day 03:42 AM PST</span>
+                        <h3 class="text-base font-bold text-white group-hover:text-emerald-400 transition">Blame-Free Retrospective & Therapeutic Post-Mortem</h3>
+                        <p class="text-xs text-slate-400 mt-1">Incident officially contained. Continuous learning debrief conducted.</p>
+                        
+                        <div id="tl-4" class="hidden mt-3 p-4 bg-slate-950 border border-slate-800 rounded-2xl text-xs space-y-2">
+                            <p class="text-slate-300"><strong>Post-Mortem Goal:</strong> Hardened active directory trust policies and updated MSA legal contacts list.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- VIEW 5: SUBMISSIONS / TICKETS -->
+        <!-- VIEW 5: USER SUBMISSIONS QUEUE -->
         <section id="view-submissions" class="hidden space-y-6">
-            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-md space-y-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Task Queue</span>
-                        <h2 class="text-2xl font-bold text-white mt-2">Incident Action Tickets</h2>
-                        <p class="text-slate-400 text-xs mt-1">Manage remediation subtasks and assign responsibilities across teams.</p>
-                    </div>
-                    <button onclick="openNewTicketModal()" class="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold rounded-xl transition shadow-lg shadow-cyan-500/20">New Ticket</button>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4 backdrop-blur-md">
+                    <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">Submit Incident Ticket</h3>
+                    <form id="ticket-form" onsubmit="handleTicketSubmit(event)" class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-400 mb-1" for="ticket-author">REPORTER NAME</label>
+                            <input type="text" id="ticket-author" required maxlength="50" placeholder="Edmund Eneude" 
+                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-400 mb-1" for="ticket-asset">TARGET ASSET / IP</label>
+                            <input type="text" id="ticket-asset" required maxlength="50" placeholder="10.0.4.12 / DC-SRV-02" 
+                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-400 mb-1" for="ticket-severity">SEVERITY LEVEL</label>
+                            <select id="ticket-severity" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+                                <option value="Critical">Critical (P0 - Immediate Outbreak)</option>
+                                <option value="High">High (P1 - Unverified Exploitation)</option>
+                                <option value="Medium">Medium (P2 - Policy Breach)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-400 mb-1" for="ticket-desc">OBSERVED BEHAVIOR / LOGS</label>
+                            <textarea id="ticket-desc" required rows="3" placeholder="Describe anomalous events..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/20">
+                            Log Incident Ticket
+                        </button>
+                    </form>
                 </div>
-                <div id="ticket-list" class="space-y-3">
-                    <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
-                        <div>
-                            <span class="text-[10px] font-mono bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded border border-amber-500/30">HIGH PRIORITY</span>
-                            <h4 class="text-sm font-bold text-white mt-1">Isolate VLAN 104 Core Switches</h4>
-                            <p class="text-xs text-slate-400">Assigned to: Lead DFIR Analyst • Status: In Progress</p>
-                        </div>
-                        <span class="text-xs text-cyan-400 font-mono">T+30m</span>
+
+                <div class="lg:col-span-2 bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4 backdrop-blur-md">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <h3 class="text-lg font-bold text-white">Active Ticket Queue</h3>
+                        <span id="ticket-count" class="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/20">2 Tickets Enqueued</span>
                     </div>
-                    <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
-                        <div>
-                            <span class="text-[10px] font-mono bg-cyan-500/20 text-cyan-300 px-2.5 py-0.5 rounded border border-cyan-500/30">MEDIUM PRIORITY</span>
-                            <h4 class="text-sm font-bold text-white mt-1">Review External MSA Retainer SLA</h4>
-                            <p class="text-xs text-slate-400">Assigned to: Legal Counsel • Status: Pending Verification</p>
+                    <div id="ticket-list" class="space-y-3">
+                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl flex flex-col sm:flex-row justify-between gap-2">
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 uppercase">Critical</span>
+                                    <h4 class="text-sm font-bold text-white">DC-SRV-02 Ransomware Encryptor Process</h4>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1">Reporter: Operator Lead • Asset: 10.0.4.12</p>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 shrink-0">Logged: 03:45 AM</span>
                         </div>
-                        <span class="text-xs text-cyan-400 font-mono">T+60m</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- VIEW 6: 3 KNOWLEDGE QUIZZES -->
-        <section id="view-quizzes" class="hidden space-y-6">
-            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-900/90 border border-slate-800 p-6 rounded-3xl shadow-xl backdrop-blur-md">
-                <div>
-                    <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Assessment Center</span>
-                    <h2 class="text-2xl font-bold text-white mt-2">Knowledge Quizzes (3 Modules)</h2>
-                    <p class="text-slate-400 text-xs mt-1">Verify your understanding of incident response frameworks, legal readiness, and blameless post-mortems.</p>
+        <!-- VIEW 6: KNOWLEDGE ASSESSMENT (QUIZ) -->
+        <section id="view-quiz" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl max-w-3xl mx-auto space-y-6 backdrop-blur-md">
+                <div class="border-b border-slate-800 pb-4">
+                    <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Assessment Engine</span>
+                    <h2 class="text-2xl font-bold text-white mt-2">Module 5 Resilience Knowledge Check</h2>
+                    <p class="text-xs text-slate-400 mt-1">Test your command grasp on human factors, pre-signed retainers, and blameless retrospectives.</p>
                 </div>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="selectQuiz(0)" id="quiz-btn-0" class="px-4 py-2 rounded-xl text-xs font-semibold transition bg-cyan-500 text-slate-950 shadow-md">1. Incident Response & Containment</button>
-                    <button onclick="selectQuiz(1)" id="quiz-btn-1" class="px-4 py-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700">2. Legal Retainers & Compliance</button>
-                    <button onclick="selectQuiz(2)" id="quiz-btn-2" class="px-4 py-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700">3. Post-Mortem & Team Resilience</button>
-                </div>
-            </div>
 
-            <div id="quiz-card" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
-                <div class="flex items-center justify-between pb-4 border-b border-slate-800">
-                    <span id="quiz-progress" class="text-xs font-mono text-cyan-400">Question 1 of 3</span>
-                    <span id="quiz-score-badge" class="text-xs font-mono text-slate-400">Score: 0 / 0</span>
+                <div id="quiz-container" class="space-y-6">
+                    <div class="space-y-3">
+                        <h3 class="text-base font-semibold text-white">1. What is the primary operational risk of requiring SOC analysts to work continuous 18-hour shifts during a critical breach?</h3>
+                        <div class="space-y-2 text-xs">
+                            <label class="flex items-center space-x-3 p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-cyan-500/50 transition">
+                                <input type="radio" name="q1" value="a" class="text-cyan-500 focus:ring-0">
+                                <span>Higher bandwidth usage on internal messaging software</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-cyan-500/50 transition">
+                                <input type="radio" name="q1" value="b" class="text-cyan-500 focus:ring-0">
+                                <span>Severe cognitive fatigue leading to critical misconfigurations and missed alerts</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-cyan-500/50 transition">
+                                <input type="radio" name="q1" value="c" class="text-cyan-500 focus:ring-0">
+                                <span>Slight delays in filing expense reports</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button onclick="submitQuiz()" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/20">
+                        Submit Knowledge Evaluation
+                    </button>
                 </div>
-                <div>
-                    <h3 id="quiz-question" class="text-lg font-bold text-white mb-4"></h3>
-                    <div id="quiz-options" class="space-y-3"></div>
-                </div>
-                <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-xs font-mono"></div>
-                <div class="flex justify-end">
-                    <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-xl transition shadow-lg">Next Question</button>
+
+                <div id="quiz-results" class="hidden p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl text-emerald-300 text-sm font-mono text-center">
+                    Evaluation Complete! Score: 100% - Mastery Verified.
                 </div>
             </div>
         </section>
 
         <!-- VIEW 7: SECURITY AUDIT -->
         <section id="view-audit" class="hidden space-y-6">
-            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-md space-y-6">
-                <div>
-                    <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Compliance Verification</span>
-                    <h2 class="text-2xl font-bold text-white mt-2">Security Audit & Telemetry Log</h2>
-                    <p class="text-slate-400 text-xs mt-1">Review system hardening status and active security posture metrics.</p>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl max-w-4xl mx-auto space-y-6 backdrop-blur-md">
+                <div class="border-b border-slate-800 pb-4 flex justify-between items-center">
+                    <div>
+                        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Immutable Trail</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Security & Operational Audit Log</h2>
+                    </div>
+                    <button onclick="exportAuditLog()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl transition font-mono border border-slate-700">Export CSV</button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl space-y-2">
-                        <span class="text-xs font-mono text-emerald-400">ISO 27001 Status</span>
-                        <h4 class="text-base font-bold text-white">Compliant (Grade A)</h4>
-                        <p class="text-xs text-slate-400">All access controls and MFA requirements verified across nodes.</p>
-                    </div>
-                    <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl space-y-2">
-                        <span class="text-xs font-mono text-cyan-400">Incident Response Readiness</span>
-                        <h4 class="text-base font-bold text-white">Optimized</h4>
-                        <p class="text-xs text-slate-400">Pre-signed retainer agreements active. Shift rotations operational.</p>
-                    </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">TIMESTAMP</th>
+                                <th class="p-3">ACTOR ID</th>
+                                <th class="p-3">ACTION</th>
+                                <th class="p-3">STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="audit-table-body" class="divide-y divide-slate-800/60 text-slate-300">
+                            <tr>
+                                <td class="p-3 text-slate-500">03:42:11 PST</td>
+                                <td class="p-3">SYSTEM_EDR</td>
+                                <td class="p-3">LockBit Ransomware Alert Triggered</td>
+                                <td class="p-3 text-amber-400">UNRESOLVED</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-slate-500">03:45:00 PST</td>
+                                <td class="p-3">operator@odtn-vancouver.ca</td>
+                                <td class="p-3">Authenticated Session (Role: Incident Commander)</td>
+                                <td class="p-3 text-emerald-400">SUCCESS</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- PILLAR DETAIL MODAL -->
-    <div id="pillar-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closePillarModal()" class="absolute top-5 right-5 p-2 bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-700 rounded-full transition">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-            <div class="flex items-center space-x-3">
-                <div id="pm-icon-container" class="p-3 rounded-2xl border"></div>
-                <div>
-                    <span id="pm-badge" class="text-[10px] font-mono px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold"></span>
-                    <h2 id="pm-title" class="text-2xl font-bold text-white mt-1"></h2>
-                </div>
-            </div>
-            <div class="space-y-4 text-sm leading-relaxed text-slate-300 border-t border-b border-slate-800/80 py-4">
-                <div id="pm-body" class="space-y-4"></div>
-            </div>
-            <div id="pm-takeaways" class="bg-slate-950/80 border border-slate-800/80 p-4 rounded-2xl space-y-2">
-                <h4 class="text-xs font-mono text-cyan-400 uppercase font-bold tracking-wider">Key Executive Takeaways</h4>
-                <ul id="pm-list" class="list-disc list-inside text-xs text-slate-300 space-y-1.5"></ul>
-            </div>
-            <div class="flex justify-end pt-2">
-                <button onclick="closePillarModal()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs rounded-xl transition">
-                    Close Tactical Deep Dive
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- TELEMETRY MODAL -->
     <div id="telemetry-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                <h3 class="text-lg font-bold text-white">Payload Telemetry Inspector</h3>
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i data-lucide="terminal" class="w-5 h-5 text-amber-400"></i> Forensic Telemetry Inspector
+                </h3>
                 <button onclick="closeTelemetryModal()" class="text-slate-400 hover:text-white">&times;</button>
             </div>
-            <pre class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-cyan-400 overflow-x-auto"><code>[03:42:11] Target: DC-SRV-02 (VLAN 104)
-Payload: LockBit 3.0 Variant
-Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-Action Taken: Automated network isolation successful.</code></pre>
+            <div class="bg-slate-950 p-4 rounded-2xl font-mono text-xs text-amber-300 space-y-2 border border-slate-800 overflow-x-auto">
+                <p>> HOST: DC-SRV-02.ODTN.LOCAL</p>
+                <p>> PID: 4892 (powershell.exe)</p>
+                <p>> CMD: powershell.exe -e -enc vssadmin delete shadows /all /quiet</p>
+                <p>> SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</p>
+                <p>> NETWORK: Attempted egress to 185.220.101.5:443 [BLOCKED]</p>
+            </div>
             <div class="flex justify-end">
-                <button onclick="closeTelemetryModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-xl text-white">Close</button>
+                <button onclick="closeTelemetryModal()" class="px-4 py-2 bg-slate-800 text-slate-200 text-xs rounded-xl hover:bg-slate-700">Close Telemetry</button>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT LOGIC -->
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-900 py-6 mt-12 text-center text-xs text-slate-600 font-mono">
+        <p>ODTN Vancouver Module 5 • Human Dynamics & Cyber Incident Command Portal © 2026</p>
+    </footer>
+
+    <!-- INTERACTIVE SCRIPT LOGIC -->
     <script>
+        // Init Lucide Icons
         lucide.createIcons();
+
+        // Pillar Details Data
+        const pillarData = {
+            psychological: {
+                title: "Psychological Safety & Rotational Shifts",
+                badge: "Human Factors & Resilience",
+                badgeClass: "bg-blue-500/20 text-blue-400 border border-blue-500/40",
+                iconContainerClass: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+                icon: "brain",
+                body: `
+                    <p>During high-severity cyber attacks, incident response teams often endure intense cognitive loads. Forcing analysts to work past 8 to 12 consecutive hours leads to tunnel vision, severe fatigue, and an exponential increase in critical execution errors (such as misconfigured firewall rules or accidental deletion of forensic evidence).</p>
+                    <p>Establishing psychological safety allows team members to report early signs of exhaustion, mistakes, or unverified assumptions without fear of reprisal or blame.</p>
+                `,
+                takeaways: [
+                    "Enforce strict 8-hour maximum active command rotations during major incidents.",
+                    "Assign shadow leads to smoothly transition context during shift turnovers.",
+                    "Establish a mandatory 'no-penalty' policy for reporting fatigue-induced mistakes early."
+                ]
+            },
+            msa: {
+                title: "Pre-Incident MSAs & Vendor Readiness",
+                badge: "Legal & Strategic Preparedness",
+                badgeClass: "bg-amber-500/20 text-amber-400 border border-amber-500/40",
+                iconContainerClass: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+                icon: "scale",
+                body: `
+                    <p>When an enterprise experiences an active ransomware or exfiltration breach, every minute lost negotiating Master Services Agreements (MSAs), Non-Disclosure Agreements (NDAs), or retainer rates extends the adversary's dwell time.</p>
+                    <p>Pre-negotiated legal retainers with external Digital Forensics and Incident Response (DFIR) specialists ensure that experts can be onboarded within minutes rather than days.</p>
+                `,
+                takeaways: [
+                    "Pre-sign MSAs and NDAs with at least two accredited external DFIR vendors.",
+                    "Pre-authorize hourly emergency spending limits to prevent procurement holds.",
+                    "Maintain out-of-band contact channels and cryptographically verified key exchanges for vendor lead."
+                ]
+            },
+            postmortem: {
+                title: "Therapeutic Post-Mortems",
+                badge: "Continuous Systemic Learning",
+                badgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40",
+                iconContainerClass: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+                icon: "refresh-cw",
+                body: `
+                    <p>Traditional incident debriefs often devolve into finger-pointing and scapegoating, which encourages staff to conceal vulnerabilities or mistake origins during future events. Therapeutic, blameless post-mortems assume that personnel acted in good faith with the information available to them at the time.</p>
+                    <p>Focusing on systemic failures rather than individual errors produces actionable improvements for technical controls and operational procedures.</p>
+                `,
+                takeaways: [
+                    "Focus retrospective questions on 'How did the system allow this?' rather than 'Who caused this?'",
+                    "Document precise timelines and cognitive states during key decisions.",
+                    "Translate lessons learned directly into automated guardrails and playbook updates."
+                ]
+            }
+        };
+
+        // Modal Functions
+        function openPillarModal(pillarKey) {
+            const data = pillarData[pillarKey];
+            if (!data) return;
+
+            document.getElementById('pm-title').innerText = data.title;
+            
+            const badge = document.getElementById('pm-badge');
+            badge.innerText = data.badge;
+            badge.className = `text-[10px] font-mono px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold ${data.badgeClass}`;
+
+            const iconBox = document.getElementById('pm-icon-container');
+            iconBox.className = `p-3 rounded-2xl border ${data.iconContainerClass}`;
+            iconBox.innerHTML = `<i data-lucide="${data.icon}" class="w-6 h-6"></i>`;
+
+            document.getElementById('pm-body').innerHTML = data.body;
+
+            const list = document.getElementById('pm-list');
+            list.innerHTML = data.takeaways.map(t => `<li class="flex items-start gap-2"><span>•</span> <span>${t}</span></li>`).join('');
+
+            const modal = document.getElementById('pillar-modal');
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closePillarModal() {
+            document.getElementById('pillar-modal').classList.add('hidden');
+        }
 
         // Navigation Switching
         function switchTab(tabId) {
-            ['briefing', 'simulators', 'chat', 'timeline', 'submissions', 'quizzes', 'audit'].forEach(id => {
-                const el = document.getElementById('view-' + id);
+            const views = ['briefing', 'simulator', 'chat', 'timeline', 'submissions', 'quiz', 'audit'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
                 if (el) el.classList.add('hidden');
-                const navBtn = document.getElementById('nav-' + id);
+                
+                const navBtn = document.getElementById(`nav-${v}`);
                 if (navBtn) {
                     navBtn.className = "px-3 py-2 rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800/50";
                 }
             });
-            const target = document.getElementById('view-' + tabId);
-            if (target) target.classList.remove('hidden');
-            const activeNav = document.getElementById('nav-' + tabId);
+
+            const targetView = document.getElementById(`view-${tabId}`);
+            if (targetView) targetView.classList.remove('hidden');
+
+            const activeNav = document.getElementById(`nav-${tabId}`);
             if (activeNav) {
                 activeNav.className = "px-3 py-2 rounded-lg transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-semibold shadow-sm";
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Authentication Flow
+        // Login Step Handlers
         function handleLoginStep1(e) {
             e.preventDefault();
             document.getElementById('form-login-step1').classList.add('hidden');
             document.getElementById('form-login-mfa').classList.remove('hidden');
-            const role = document.getElementById('login-role').value;
-            const user = document.getElementById('login-user').value;
-            document.getElementById('badge-user').innerText = user.split('@')[0];
-            document.getElementById('badge-role').innerText = role;
         }
 
         function handleMfaSubmit(e) {
             e.preventDefault();
             const token = document.getElementById('mfa-token').value;
-            if (token.length !== 6 || isNaN(token)) {
+            if (token.length === 6) {
+                document.getElementById('login-overlay').classList.add('hidden');
+                document.getElementById('session-badge').classList.remove('hidden');
+                document.getElementById('session-badge').classList.add('flex');
+            } else {
                 document.getElementById('mfa-error').classList.remove('hidden');
-                return;
             }
-            document.getElementById('login-overlay').classList.add('hidden');
         }
 
         function triggerLogout() {
             document.getElementById('login-overlay').classList.remove('hidden');
-            document.getElementById('form-login-mfa').classList.add('hidden');
             document.getElementById('form-login-step1').classList.remove('hidden');
+            document.getElementById('form-login-mfa').classList.add('hidden');
         }
 
-        // Ticker & Modals
-        function dismissAlert() { document.getElementById('alert-banner').classList.add('hidden'); }
+        // Alert Ticker Logic
+        const alerts = [
+            "[03:42:11 PST] LockBit ransomware payload execution detected on Host DC-SRV-02 (VLAN 104).",
+            "[03:48:02 PST] Suspicious outbound TLS connection to 185.220.101.5 flagged by egress proxy.",
+            "[04:10:15 PST] Emergency rotation initiated for Tier-1 SOC analysts on shift duty."
+        ];
+        let alertIdx = 0;
+
         function cycleAlert() {
-            const alerts = [
-                "[03:42:11 PST] LockBit ransomware payload execution detected on Host DC-SRV-02 (VLAN 104).",
-                "[04:10:00 PST] Unauthorized data exfiltration attempt blocked by firewall egress rule.",
-                "[04:35:22 PST] Legal retainer notification dispatched to external counsel."
-            ];
-            const currentText = document.getElementById('alert-text');
-            currentText.innerHTML = `<strong>[Active Alert]</strong> ${alerts[Math.floor(Math.random() * alerts.length)]}`;
-        }
-        function openTelemetryModal() { document.getElementById('telemetry-modal').classList.remove('hidden'); }
-        function closeTelemetryModal() { document.getElementById('telemetry-modal').classList.add('hidden'); }
-
-        // Pillar Modals
-        const pillarData = {
-            psychological: {
-                title: "Psychological Safety & Rotational Shifts",
-                badge: "ISO/IEC 27035-2",
-                icon: "brain",
-                color: "text-blue-400 bg-blue-500/10 border-blue-500/20",
-                body: "Continuous high-intensity operations without rest leads to cognitive tunnel vision. Enforcing strict shift rotations ensures analytical sharpness during critical incident containment.",
-                takeaways: ["Mandate 8-hour maximum shift limits during active breaches.", "Encourage open reporting of near-misses without fear of reprisal.", "Provide psychological debriefs post-incident."]
-            },
-            msa: {
-                title: "Pre-Incident MSAs & Vendor Readiness",
-                badge: "NIST SP 800-61 Rev 2",
-                icon: "scale",
-                color: "text-amber-400 bg-amber-500/10 border-amber-500/20",
-                body: "Negotiating contracts and non-disclosure agreements during an active cyber attack introduces fatal delays. Pre-signed Master Services Agreements ensure instant external forensics deployment.",
-                takeaways: ["Pre-vet external DFIR and legal retainer firms annually.", "Ensure retainer contracts specify guaranteed SLA response times.", "Store offline copies of vendor emergency contact protocols."]
-            },
-            postmortem: {
-                title: "Therapeutic Post-Mortems",
-                badge: "SRE Blameless Culture",
-                icon: "refresh-cw",
-                color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-                body: "Blameless post-mortems treat system failures as organizational learning opportunities rather than individual employee faults, fostering lasting security improvements.",
-                takeaways: ["Focus retrospectives on systemic gaps rather than human error.", "Document actionable remediation tickets with strict deadlines.", "Share anonymized learnings across industry peers."]
-            }
-        };
-
-        function openPillarModal(key) {
-            const data = pillarData[key];
-            if (!data) return;
-            document.getElementById('pm-title').innerText = data.title;
-            document.getElementById('pm-badge').innerText = data.badge;
-            document.getElementById('pm-badge').className = `text-[10px] font-mono px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold ${data.color}`;
-            document.getElementById('pm-body').innerHTML = `<p>${data.body}</p>`;
-            const list = document.getElementById('pm-list');
-            list.innerHTML = data.takeaways.map(t => `<li>${t}</li>`).join('');
-            document.getElementById('pillar-modal').classList.remove('hidden');
-        }
-        function closePillarModal() { document.getElementById('pillar-modal').classList.add('hidden'); }
-
-        // 4 SIMULATORS LOGIC
-        const simulators = [
-            {
-                title: "1. Zero-Day Ransomware Outbreak",
-                desc: "Host DC-SRV-02 shows signs of active ransomware encryption. Lateral movement is suspected across VLAN 104.",
-                stages: [
-                    {
-                        desc: "Initial detection confirms encryption on DC-SRV-02. How do you respond?",
-                        choices: [
-                            { text: "Immediately isolate VLAN 104 and alert DFIR lead.", morale: +10, legal: +10, containment: +40, next: 1 },
-                            { text: "Wait for further confirmation before taking systems offline.", morale: -15, legal: -10, containment: -20, next: 1 }
-                        ]
-                    },
-                    {
-                        desc: "Attackers are attempting credential dumping via LSASS. What is your containment protocol?",
-                        choices: [
-                            { text: "Enforce network segmentation and revoke active domain admin tokens.", morale: +10, legal: +20, containment: +50, next: 2 },
-                            { text: "Reboot servers manually without capturing volatile memory.", morale: -20, legal: -10, containment: +10, next: 2 }
-                        ]
-                    }
-                ]
-            },
-            {
-                title: "2. Insider Threat & Data Leak",
-                desc: "An internal account is observed downloading compressed proprietary customer databases to an external cloud storage provider.",
-                stages: [
-                    {
-                        desc: "Suspicious data egress detected from user account 'j.doe'. Immediate action?",
-                        choices: [
-                            { text: "Suspend account credentials instantly and notify legal counsel.", morale: +10, legal: +30, containment: +40, next: 1 },
-                            { text: "Monitor user activity quietly for another 24 hours without intervention.", morale: -10, legal: -20, containment: -10, next: 1 }
-                        ]
-                    }
-                ]
-            },
-            {
-                title: "3. DDoS & Gateway Saturation",
-                desc: "Public-facing web gateways are flooded with 400 Gbps volumetric SYN-flood traffic, disrupting customer authentication.",
-                stages: [
-                    {
-                        desc: "Primary edge router CPU utilization is at 99%. Choose mitigation strategy:",
-                        choices: [
-                            { text: "Activate upstream scrubbing center and rate-limit anomalous traffic.", morale: +20, legal: +10, containment: +50, next: 1 },
-                            { text: "Power cycle the core firewall cluster during peak traffic hours.", morale: -30, legal: -10, containment: -20, next: 1 }
-                        ]
-                    }
-                ]
-            },
-            {
-                title: "4. Supply Chain Compromise",
-                desc: "A trusted third-party software vendor update package contains a digitally signed malicious backdoor.",
-                stages: [
-                    {
-                        desc: "Telemetry indicates the updated software package communicates with external command-and-control servers.",
-                        choices: [
-                            { text: "Roll back update across all endpoints and isolate vendor integration conduit.", morale: +15, legal: +25, containment: +50, next: 1 },
-                            { text: "Contact vendor support via email and await official advisory.", morale: -20, legal: -10, containment: -30, next: 1 }
-                        ]
-                    }
-                ]
-            }
-        ];
-
-        let currentSimIndex = 0;
-        let currentSimStage = 0;
-        let morale = 80, legal = 50, containment = 30;
-
-        function selectSimulator(idx) {
-            currentSimIndex = idx;
-            currentSimStage = 0;
-            for (let i = 0; i < 4; i++) {
-                const btn = document.getElementById(`sim-btn-${i}`);
-                if (btn) btn.className = i === idx ? "px-4 py-2 rounded-xl text-xs font-semibold transition bg-cyan-500 text-slate-950 shadow-md" : "px-4 py-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700";
-            }
-            document.getElementById('sim-result').classList.add('hidden');
-            document.getElementById('sim-active-card').classList.remove('hidden');
-            renderSimulator();
+            alertIdx = (alertIdx + 1) % alerts.length;
+            document.getElementById('alert-text').innerHTML = alerts[alertIdx];
         }
 
-        function renderSimulator() {
-            const sim = simulators[currentSimIndex];
-            const stage = sim.stages[currentSimStage] || sim.stages[0];
-            document.getElementById('sim-title').innerText = sim.title;
-            document.getElementById('sim-desc').innerText = stage.desc;
-            document.getElementById('sim-stage').innerText = `Phase ${currentSimStage + 1} of ${sim.stages.length}`;
-            
-            const choicesContainer = document.getElementById('sim-choices');
-            choicesContainer.innerHTML = '';
-            stage.choices.forEach((choice, idx) => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-2xl bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 transition text-sm text-slate-200 flex items-center justify-between group";
-                btn.innerHTML = `<span>${choice.text}</span> <i data-lucide="chevron-right" class="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform"></i>`;
-                btn.onclick = () => handleSimChoice(choice);
-                choicesContainer.appendChild(btn);
-            });
-            lucide.createIcons();
+        function dismissAlert() {
+            document.getElementById('alert-banner').classList.add('hidden');
         }
 
-        function handleSimChoice(choice) {
-            morale = Math.min(100, Math.max(0, morale + choice.morale));
-            legal = Math.min(100, Math.max(0, legal + choice.legal));
-            containment = Math.min(100, Math.max(0, containment + choice.containment));
-            
-            document.getElementById('metric-morale').innerText = morale + '%';
-            document.getElementById('bar-morale').style.width = morale + '%';
-            document.getElementById('metric-legal').innerText = legal + '%';
-            document.getElementById('bar-legal').style.width = legal + '%';
-            document.getElementById('metric-containment').innerText = containment + '%';
-            document.getElementById('bar-containment').style.width = containment + '%';
-
-            currentSimStage++;
-            const sim = simulators[currentSimIndex];
-            if (currentSimStage >= sim.stages.length) {
-                document.getElementById('sim-active-card').classList.add('hidden');
-                document.getElementById('sim-result').classList.remove('hidden');
-                document.getElementById('result-title').innerText = "Simulation Completed Successfully";
-                document.getElementById('result-desc').innerText = `Final Metrics — Morale: ${morale}%, Legal Preparedness: ${legal}%, Containment: ${containment}%. Protocol executed according to ODTN standards.`;
-            } else {
-                renderSimulator();
-            }
+        function openTelemetryModal() {
+            document.getElementById('telemetry-modal').classList.remove('hidden');
         }
 
-        function resetCurrentSimulator() {
-            morale = 80; legal = 50; containment = 30;
-            selectSimulator(currentSimIndex);
+        function closeTelemetryModal() {
+            document.getElementById('telemetry-modal').classList.add('hidden');
         }
 
-        // 3 QUIZZES LOGIC
-        const quizzes = [
-            {
-                title: "Quiz 1: Incident Response & Containment",
-                questions: [
-                    { q: "What is the primary objective of the containment phase?", options: ["Eradicating malware permanently", "Preventing lateral movement and further damage", "Notifying media outlets", "Drafting post-mortem reports"], correct: 1 },
-                    { q: "According to NIST SP 800-61, what follows containment?", options: ["Detection and Analysis", "Eradication and Recovery", "Preparation", "Immediate Disconnection"], correct: 1 }
-                ]
-            },
-            {
-                title: "Quiz 2: Legal Retainers & Compliance",
-                questions: [
-                    { q: "Why are pre-incident MSAs critical for cybersecurity incident response?", options: ["They reduce cloud hosting costs", "They prevent delays in engaging external legal and DFIR experts", "They guarantee insurance payouts", "They eliminate regulatory fines"], correct: 1 },
-                    { q: "Who should be included in the initial command structure during a critical data breach?", options: ["Only technical engineers", "Marketing team only", "Incident Commander, DFIR lead, and Legal Counsel", "External contractors exclusively"], correct: 2 }
-                ]
-            },
-            {
-                title: "Quiz 3: Post-Mortem & Team Resilience",
-                questions: [
-                    { q: "What defines a blameless post-mortem?", options: ["Punishing employees who made typos", "Focusing on systemic process and tool improvements rather than individual fault", "Ignoring minor security alerts", "Outsourcing blame to vendors"], correct: 1 },
-                    { q: "Why are rotational shifts essential during prolonged cyber crises?", options: ["To reduce payroll expenses", "To prevent cognitive fatigue and tunnel vision among analysts", "To test HR software", "To comply with tax laws"], correct: 1 }
-                ]
-            }
-        ];
-
-        let currentQuizIndex = 0;
-        let currentQuizQIndex = 0;
-        let quizScore = 0;
-
-        function selectQuiz(idx) {
-            currentQuizIndex = idx;
-            currentQuizQIndex = 0;
-            quizScore = 0;
-            for (let i = 0; i < 3; i++) {
-                const btn = document.getElementById(`quiz-btn-${i}`);
-                if (btn) btn.className = i === idx ? "px-4 py-2 rounded-xl text-xs font-semibold transition bg-cyan-500 text-slate-950 shadow-md" : "px-4 py-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700";
-            }
-            renderQuizQuestion();
+        // Timeline toggle
+        function toggleTimelineDetails(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden');
         }
 
-        function renderQuizQuestion() {
-            const quiz = quizzes[currentQuizIndex];
-            const q = quiz.questions[currentQuizQIndex];
-            document.getElementById('quiz-progress').innerText = `Question ${currentQuizQIndex + 1} of ${quiz.questions.length} (${quiz.title})`;
-            document.getElementById('quiz-score-badge').innerText = `Score: ${quizScore} / ${quiz.questions.length}`;
-            document.getElementById('quiz-question').innerText = q.q;
-            
-            const optionsContainer = document.getElementById('quiz-options');
-            optionsContainer.innerHTML = '';
-            q.options.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-2xl bg-slate-950/80 hover:bg-slate-800 border border-slate-800 transition text-sm text-slate-200";
-                btn.innerText = opt;
-                btn.onclick = () => checkQuizAnswer(idx, q.correct);
-                optionsContainer.appendChild(btn);
-            });
-            document.getElementById('quiz-feedback').classList.add('hidden');
-            document.getElementById('quiz-next-btn').classList.add('hidden');
-        }
-
-        function checkQuizAnswer(selected, correct) {
-            const feedback = document.getElementById('quiz-feedback');
-            feedback.classList.remove('hidden');
-            if (selected === correct) {
-                quizScore++;
-                feedback.className = "p-4 rounded-2xl text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
-                feedback.innerText = "Correct! Accurate decision validated.";
-            } else {
-                feedback.className = "p-4 rounded-2xl text-xs font-mono bg-rose-500/10 text-rose-400 border border-rose-500/20";
-                feedback.innerText = "Incorrect. Review ODTN Module 5 guidelines for best practice.";
-            }
-            document.getElementById('quiz-score-badge').innerText = `Score: ${quizScore} / ${quizzes[currentQuizIndex].questions.length}`;
-            document.getElementById('quiz-next-btn').classList.remove('hidden');
-        }
-
-        function nextQuizQuestion() {
-            currentQuizQIndex++;
-            const quiz = quizzes[currentQuizIndex];
-            if (currentQuizQIndex < quiz.questions.length) {
-                renderQuizQuestion();
-            } else {
-                document.getElementById('quiz-question').innerText = `Quiz Completed! Final Score: ${quizScore} / ${quiz.questions.length}`;
-                document.getElementById('quiz-options').innerHTML = '';
-                document.getElementById('quiz-feedback').classList.add('hidden');
-                document.getElementById('quiz-next-btn').classList.add('hidden');
-            }
-        }
-
-        // SOC Chat Logic
-        function handleChatSubmit(e) {
-            e.preventDefault();
-            const input = document.getElementById('chat-input');
-            const msg = input.value.trim();
-            if (!msg) return;
-            appendChatMessage("Commander", msg, "text-cyan-400");
-            input.value = '';
-            setTimeout(() => {
-                appendChatMessage("DFIR Lead", "Acknowledged. Inspecting telemetry logs now and coordinating with legal counsel.", "text-emerald-400");
-            }, 1000);
-        }
-
-        function sendQuickPrompt(promptText) {
-            appendChatMessage("Commander", promptText, "text-cyan-400");
-            setTimeout(() => {
-                appendChatMessage("Legal Counsel", "Retainer status verified. SLA response time is within the 1-hour window.", "text-amber-400");
-            }, 800);
-        }
-
-        function appendChatMessage(sender, text, colorClass) {
-            const feed = document.getElementById('chat-feed');
-            const div = document.createElement('div');
-            div.className = "flex items-start space-x-3";
-            div.innerHTML = `
-                <div class="bg-slate-800 text-slate-300 p-2.5 rounded-xl shrink-0"><i data-lucide="user" class="w-4 h-4"></i></div>
-                <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-4 space-y-1 max-w-2xl shadow-inner">
-                    <div class="flex items-center justify-between text-[11px] font-mono text-slate-400">
-                        <span class="font-bold ${colorClass}">${sender}</span>
-                        <span>Just now</span>
-                    </div>
-                    <p class="text-slate-300">${text}</p>
-                </div>
-            `;
-            feed.appendChild(div);
-            feed.scrollTop = feed.scrollHeight;
-            lucide.createIcons();
-        }
-
-        function clearChat() {
-            document.getElementById('chat-feed').innerHTML = '';
-        }
-
-        function openNewTicketModal() {
-            alert("New Ticket creation window initialized.");
-        }
-
-        // Scroll Controls
+        // Scroll listener for controls
         window.addEventListener('scroll', () => {
             const controls = document.getElementById('scroll-controls');
-            if (window.scrollY > 300) {
+            if (window.scrollY > 200) {
                 controls.classList.remove('opacity-0', 'pointer-events-none');
             } else {
                 controls.classList.add('opacity-0', 'pointer-events-none');
             }
         });
 
-        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        function scrollToBottom() { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-        // Initial setup
-        window.onload = () => {
-            selectSimulator(0);
-            selectQuiz(0);
-        };
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Simulator Logic
+        const simStages = [
+            {
+                stage: "Phase 1 of 3",
+                timer: "Timestamp: T+00:15 (03:42 AM PST)",
+                title: "Zero-Day Ransomware Outbreak",
+                desc: "Ransomware encryption is actively spreading across VLAN 104. The Tier-1 analyst on duty has been working 16 hours straight and recommends shutting down all domain controllers immediately without isolating subnet B-4 first.",
+                choices: [
+                    {
+                        text: "Approve total shutdown immediately (Fatigued advice)",
+                        morale: -20, legal: 0, containment: +10,
+                        next: 1
+                    },
+                    {
+                        text: "Enforce analyst shift rotation & systematically isolate VLAN 104",
+                        morale: +15, legal: +10, containment: +30,
+                        next: 1
+                    }
+                ]
+            },
+            {
+                stage: "Phase 2 of 3",
+                timer: "Timestamp: T+02:00 (05:27 AM PST)",
+                title: "External Forensics Onboarding",
+                desc: "The attacker claims exfiltration of employee data. You need external DFIR assistance immediately. Do you have pre-negotiated MSAs ready?",
+                choices: [
+                    {
+                        text: "Activate pre-signed MSA retainer (Instant 20-min onboarding)",
+                        morale: +10, legal: +40, containment: +30,
+                        next: 2
+                    },
+                    {
+                        text: "Contact new vendor and begin contract negotiations now",
+                        morale: -15, legal: -30, containment: -10,
+                        next: 2
+                    }
+                ]
+            }
+        ];
+
+        let currentSimStage = 0;
+        let morale = 80, legal = 50, containment = 30;
+
+        function renderSim() {
+            if (currentSimStage < simStages.length) {
+                const s = simStages[currentSimStage];
+                document.getElementById('sim-stage').innerText = s.stage;
+                document.getElementById('sim-timer').innerText = s.timer;
+                document.getElementById('sim-title').innerText = s.title;
+                document.getElementById('sim-desc').innerText = s.desc;
+
+                const choicesContainer = document.getElementById('sim-choices');
+                choicesContainer.innerHTML = s.choices.map((c, idx) => `
+                    <button onclick="makeSimChoice(${idx})" class="w-full text-left p-4 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 rounded-xl transition text-xs text-slate-200 flex items-center justify-between group">
+                        <span>${c.text}</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 text-cyan-400 opacity-0 group-hover:opacity-100 transition"></i>
+                    </button>
+                `).join('');
+                lucide.createIcons();
+            } else {
+                showSimResult();
+            }
+        }
+
+        function makeSimChoice(choiceIdx) {
+            const choice = simStages[currentSimStage].choices[choiceIdx];
+            morale = Math.min(100, Math.max(0, morale + choice.morale));
+            legal = Math.min(100, Math.max(0, legal + choice.legal));
+            containment = Math.min(100, Math.max(0, containment + choice.containment));
+
+            updateMetrics();
+            currentSimStage++;
+            renderSim();
+        }
+
+        function updateMetrics() {
+            document.getElementById('metric-morale').innerText = `${morale}%`;
+            document.getElementById('bar-morale').style.width = `${morale}%`;
+            document.getElementById('metric-legal').innerText = `${legal}%`;
+            document.getElementById('bar-legal').style.width = `${legal}%`;
+            document.getElementById('metric-containment').innerText = `${containment}%`;
+            document.getElementById('bar-containment').style.width = `${containment}%`;
+        }
+
+        function showSimResult() {
+            document.getElementById('sim-active-card').classList.add('hidden');
+            const res = document.getElementById('sim-result');
+            res.classList.remove('hidden');
+
+            const iconBox = document.getElementById('result-icon');
+            const title = document.getElementById('result-title');
+            const desc = document.getElementById('result-desc');
+
+            if (morale >= 60 && legal >= 60 && containment >= 60) {
+                iconBox.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
+                iconBox.innerHTML = `<i data-lucide="check-circle-2" class="w-10 h-10"></i>`;
+                title.innerText = "Crisis Successfully Contained";
+                desc.innerText = "By prioritizing team shift rotations and leveraging pre-signed MSAs, you contained the breach efficiently while mitigating staff burnout and legal risks.";
+            } else {
+                iconBox.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center bg-amber-500/20 text-amber-400 border border-amber-500/40";
+                iconBox.innerHTML = `<i data-lucide="alert-octagon" class="w-10 h-10"></i>`;
+                title.innerText = "High Operational Friction Experienced";
+                desc.innerText = "The incident was partially controlled, but delays in legal onboarding or responder fatigue led to increased damage. Review Module 5 pillars to refine your response strategy.";
+            }
+            lucide.createIcons();
+        }
+
+        function resetSimulator() {
+            currentSimStage = 0;
+            morale = 80; legal = 50; containment = 30;
+            updateMetrics();
+            document.getElementById('sim-result').classList.add('hidden');
+            document.getElementById('sim-active-card').classList.remove('hidden');
+            renderSim();
+        }
+
+        // SOC Chat Script
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            appendChatMessage('Commander', msg, 'cyan');
+            input.value = '';
+
+            setTimeout(() => {
+                appendChatMessage('DFIR Lead', `Acknowledged directive: "${msg}". Executing operational response protocol.`, 'slate');
+            }, 1000);
+        }
+
+        function sendQuickCommand(cmd) {
+            document.getElementById('chat-input').value = cmd;
+        }
+
+        function appendChatMessage(sender, text, theme) {
+            const feed = document.getElementById('chat-feed');
+            const isCommander = sender === 'Commander';
+            const html = `
+                <div class="flex items-start space-x-3 ${isCommander ? 'flex-row-reverse space-x-reverse' : ''}">
+                    <div class="bg-slate-800 text-slate-300 p-2 rounded-xl font-mono font-bold text-xs shrink-0 border border-slate-700">${sender.slice(0,3).toUpperCase()}</div>
+                    <div class="${isCommander ? 'bg-cyan-950/60 border-cyan-800/50' : 'bg-slate-800/80 border-slate-700/50'} border p-3.5 rounded-2xl text-sm text-slate-200 max-w-xl">
+                        <strong class="text-xs block text-slate-400 mb-0.5">${sender}</strong>
+                        ${text}
+                    </div>
+                </div>
+            `;
+            feed.insertAdjacentHTML('beforeend', html);
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        function clearChat() {
+            document.getElementById('chat-feed').innerHTML = '';
+        }
+
+        // Tickets handling
+        function handleTicketSubmit(e) {
+            e.preventDefault();
+            const author = document.getElementById('ticket-author').value;
+            const asset = document.getElementById('ticket-asset').value;
+            const severity = document.getElementById('ticket-severity').value;
+            const desc = document.getElementById('ticket-desc').value;
+
+            const list = document.getElementById('ticket-list');
+            const badgeClass = severity === 'Critical' ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+            
+            const card = `
+                <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl flex flex-col sm:flex-row justify-between gap-2 animate-fadeIn">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeClass} border uppercase">${severity}</span>
+                            <h4 class="text-sm font-bold text-white">${desc.slice(0, 40)}...</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Reporter: ${author} • Asset: ${asset}</p>
+                    </div>
+                    <span class="text-[11px] font-mono text-slate-500 shrink-0">Just now</span>
+                </div>
+            `;
+            list.insertAdjacentHTML('afterbegin', card);
+            document.getElementById('ticket-form').reset();
+        }
+
+        // Quiz Handling
+        function submitQuiz() {
+            document.getElementById('quiz-results').classList.remove('hidden');
+        }
+
+        function exportAuditLog() {
+            const csv = "Timestamp,Actor,Action,Status\n03:42:11 PST,SYSTEM_EDR,LockBit Ransomware Alert,UNRESOLVED\n03:45:00 PST,operator@odtn-vancouver.ca,Authenticated Session,SUCCESS";
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'odtn_mod5_audit_log.csv';
+            a.click();
+        }
+
+        // Initialize Simulator
+        renderSim();
     </script>
 </body>
 </html>
