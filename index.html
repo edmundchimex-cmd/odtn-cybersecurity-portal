@@ -14,10 +14,13 @@
     <meta name="description" content="An interactive learning portal for cyber incident response, human factors, legal readiness, evidence handling, and operational resilience.">
     <meta name="theme-color" content="#070a14">
 
-    <!-- SECURITY ACTIONS: Connect authentication, server-side role enforcement, persistent storage, and server-generated audit records before using this portal with real accounts or incidents. Self-host pinned dependencies and configure CSP/security headers at the web server. This single-file page uses inline JavaScript/event handlers and a CDN stylesheet; refactor these before enforcing a strict CSP. -->
-    <!-- ACTION: Compile Tailwind CSS and self-host the stylesheet for deployment. -->
+    <!-- SECURITY NOTE: This is a client-side training demo, not a production security portal. Authentication, role checks, persistence, and audit records are not server-backed. For production, self-host pinned dependencies and configure CSP/security headers at the web server. This single-file training demo uses inline JS/event handlers and a CDN stylesheet, so a strict CSP cannot be safely added as a meta tag without refactoring. -->
+    <!-- Tailwind CSS (development/demo use; compile and self-host for production) -->
 
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Supabase public project configuration; replace placeholders in supabase-config.js before enabling recovery. -->
+    <script src="./supabase-config.js"></script>
 
     <!-- Lucide Icons -->
 
@@ -290,129 +293,76 @@
 
 
     <!-- LOGIN OVERLAY -->
+
     <div id="login-overlay" class="fixed inset-0 bg-slate-950/95 z-50 flex items-center justify-center p-4 backdrop-blur-xl">
+
         <div class="bg-slate-900/90 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden backdrop-blur-md">
+
             <div class="absolute -right-12 -top-12 w-36 h-36 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+
+
             <div class="text-center space-y-2">
-                <div class="bg-cyan-500/10 p-3.5 rounded-2xl border border-cyan-500/20 w-fit mx-auto text-cyan-400 shadow-inner"><i data-lucide="shield-check" class="w-8 h-8"></i></div>
-                <h2 class="text-2xl font-bold text-white tracking-tight">ODTN Secure Portal</h2>
-                <p class="text-xs text-slate-400">Sign in with your authorized username and password.</p>
-            </div>
-            <form id="form-login-step1" onsubmit="handleLoginStep1(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-user">USERNAME</label>
-                    <input type="email" id="login-user" required maxlength="254" placeholder="Enter username" autocomplete="username" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner">
+
+                <div class="bg-cyan-500/10 p-3.5 rounded-2xl border border-cyan-500/20 w-fit mx-auto text-cyan-400 shadow-inner">
+
+                    <i data-lucide="shield-check" class="w-8 h-8"></i>
+
                 </div>
+
+                <h2 class="text-2xl font-bold text-white tracking-tight">ODTN Secure Portal</h2>
+
+                <p class="text-xs text-slate-400">Supabase Auth sign-in · security training demo</p>
+
+            </div>
+
+
+
+            <!-- Login Step 1 -->
+
+            <form id="form-login-step1" onsubmit="handleLoginStep1(event)" class="space-y-4">
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-user">USERNAME (EMAIL ADDRESS)</label>
+                    <input type="email" id="login-user" name="username" required maxlength="254" placeholder="Enter your email username" autocomplete="username"
+                        class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner">
+                </div>
+
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-password">PASSWORD</label>
-                    <input type="password" id="login-password" required maxlength="128" placeholder="Enter password" autocomplete="current-password" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner>
+                    <input type="password" id="login-password" name="password" required minlength="8" maxlength="128" placeholder="Enter your password" autocomplete="current-password"
+                        class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner">
+                </div>
+
+                <p class="text-xs text-slate-500">Use your account email as the username. Supabase Auth verifies the email and password. Configure the project URL and publishable key before testing.</p>
+
+                <div id="login-error" class="hidden text-xs text-rose-400 font-mono text-center" role="alert">Sign-in failed. Check your credentials and try again.</div>
+                <div id="password-recovery-popup" class="hidden rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-100" role="dialog" aria-live="polite" aria-labelledby="password-recovery-title">
+                    <h3 id="password-recovery-title" class="font-bold">Forgot your password?</h3>
+                    <p class="mt-1 text-xs text-amber-100/90">We can request a secure, time-limited reset link for the email above.</p>
+                    <button type="button" onclick="requestPasswordRecovery('password-recovery-status')" class="mt-3 inline-flex items-center gap-2 rounded-lg border border-amber-300/30 px-3 py-2 text-xs font-semibold hover:bg-amber-300/10"><i data-lucide="mail" class="w-4 h-4"></i>Send recovery link</button>
+                    <p id="password-recovery-status" class="mt-2 text-xs" role="status" aria-live="polite"></p>
+                    <button type="button" onclick="dismissRecovery('password-recovery-popup')" class="ml-3 mt-3 text-xs font-semibold underline underline-offset-4">Dismiss</button>
                 </div>
 
                 <button type="submit" class="w-full py-3.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2">
-                    <span>Sign In</span><i data-lucide="arrow-right" class="w-4 h-4"></i>
+
+                    <span>Sign in securely</span>
+
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+
                 </button>
+
             </form>
+
+
+
+
+
+
         </div>
+
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -803,7 +753,7 @@
 
                             <h3 class="text-base font-bold text-white">SOC Tactical Command Channel</h3>
 
-                            <p class="text-xs text-slate-400">Local command feed. Connect an authenticated messaging service to deliver directives to the response team.</p>
+                            <p class="text-xs text-slate-400">Simulated local feed — no AI service, encryption, or backend connection</p>
 
                         </div>
 
@@ -1133,7 +1083,7 @@
 
                         <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Immutable Trail</span>
 
-                        <h2 class="text-2xl font-bold text-white mt-2">Security & Operational Audit Log</h2>
+                        <h2 class="text-2xl font-bold text-white mt-2">Security & Operational Demo Audit Log</h2>
 
                     </div>
 
@@ -1183,7 +1133,7 @@
 
                                 <td class="p-3">operator@odtn-vancouver.ca</td>
 
-                                <td class="p-3">Portal Access Check (Role: Incident Commander)</td>
+                                <td class="p-3">Demo Gate Completed (Role: Incident Commander)</td>
 
                                 <td class="p-3 text-emerald-400">SUCCESS</td>
 
@@ -1485,93 +1435,181 @@
 
 
 
-        // Fixed-credential sign-in for this static portal.
-        // WARNING: Client-side credentials can be viewed in page source. Use server-side authentication for real security.
-        let loginFailureCount = 0;
-
-        function handleLoginStep1(e) {
-            e.preventDefault();
-            const form = document.getElementById("form-login-step1");
-            const emailInput = document.getElementById("login-user");
-            const passwordInput = document.getElementById("login-password");
-
-            if (!form.reportValidity()) return;
-
-            const username = emailInput.value.trim().toLowerCase();
-            const password = passwordInput.value;
-            const validUsername = 'edmundchimex@gmail.com';
-            const validPassword = 'Delta!@%7';
-
-            if (username !== validUsername || password !== validPassword) {
-                alert("Invalid username or password");
-
-                loginFailureCount += 1;
-                passwordInput.value = "";
-                passwordInput.focus();
+        // Password recovery uses Supabase Auth only after supabase-config.js is configured.
+        // The browser never creates a reset token or sends email itself; Supabase handles both.
+        async function requestPasswordRecovery(statusId) {
+            const status = document.getElementById(statusId);
+            const email = (document.getElementById('login-user')?.value || '').trim();
+            const config = window.ODTN_SUPABASE_CONFIG || {};
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                status.textContent = 'Enter a valid email address first.';
+                status.className = 'mt-2 text-xs text-rose-300';
+                document.getElementById('login-user')?.focus();
                 return;
             }
+            if (!config.url || !config.anonKey || config.url.includes('YOUR_PROJECT') || config.anonKey.includes('YOUR_SUPABASE')) {
+                status.textContent = 'Recovery is not configured yet. The administrator must add the Supabase project URL and public key, then enable the reset redirect URL.';
+                status.className = 'mt-2 text-xs text-amber-200';
+                return;
+            }
+            status.textContent = 'Requesting recovery email…';
+            status.className = 'mt-2 text-xs text-cyan-200';
+            try {
+                const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+                const supabase = createClient(config.url, config.anonKey);
+                const redirectTo = new URL('./reset-password.html', window.location.href).href;
+                const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+                if (error) throw error;
+                // Generic confirmation avoids revealing whether an address has an account.
+                status.textContent = 'If an account exists for that email, a password reset link will arrive shortly. Check your inbox and spam folder.';
+                status.className = 'mt-2 text-xs text-emerald-200';
+            } catch (err) {
+                console.error('Password recovery request failed:', err);
+                status.textContent = 'The recovery request could not be completed. Please try again later or contact the portal administrator.';
+                status.className = 'mt-2 text-xs text-rose-300';
+            }
+        }
+        window.requestPasswordRecovery = requestPasswordRecovery;
 
+        // Login and session handlers. Supabase publishable/anon keys are public by design;
+        // never place a service-role/secret key in this browser file.
+        const allowedDemoRoles = new Set(['Incident Commander', 'Lead DFIR Analyst', 'Legal Counsel', 'Security Auditor']);
+        let loginFailureCount = 0;
+        let supabaseClient = null;
 
-            document.getElementById("badge-user").textContent = validUsername;
-            document.getElementById("badge-role").textContent = "Incident Commander · Session";
-            document.getElementById("login-overlay").classList.add("hidden");
-            document.getElementById("session-badge").classList.remove("hidden");
-            document.getElementById("session-badge").classList.add("flex");
-            passwordInput.value = "";
+        function getSupabaseClient() {
+            const config = window.ODTN_SUPABASE_CONFIG || {};
+            if (!config.url || !config.anonKey || config.url.includes('YOUR_PROJECT') || config.anonKey.includes('YOUR_SUPABASE')) {
+                throw new Error('Supabase Auth is not configured.');
+            }
+            if (!supabaseClient) throw new Error('Supabase client is not initialized.');
+            return supabaseClient;
         }
 
-        function triggerLogout() {
-            document.getElementById("login-overlay").classList.remove("hidden");
-            document.getElementById("form-login-step1").reset();
-            document.getElementById("session-badge").classList.add("hidden");
-            document.getElementById("session-badge").classList.remove("flex");
+        function dismissRecovery(id) {
+            const panel = document.getElementById(id);
+            if (panel) panel.classList.add('hidden');
+        }
 
+        async function requestPasswordRecovery(statusId) {
+            const status = document.getElementById(statusId);
+            const email = (document.getElementById('login-user')?.value || '').trim();
+            const config = window.ODTN_SUPABASE_CONFIG || {};
+            if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                status.textContent = 'Enter a valid email address above, then try again.';
+                status.className = 'mt-2 text-xs text-amber-200';
+                return;
+            }
+            if (!config.url || !config.anonKey || config.url.includes('YOUR_PROJECT') || config.anonKey.includes('YOUR_SUPABASE')) {
+                status.textContent = 'Recovery is not configured. The administrator must configure Supabase and allow the reset-password redirect URL.';
+                status.className = 'mt-2 text-xs text-amber-200';
+                return;
+            }
+            status.textContent = 'Requesting recovery email…';
+            status.className = 'mt-2 text-xs text-cyan-200';
+            try {
+                const client = getSupabaseClient();
+                const redirectTo = new URL('./reset-password.html', window.location.href).href;
+                const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
+                if (error) throw error;
+                status.textContent = 'If an account exists for that email, a reset link will arrive shortly. Check your inbox and spam folder.';
+                status.className = 'mt-2 text-xs text-emerald-200';
+            } catch (err) {
+                status.textContent = 'The recovery request could not be completed. Check the configuration or try again later.';
+                status.className = 'mt-2 text-xs text-rose-300';
+            }
+        }
+        window.requestPasswordRecovery = requestPasswordRecovery;
+
+        function showAuthenticatedPortal(user) {
+            const email = user?.email || 'Authenticated user';
+            document.getElementById('badge-user').textContent = email;
+            // Do not assign permissions from a browser-controlled role selector.
+            document.getElementById('badge-role').textContent = 'Supabase-authenticated · Demo portal';
+            document.getElementById('login-overlay').classList.add('hidden');
+            document.getElementById('session-badge').classList.remove('hidden');
+            document.getElementById('session-badge').classList.add('flex');
+            document.getElementById('main-content')?.focus({ preventScroll: true });
+        }
+
+        async function handleLoginStep1(e) {
+            e.preventDefault();
+            const form = document.getElementById('form-login-step1');
+            const emailInput = document.getElementById('login-user');
+            const passwordInput = document.getElementById('login-password');
+            const loginError = document.getElementById('login-error');
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            if (!form.reportValidity() || email.length > 254 || password.length < 8 || password.length > 128 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+            const config = window.ODTN_SUPABASE_CONFIG || {};
+            if (!config.url || !config.anonKey || config.url.includes('YOUR_PROJECT') || config.anonKey.includes('YOUR_SUPABASE')) {
+                loginError.textContent = 'Sign-in is not configured. The administrator must configure Supabase Auth first.';
+                loginError.classList.remove('hidden');
+                return;
+            }
+            const submit = form.querySelector('button[type="submit"]');
+            if (submit) submit.disabled = true;
+            loginError.textContent = 'Sign-in failed. Check your credentials and try again.';
+            try {
+                const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+                if (!supabaseClient) supabaseClient = createClient(config.url, config.anonKey, {
+                    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+                });
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error || !data?.user) throw (error || new Error('Authentication failed'));
+                loginFailureCount = 0;
+                loginError.classList.add('hidden');
+                document.getElementById('password-recovery-popup').classList.add('hidden');
+                passwordInput.value = '';
+                showAuthenticatedPortal(data.user);
+            } catch (err) {
+                loginFailureCount += 1;
+                loginError.textContent = 'Sign-in failed. Check your credentials and try again.';
+                loginError.classList.remove('hidden');
+                // UI-only convenience, not a security control. Enforce rate limits server-side too.
+                if (loginFailureCount > 3) {
+                    document.getElementById('password-recovery-popup').classList.remove('hidden');
+                    if (window.lucide) window.lucide.createIcons();
+                }
+                passwordInput.value = '';
+                passwordInput.focus();
+            } finally {
+                if (submit) submit.disabled = false;
+            }
+        }
+
+        async function triggerLogout() {
+            try {
+                if (supabaseClient) await supabaseClient.auth.signOut();
+            } catch (err) {
+                console.warn('Supabase sign-out could not be confirmed.');
+            }
+            document.getElementById('login-overlay').classList.remove('hidden');
+            document.getElementById('form-login-step1').classList.remove('hidden');
+            document.getElementById('session-badge').classList.add('hidden');
+            document.getElementById('session-badge').classList.remove('flex');
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('password-recovery-popup').classList.add('hidden');
+            document.getElementById('password-recovery-status').textContent = '';
             loginFailureCount = 0;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // Initialize the public Supabase client once and restore an existing session if available.
+        (async function initializeSupabaseAuth() {
+            const config = window.ODTN_SUPABASE_CONFIG || {};
+            if (!config.url || !config.anonKey || config.url.includes('YOUR_PROJECT') || config.anonKey.includes('YOUR_SUPABASE')) return;
+            try {
+                const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+                supabaseClient = createClient(config.url, config.anonKey, {
+                    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+                });
+                const { data } = await supabaseClient.auth.getSession();
+                if (data?.session?.user) showAuthenticatedPortal(data.session.user);
+            } catch (err) {
+                console.warn('Supabase Auth initialization failed.');
+            }
+        })();
 
         // Alert Ticker Logic
 
@@ -1870,7 +1908,7 @@
 
             setTimeout(() => {
 
-                appendChatMessage('DFIR Lead', `Acknowledged directive: "${msg}". Directive recorded in this local feed only. Notify the response team through the approved incident-response channel.`, 'slate');
+                appendChatMessage('DFIR Lead', `Acknowledged directive: "${msg}". This is a simulated acknowledgement. Follow the approved incident-response plan for real incidents.`, 'slate');
 
             }, 1000);
 
@@ -1960,7 +1998,7 @@
             details.append(heading, metadata);
             const time = document.createElement('span');
             time.className = 'text-[11px] font-mono text-slate-500 shrink-0';
-            time.textContent = 'Just now · Local record';
+            time.textContent = 'Just now · Local demo only';
             card.append(details, time);
             list.prepend(card);
             while (list.children.length > 50) list.lastElementChild.remove();
@@ -2051,7 +2089,7 @@
 
         function exportAuditLog() {
 
-            const csv = "Timestamp,Actor,Action,Status\n03:42:11 PST,SYSTEM_EDR,LockBit Ransomware Alert,UNRESOLVED\n03:45:00 PST,operator@odtn-vancouver.ca,Portal Access Check,LOCAL RECORD";
+            const csv = "Timestamp,Actor,Action,Status\n03:42:11 PST,SYSTEM_EDR,LockBit Ransomware Alert,UNRESOLVED\n03:45:00 PST,operator@odtn-vancouver.ca,Demo Gate Completed,DEMO ONLY";
 
             const blob = new Blob([csv], { type: 'text/csv' });
 
