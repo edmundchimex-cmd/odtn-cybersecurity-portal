@@ -91,6 +91,53 @@
             *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
         }
 
+        .core-theme-heading {
+            display: inline-block;
+            background: linear-gradient(90deg, #22d3ee 0%, #a78bfa 25%, #f472b6 50%, #fbbf24 75%, #34d399 100%);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 18px rgba(34, 211, 238, .12);
+            animation: coreThemeColorShift 5s linear infinite, coreThemeBounce 2.8s ease-in-out infinite;
+        }
+        @keyframes coreThemeColorShift {
+            0% { background-position: 0% center; }
+            100% { background-position: 250% center; }
+        }
+        @keyframes coreThemeBounce {
+            0%, 72%, 100% { transform: translateY(0); }
+            80% { transform: translateY(-5px); }
+            88% { transform: translateY(0); }
+            94% { transform: translateY(-2px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .core-theme-heading { animation: none; background-position: center; }
+        }
+
+
+        .resilience-network { position: relative; width: 260px; height: 190px; flex: 0 0 auto; }
+        .resilience-network .network-orbit { position: absolute; left: 50%; top: 50%; border: 1px solid rgba(34,211,238,.18); border-radius: 50%; transform: translate(-50%,-50%); }
+        .resilience-network .orbit-one { width: 155px; height: 155px; animation: orbitPulse 4s ease-in-out infinite; }
+        .resilience-network .orbit-two { width: 215px; height: 120px; border-color: rgba(167,139,250,.2); animation: orbitPulse 4s ease-in-out infinite reverse; }
+        .resilience-network .network-line { position: absolute; left: 50%; top: 50%; height: 1px; width: 95px; transform-origin: left center; background: linear-gradient(90deg,rgba(34,211,238,.65),rgba(167,139,250,.12)); }
+        .resilience-network .line-a { transform: rotate(-145deg); }
+        .resilience-network .line-b { transform: rotate(-35deg); }
+        .resilience-network .line-c { transform: rotate(90deg); }
+        .resilience-network .network-node { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; width: 64px; height: 64px; border: 1px solid rgba(71,85,105,.9); border-radius: 18px; background: #0f172a; box-shadow: 0 0 24px rgba(34,211,238,.08); animation: nodeFloat 3.6s ease-in-out infinite; }
+        .resilience-network .network-node svg { width: 19px; height: 19px; }
+        .resilience-network .network-node small { font-size: 10px; font-weight: 600; color: #cbd5e1; }
+        .resilience-network .node-people { left: 3px; top: 6px; color: #22d3ee; }
+        .resilience-network .node-ready { right: 3px; top: 6px; color: #a78bfa; animation-delay: -.9s; }
+        .resilience-network .node-learn { left: calc(50% - 32px); bottom: 0; color: #34d399; animation-delay: -1.8s; }
+        .resilience-network .network-core { position: absolute; left: calc(50% - 21px); top: calc(50% - 21px); display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: #e0f2fe; background: radial-gradient(circle,rgba(34,211,238,.3),rgba(15,23,42,.9)); border: 1px solid rgba(34,211,238,.55); animation: coreGlow 2.5s ease-in-out infinite; }
+        .resilience-network .network-core svg { width: 20px; height: 20px; }
+        @keyframes nodeFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes orbitPulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+        @keyframes coreGlow { 0%,100% { box-shadow: 0 0 10px rgba(34,211,238,.12); } 50% { box-shadow: 0 0 26px rgba(34,211,238,.38); } }
+        @media (max-width: 639px) { .resilience-network { transform: scale(.92); margin: -3px 0; } }
+        @media (prefers-reduced-motion: reduce) { .resilience-network *, .resilience-network::before { animation: none !important; } }
+
         /* Custom scrollbar for cyber aesthetic */
 
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -440,15 +487,29 @@
 
             <!-- Core learning themes -->
             <section aria-labelledby="pillars-title" class="space-y-3">
-                <div><h3 id="pillars-title" class="text-lg font-semibold text-white">Core resilience themes</h3><p class="mt-1 text-sm text-slate-400">Select a topic to open its guidance and key takeaways.</p></div>
+                <div><h3 id="pillars-title" class="core-theme-heading text-lg font-bold">Core resilience themes</h3><p class="mt-1 text-sm text-slate-400">Select a topic to open its guidance and key takeaways.</p></div>
                 <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
                     <button type="button" onclick="openPillarModal('psychological')" class="rounded-xl border border-slate-800 bg-slate-900/70 p-5 text-left transition hover:border-cyan-500/50 hover:bg-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"><span class="mb-3 inline-flex rounded-lg bg-slate-800 p-2.5 text-cyan-400"><i data-lucide="brain" class="h-5 w-5"></i></span><span class="block font-semibold text-white">Psychological safety and shift rotation</span><span class="mt-2 block text-sm leading-6 text-slate-400">Protect decision-making under pressure by using realistic shift lengths, planned breaks, clear handovers, and peer check-ins. Leaders should make it safe to raise concerns early, especially when fatigue or stress could affect response quality.</span><span class="mt-3 block text-sm font-medium text-cyan-400">Read guidance →</span></button>
                     <button type="button" onclick="openPillarModal('msa')" class="rounded-xl border border-slate-800 bg-slate-900/70 p-5 text-left transition hover:border-cyan-500/50 hover:bg-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"><span class="mb-3 inline-flex rounded-lg bg-slate-800 p-2.5 text-cyan-400"><i data-lucide="scale" class="h-5 w-5"></i></span><span class="block font-semibold text-white">Legal and vendor readiness</span><span class="mt-2 block text-sm leading-6 text-slate-400">Confirm legal and vendor support before a crisis: identify decision-makers, maintain current escalation contacts, and review master services agreements (MSAs), confidentiality terms, and evidence-handling expectations. Early preparation can reduce delays when specialist help is needed.</span><span class="mt-3 block text-sm font-medium text-cyan-400">Read guidance →</span></button>
                     <button type="button" onclick="openPillarModal('postmortem')" class="rounded-xl border border-slate-800 bg-slate-900/70 p-5 text-left transition hover:border-cyan-500/50 hover:bg-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"><span class="mb-3 inline-flex rounded-lg bg-slate-800 p-2.5 text-cyan-400"><i data-lucide="refresh-cw" class="h-5 w-5"></i></span><span class="block font-semibold text-white">Blameless post-incident reviews</span><span class="mt-2 block text-sm leading-6 text-slate-400">Review what happened without blame, document contributing factors, and distinguish process or technology gaps from individual actions. Assign owners and due dates to corrective actions, then track completion so lessons lead to measurable improvements.</span><span class="mt-3 block text-sm font-medium text-cyan-400">Read guidance →</span></button>
                 </div>
-                <aside class="rounded-xl border border-cyan-900/70 bg-cyan-950/25 px-4 py-3 text-sm leading-6 text-slate-300" role="note" aria-label="Resilience practice note">
-                    <strong class="text-cyan-300">Practice note:</strong> Resilience depends on people, preparation, and follow-through—not technology alone. Adapt these recommendations to your organization’s incident-response plan, protect sensitive information, and record clear owners and next steps for every improvement.
-                </aside>
+                <div class="resilience-visual rounded-2xl border border-slate-800 bg-slate-950/80 p-5 sm:p-6" role="img" aria-label="Animated illustration of people, legal readiness, and lessons learned connected in a resilient cyber response network">
+                    <div class="flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
+                        <div class="max-w-sm text-center sm:text-left">
+                            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">Resilience in action</p>
+                            <p class="mt-2 text-lg font-semibold text-white">People. Preparation. Progress.</p>
+                            <p class="mt-1 text-sm leading-6 text-slate-400">A coordinated response connects a supported team, clear legal pathways, and lessons that strengthen the next response.</p>
+                        </div>
+                        <div class="resilience-network" aria-hidden="true">
+                            <span class="network-orbit orbit-one"></span><span class="network-orbit orbit-two"></span>
+                            <span class="network-line line-a"></span><span class="network-line line-b"></span><span class="network-line line-c"></span>
+                            <span class="network-node node-people"><i data-lucide="users"></i><small>People</small></span>
+                            <span class="network-node node-ready"><i data-lucide="shield-check"></i><small>Prepare</small></span>
+                            <span class="network-node node-learn"><i data-lucide="refresh-cw"></i><small>Learn</small></span>
+                            <span class="network-core"><i data-lucide="activity"></i></span>
+                        </div>
+                    </div>
+                </div>
             </section>
         </section>
 
