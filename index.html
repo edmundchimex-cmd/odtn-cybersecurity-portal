@@ -14,8 +14,8 @@
     <meta name="description" content="An interactive learning portal for cyber incident response, human factors, legal readiness, evidence handling, and operational resilience.">
     <meta name="theme-color" content="#070a14">
 
-    <!-- SECURITY NOTE: This is a client-side training demo, not a production security portal. Authentication, role checks, persistence, and audit records are not server-backed. For production, self-host pinned dependencies and configure CSP/security headers at the web server. This single-file training demo uses inline JS/event handlers and a CDN stylesheet, so a strict CSP cannot be safely added as a meta tag without refactoring. -->
-    <!-- Tailwind CSS (development/demo use; compile and self-host for production) -->
+    <!-- SECURITY ACTIONS: Connect authentication, server-side role enforcement, persistent storage, and server-generated audit records before using this portal with real accounts or incidents. Self-host pinned dependencies and configure CSP/security headers at the web server. This single-file page uses inline JavaScript/event handlers and a CDN stylesheet; refactor these before enforcing a strict CSP. -->
+    <!-- ACTION: Compile Tailwind CSS and self-host the stylesheet for deployment. -->
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -309,7 +309,7 @@
 
                 <h2 class="text-2xl font-bold text-white tracking-tight">ODTN Secure Portal</h2>
 
-                <p class="text-xs text-slate-400">Demo access · account verification is not connected</p>
+                <p class="text-xs text-slate-400">Enter your work email to continue. Secure account verification must be configured before live use.</p>
 
             </div>
 
@@ -375,7 +375,7 @@
 
                     <i data-lucide="smartphone" class="w-4 h-4 shrink-0"></i>
 
-                    <span>Demo verification only. Use the configured six-digit token. This is a local browser check, not secure server-side authentication.</span>
+                    <span>Enter the six-digit code issued to your account. This page checks the code in the browser; connect server-side MFA verification before protecting real accounts.</span>
 
                 </div>
 
@@ -401,7 +401,7 @@
 
                     <i data-lucide="key" class="w-4 h-4"></i>
 
-                    <span>Enter Training Demo</span>
+                    <span>Verify Code & Open Portal</span>
 
                 </button>
 
@@ -803,7 +803,7 @@
 
                             <h3 class="text-base font-bold text-white">SOC Tactical Command Channel</h3>
 
-                            <p class="text-xs text-slate-400">Simulated local feed — no AI service, encryption, or backend connection</p>
+                            <p class="text-xs text-slate-400">Local command feed. Connect an authenticated messaging service to deliver directives to the response team.</p>
 
                         </div>
 
@@ -1133,7 +1133,7 @@
 
                         <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Immutable Trail</span>
 
-                        <h2 class="text-2xl font-bold text-white mt-2">Security & Operational Demo Audit Log</h2>
+                        <h2 class="text-2xl font-bold text-white mt-2">Security & Operational Audit Log</h2>
 
                     </div>
 
@@ -1183,7 +1183,7 @@
 
                                 <td class="p-3">operator@odtn-vancouver.ca</td>
 
-                                <td class="p-3">Demo Gate Completed (Role: Incident Commander)</td>
+                                <td class="p-3">Portal Access Check (Role: Incident Commander)</td>
 
                                 <td class="p-3 text-emerald-400">SUCCESS</td>
 
@@ -1543,12 +1543,12 @@
                 tokenInput.focus();
                 return;
             }
-            // Deliberately a demo gate only. Never treat this client-side state as identity or authorization.
+            // This client-side check is not authentication or authorization; enforce identity and roles on the server.
             error.classList.add('hidden');
             const email = document.getElementById('login-user').value.trim();
             const role = document.getElementById('login-role').value;
             document.getElementById('badge-user').textContent = email || 'Training Operator';
-            document.getElementById('badge-role').textContent = role + ' · Demo only';
+            document.getElementById('badge-role').textContent = role + ' · Session';
             document.getElementById('login-overlay').classList.add('hidden');
             document.getElementById('session-badge').classList.remove('hidden');
             document.getElementById('session-badge').classList.add('flex');
@@ -1870,7 +1870,7 @@
 
             setTimeout(() => {
 
-                appendChatMessage('DFIR Lead', `Acknowledged directive: "${msg}". This is a simulated acknowledgement. Follow the approved incident-response plan for real incidents.`, 'slate');
+                appendChatMessage('DFIR Lead', `Acknowledged directive: "${msg}". Directive recorded in this local feed only. Notify the response team through the approved incident-response channel.`, 'slate');
 
             }, 1000);
 
@@ -1960,7 +1960,7 @@
             details.append(heading, metadata);
             const time = document.createElement('span');
             time.className = 'text-[11px] font-mono text-slate-500 shrink-0';
-            time.textContent = 'Just now · Local demo only';
+            time.textContent = 'Just now · Local record';
             card.append(details, time);
             list.prepend(card);
             while (list.children.length > 50) list.lastElementChild.remove();
@@ -2051,7 +2051,7 @@
 
         function exportAuditLog() {
 
-            const csv = "Timestamp,Actor,Action,Status\n03:42:11 PST,SYSTEM_EDR,LockBit Ransomware Alert,UNRESOLVED\n03:45:00 PST,operator@odtn-vancouver.ca,Demo Gate Completed,DEMO ONLY";
+            const csv = "Timestamp,Actor,Action,Status\n03:42:11 PST,SYSTEM_EDR,LockBit Ransomware Alert,UNRESOLVED\n03:45:00 PST,operator@odtn-vancouver.ca,Portal Access Check,LOCAL RECORD";
 
             const blob = new Blob([csv], { type: 'text/csv' });
 
