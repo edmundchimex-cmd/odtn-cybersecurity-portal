@@ -228,9 +228,10 @@
 
 
 <style>
-.activity-bounce:hover, .activity-bounce:focus-visible { animation: activity-pop 420ms ease-out; }
-@keyframes activity-pop { 0% { transform: translateY(0) scale(1); } 38% { transform: translateY(-5px) scale(1.06); } 68% { transform: translateY(1px) scale(.99); } 100% { transform: translateY(-3px) scale(1.04); } }
-@media (prefers-reduced-motion: reduce) { .activity-bounce:hover, .activity-bounce:focus-visible { animation: none; } }
+.activity-bounce { transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+.activity-bounce:hover, .activity-bounce:focus-visible { transform: translateY(-1px); filter: brightness(1.08); box-shadow: 0 3px 10px rgba(34,211,238,.10); }
+.activity-bounce:focus-visible { outline: 2px solid rgba(103,232,249,.8); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .activity-bounce { transition: none; } .activity-bounce:hover, .activity-bounce:focus-visible { transform: none; } }
 </style>
 </head>
 
@@ -259,6 +260,17 @@
     </div>
 
 
+
+    <style>
+      /* Gentle sequential critical-alert ticker: each message slides up from below. */
+      #alert-text { opacity: 1; transform: translateY(0); transition: opacity 320ms ease, transform 320ms ease, text-shadow 320ms ease; will-change: opacity, transform; }
+      #alert-text.alert-fading { opacity: 0; transform: translateY(-8px); text-shadow: 0 0 10px rgba(251, 191, 36, .25); }
+      #alert-text.alert-entering { opacity: 0; transform: translateY(10px); }
+      #alert-banner.alert-refresh { box-shadow: 0 0 0 1px rgba(251, 191, 36, .12), 0 4px 18px rgba(245, 158, 11, .08); }
+      @media (prefers-reduced-motion: reduce) {
+        #alert-text { transition: none; transform: none; }
+      }
+    </style>
 
     <!-- 1. ALERT TICKER BANNER -->
 
@@ -553,12 +565,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-4">
             <div class="flex min-w-0 items-center gap-2 overflow-x-auto">
                 <span class="hidden md:inline shrink-0 pr-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">Activities</span>
-                <button type="button" onclick="switchTab('simulator')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/25 bg-cyan-500/10 px-3 py-1.5 text-xs font-medium text-cyan-200 hover:bg-cyan-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 activity-bounce hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:brightness-125 transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="workflow" class="h-3.5 w-3.5" aria-hidden="true"></i> Simulators</button>
-                <button type="button" onclick="switchTab('quiz')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-violet-500/25 bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-200 hover:bg-violet-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 activity-bounce hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:brightness-125 transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="clipboard-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Quizzes</button>
-                <button type="button" onclick="switchTab('timeline')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-200 hover:bg-emerald-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 activity-bounce hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:brightness-125 transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="list-ordered" class="h-3.5 w-3.5" aria-hidden="true"></i> Timeline</button>
-                <button type="button" onclick="switchTab('chat')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-sky-500/25 bg-sky-500/10 px-3 py-1.5 text-xs font-medium text-sky-200 hover:bg-sky-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 activity-bounce hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:brightness-125 transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="messages-square" class="h-3.5 w-3.5" aria-hidden="true"></i> SOC Chat</button>
-                <button type="button" onclick="switchTab('submissions')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-200 hover:bg-amber-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 activity-bounce hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:brightness-125 transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="ticket-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Tickets</button>
-                <button type="button" onclick="switchTab('audit')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-200 hover:bg-rose-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 activity-bounce hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:brightness-125 transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="shield-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Audit</button>
+                <button type="button" onclick="switchTab('simulator')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/25 bg-cyan-500/10 px-3 py-1.5 text-xs font-medium text-cyan-200 hover:bg-cyan-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="workflow" class="h-3.5 w-3.5" aria-hidden="true"></i> Simulators</button>
+                <button type="button" onclick="switchTab('quiz')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-violet-500/25 bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-200 hover:bg-violet-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="clipboard-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Quizzes</button>
+                <button type="button" onclick="switchTab('timeline')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-200 hover:bg-emerald-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="list-ordered" class="h-3.5 w-3.5" aria-hidden="true"></i> Timeline</button>
+                <button type="button" onclick="switchTab('chat')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-sky-500/25 bg-sky-500/10 px-3 py-1.5 text-xs font-medium text-sky-200 hover:bg-sky-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="messages-square" class="h-3.5 w-3.5" aria-hidden="true"></i> SOC Chat</button>
+                <button type="button" onclick="switchTab('submissions')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-200 hover:bg-amber-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="ticket-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Tickets</button>
+                <button type="button" onclick="switchTab('audit')" class="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-rose-500/25 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-200 hover:bg-rose-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 activity-bounce transition-all duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"><i data-lucide="shield-check" class="h-3.5 w-3.5" aria-hidden="true"></i> Audit</button>
             </div>
 
         </div>
@@ -1771,12 +1783,35 @@
 
 
         function cycleAlert() {
+            const alertText = document.getElementById('alert-text');
+            const alertBanner = document.getElementById('alert-banner');
+            if (!alertText || !alertBanner || alertBanner.classList.contains('hidden')) return;
 
-            alertIdx = (alertIdx + 1) % alerts.length;
-
-            document.getElementById('alert-text').textContent = alerts[alertIdx];
-
+            alertText.classList.add('alert-fading');
+            window.setTimeout(() => {
+                alertIdx = (alertIdx + 1) % alerts.length;
+                alertText.textContent = alerts[alertIdx];
+                alertText.classList.remove('alert-fading');
+                alertText.classList.add('alert-entering');
+                // Start below the normal position, then glide up into place.
+                void alertText.offsetHeight;
+                window.requestAnimationFrame(() => {
+                    alertText.classList.remove('alert-entering');
+                });
+                alertBanner.classList.add('alert-refresh');
+                window.setTimeout(() => alertBanner.classList.remove('alert-refresh'), 500);
+            }, 340);
         }
+
+        // Rotate critical alerts automatically every 6 seconds, one after another.
+        // Each new alert glides gently upward into place with a subtle fade.
+        let alertRotationTimer = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            alertRotationTimer = window.setInterval(() => {
+                const banner = document.getElementById('alert-banner');
+                if (banner && !banner.classList.contains('hidden')) cycleAlert();
+            }, 6000);
+        });
 
 
 
