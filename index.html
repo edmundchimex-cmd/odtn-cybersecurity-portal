@@ -186,6 +186,41 @@
         }
         ::-webkit-scrollbar-thumb:hover { background: #5eead4; }
 
+        /* Core resilience theme cards: rise and glow in distinct colours on hover/focus */
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button {
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease, background .24s ease;
+            will-change: transform;
+        }
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button:nth-child(1):hover,
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button:nth-child(1):focus-visible {
+            transform: translateY(-8px); border-color: rgba(34,211,238,.95) !important;
+            background: linear-gradient(145deg, rgba(8,47,73,.98), rgba(15,23,42,.98)) !important;
+            box-shadow: 0 18px 34px rgba(6,182,212,.22), 0 0 0 1px rgba(34,211,238,.22);
+        }
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button:nth-child(2):hover,
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button:nth-child(2):focus-visible {
+            transform: translateY(-8px); border-color: rgba(167,139,250,.95) !important;
+            background: linear-gradient(145deg, rgba(46,26,78,.98), rgba(15,23,42,.98)) !important;
+            box-shadow: 0 18px 34px rgba(139,92,246,.24), 0 0 0 1px rgba(167,139,250,.22);
+        }
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button:nth-child(3):hover,
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button:nth-child(3):focus-visible {
+            transform: translateY(-8px); border-color: rgba(52,211,153,.95) !important;
+            background: linear-gradient(145deg, rgba(6,61,52,.98), rgba(15,23,42,.98)) !important;
+            box-shadow: 0 18px 34px rgba(16,185,129,.22), 0 0 0 1px rgba(52,211,153,.22);
+        }
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button:nth-child(1):hover > span:first-child { background: rgba(8,145,178,.28); color: #67e8f9; }
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button:nth-child(2):hover > span:first-child { background: rgba(124,58,237,.28); color: #c4b5fd; }
+        #view-briefing [aria-labelledby="pillars-title"] .grid > button:nth-child(3):hover > span:first-child { background: rgba(5,150,105,.28); color: #6ee7b7; }
+        @media (prefers-reduced-motion: reduce) {
+            #view-briefing [aria-labelledby="pillars-title"] .grid > button { transition: none; }
+            #view-briefing [aria-labelledby="pillars-title"] .grid > button:hover,
+            #view-briefing [aria-labelledby="pillars-title"] .grid > button:focus-visible { transform: none; }
+        }
+
     </style>
 
 </head>
@@ -288,7 +323,7 @@
 
                     <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="login-user">OPERATOR ID</label>
 
-                    <input type="email" id="login-user" required maxlength="64" placeholder="operator@odtn-vancouver.ca" autocomplete="username"&#x20;
+                    <input type="email" id="login-user" required maxlength="64" placeholder="edmundchimex@gmail.com" autocomplete="username"&#x20;
 
                         class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition shadow-inner">
 
@@ -312,6 +347,14 @@
 
                 </div>
 
+                <div id="login-error" class="hidden text-xs text-rose-400 font-mono text-center" role="alert">Sign-in is restricted to the authorized email address.</div>
+                <div id="password-recovery-popup" class="hidden rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-100" role="dialog" aria-live="polite" aria-labelledby="password-recovery-title">
+                    <div class="flex items-center gap-3"><i data-lucide="mail-check" class="w-5 h-5 shrink-0 text-amber-300"></i><div class="flex-1"><h3 id="password-recovery-title" class="font-bold">Need a recovery link?</h3>
+                    <p class="mt-1 text-xs text-amber-100/90">Request password recovery by email.</p>
+                    <a class="mt-3 inline-flex items-center gap-2 rounded-lg border border-amber-300/30 px-3 py-2 text-xs font-semibold hover:bg-amber-300/10" href="mailto:edmundchimex@gmail.com?subject=ODTN%20Module%205%20Recovery%20Link%20Request&amp;body=Please%20send%20me%20a%20secure%20recovery%20link%20for%20ODTN%20Module%205."><i data-lucide="mail" class="w-4 h-4"></i>Request recovery link by email</a>
+                    <button type="button" onclick="dismissRecovery('password-recovery-popup')" class="ml-3 mt-3 text-xs font-semibold underline underline-offset-4">Dismiss</button></div></div>
+                </div>
+
                 <button type="submit" class="w-full py-3.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2">
 
                     <span>Proceed to MFA Verification</span>
@@ -332,7 +375,7 @@
 
                     <i data-lucide="smartphone" class="w-4 h-4 shrink-0"></i>
 
-                    <span>Demo verification only. Training simulation only: any six digits pass this local demo gate. No identity is verified and no real MFA service is connected.</span>
+                    <span>Demo verification only. Use the configured six-digit token. This is a local browser check, not secure server-side authentication.</span>
 
                 </div>
 
@@ -340,13 +383,19 @@
 
                     <label class="block text-xs font-semibold text-slate-400 mb-1.5" for="mfa-token">6-DIGIT MFA TOKEN</label>
 
-                    <input type="text" id="mfa-token" required maxlength="6" minlength="6" inputmode="numeric" pattern="[0-9]{6}" placeholder="Enter any 6 digits for this demo" autocomplete="one-time-code"
+                    <input type="text" id="mfa-token" required maxlength="6" minlength="6" inputmode="numeric" pattern="[0-9]{6}" placeholder="Enter configured token" autocomplete="one-time-code"
 
                         class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-center text-lg font-mono tracking-widest text-cyan-400 focus:outline-none focus:border-cyan-500 transition shadow-inner">
 
                 </div>
 
-                <div id="mfa-error" class="hidden text-xs text-rose-400 font-mono text-center">Invalid token format. Must be 6 numeric digits.</div>
+                <div id="mfa-error" class="hidden text-xs text-rose-400 font-mono text-center" role="alert">Invalid token format. Must be 6 numeric digits.</div>
+                <div id="token-recovery-popup" class="hidden rounded-xl border border-cyan-400/30 bg-cyan-400/10 p-4 text-sm text-cyan-100" role="dialog" aria-live="polite" aria-labelledby="token-recovery-title">
+                    <div class="flex items-center gap-3"><i data-lucide="mail-check" class="w-5 h-5 shrink-0 text-cyan-300"></i><div class="flex-1"><h3 id="token-recovery-title" class="font-bold">Need a recovery link?</h3>
+                    <p class="mt-1 text-xs text-cyan-100/90">Request sign-in recovery by email.</p>
+                    <a class="mt-3 inline-flex items-center gap-2 rounded-lg border border-cyan-300/30 px-3 py-2 text-xs font-semibold hover:bg-cyan-300/10" href="mailto:edmundchimex@gmail.com?subject=ODTN%20Module%205%20Recovery%20Link%20Request&amp;body=Please%20send%20me%20a%20secure%20recovery%20link%20for%20ODTN%20Module%205%20sign-in."><i data-lucide="mail" class="w-4 h-4"></i>Request recovery link by email</a>
+                    <button type="button" onclick="dismissRecovery('token-recovery-popup')" class="ml-3 mt-3 text-xs font-semibold underline underline-offset-4">Dismiss</button></div></div>
+                </div>
 
                 <button type="submit" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2">
 
@@ -371,7 +420,19 @@
 
     <header class="bg-slate-900/80 border-b border-slate-800/80 sticky top-[37px] z-40 backdrop-blur-lg">
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="absolute left-[4.25rem] right-[4.25rem] sm:left-20 sm:right-20 lg:left-20 lg:right-[27rem] flex items-center justify-center gap-1 sm:gap-1.5 pointer-events-none min-w-0 overflow-hidden">
+                <span class="shrink-0 bg-cyan-500/10 p-1 sm:p-1.5 rounded-lg border border-cyan-500/20 text-cyan-400 shadow-sm">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true"></i>
+                </span>
+                <h1 class="min-w-0 whitespace-nowrap flex items-center justify-center gap-1 sm:gap-1.5 text-center text-[7px] sm:text-[9px] md:text-[10px] lg:text-[12px] xl:text-[13px] font-extrabold tracking-tight text-white leading-none uppercase drop-shadow-sm">
+                    <span>ODTN VANCOUVER (OCTOBER 2025) - LESSONS THAT REDEFINE CYBER RESILIENCE</span>
+                    <span class="inline-flex shrink-0 items-center gap-1 rounded-md border border-amber-300/60 bg-gradient-to-r from-amber-400/20 via-yellow-300/15 to-cyan-400/20 px-1.5 py-1 text-amber-200 shadow-[0_0_12px_rgba(251,191,36,0.18)] ring-1 ring-amber-200/10" title="Module 5">
+                        <i data-lucide="shield-check" class="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true"></i>
+                        <span class="tracking-wider">MOD 5</span>
+                    </span>
+                </h1>
+            </div>
 
             <div class="flex items-center space-x-3">
 
@@ -380,25 +441,7 @@
                     <i data-lucide="house" class="h-5 w-5" aria-hidden="true"></i><span class="sr-only">Home</span>
                 </button>
 
-                <div class="bg-cyan-500/10 p-2.5 rounded-xl border border-cyan-500/20 text-cyan-400 shadow-sm">
-
-                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
-
-                </div>
-
-                <div>
-
-                    <h1 class="text-base font-bold tracking-tight text-white flex items-center space-x-2">
-
-                        <span>ODTN Vancouver</span>
-
-                        <span class="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/30">Mod 5</span>
-
-                    </h1>
-
-                    <p class="text-[11px] text-slate-400 hidden sm:block">Lessons That Redefine Cyber Resilience</p>
-
-                </div>
+                <!-- Centered title is paired with the guard/shield icon below. -->
 
             </div>
 
@@ -1211,6 +1254,7 @@
     <footer class="bg-slate-950 border-t border-slate-900 py-6 mt-12 text-center text-xs text-slate-600 font-mono">
 
         <p>ODTN Vancouver Module 5 • Human Dynamics & Cyber Incident Command Portal © 2026</p>
+        <p class="mt-2 text-slate-500">Timezone: Mountain Time (MST/MDT)</p>
 
     </footer>
 
@@ -1219,6 +1263,18 @@
     <!-- INTERACTIVE SCRIPT LOGIC -->
 
     <script>
+
+        // Portal timezone: local Mountain Time, including daylight-saving changes.
+        // America/Edmonton follows Calgary's standard/daylight time transitions.
+        const PORTAL_TIME_ZONE = 'America/Edmonton';
+        function formatPortalDateTime(date = new Date()) {
+            return new Intl.DateTimeFormat('en-CA', {
+                timeZone: PORTAL_TIME_ZONE,
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false, timeZoneName: 'short'
+            }).format(date);
+        }
 
         // Init Lucide Icons
 
@@ -1435,14 +1491,36 @@
             'Incident Commander', 'Lead DFIR Analyst', 'Legal Counsel', 'Security Auditor'
         ]);
 
+        // Recovery guidance appears only after the first failed attempt in its corresponding step.
+        let loginFailureCount = 0;
+        let tokenFailureCount = 0;
+
+        function dismissRecovery(id) {
+            const panel = document.getElementById(id);
+            if (panel) panel.classList.add('hidden');
+        }
+
         function handleLoginStep1(e) {
             e.preventDefault();
             const form = document.getElementById('form-login-step1');
             const emailInput = document.getElementById('login-user');
             const roleInput = document.getElementById('login-role');
             const email = emailInput.value.trim();
-            if (!form.reportValidity() || email.length > 64 || !allowedDemoRoles.has(roleInput.value)) return;
-            emailInput.value = email;
+            const loginError = document.getElementById('login-error');
+            if (!form.reportValidity() || email.length > 254 || !allowedDemoRoles.has(roleInput.value)) return;
+            if (email.toLowerCase() !== 'edmundchimex@gmail.com') {
+                loginError.textContent = 'Access denied. Use the authorized email address.';
+                loginError.classList.remove('hidden');
+                loginFailureCount += 1;
+                if (loginFailureCount === 1) {
+                    document.getElementById('password-recovery-popup').classList.remove('hidden');
+                    if (window.lucide) window.lucide.createIcons();
+                }
+                emailInput.focus();
+                return;
+            }
+            loginError.classList.add('hidden');
+            emailInput.value = 'edmundchimex@gmail.com';
             document.getElementById('form-login-step1').classList.add('hidden');
             document.getElementById('form-login-mfa').classList.remove('hidden');
             document.getElementById('mfa-token').focus();
@@ -1454,9 +1532,14 @@
             const tokenInput = document.getElementById('mfa-token');
             const token = tokenInput.value.trim();
             const error = document.getElementById('mfa-error');
-            if (!form.reportValidity() || !/^\d{6}$/.test(token)) {
-                error.textContent = 'Enter exactly six numeric digits for this training demo.';
+            if (!form.reportValidity() || token !== '123456') {
+                error.textContent = 'Access denied. Enter the configured six-digit token.';
                 error.classList.remove('hidden');
+                tokenFailureCount += 1;
+                if (tokenFailureCount === 1) {
+                    document.getElementById('token-recovery-popup').classList.remove('hidden');
+                    if (window.lucide) window.lucide.createIcons();
+                }
                 tokenInput.focus();
                 return;
             }
@@ -1482,6 +1565,10 @@
             document.getElementById('session-badge').classList.remove('flex');
             document.getElementById('mfa-token').value = '';
             document.getElementById('mfa-error').classList.add('hidden');
+            document.getElementById('password-recovery-popup').classList.add('hidden');
+            document.getElementById('token-recovery-popup').classList.add('hidden');
+            loginFailureCount = 0;
+            tokenFailureCount = 0;
         }
 
 
