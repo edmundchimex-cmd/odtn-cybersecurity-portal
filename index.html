@@ -14,7 +14,7 @@
     <meta name="description" content="An interactive learning portal for cyber incident response, human factors, legal readiness, evidence handling, and operational resilience.">
     <meta name="theme-color" content="#070a14">
 
-    <!-- SECURITY ACTIONS: Connect authentication, server-side role enforcement, persistent storage, and server-generated audit records before using this portal with real accounts or incidents. Self-host pinned dependencies and configure CSP/security headers at the web server. This single-file page uses inline JavaScript/event handlers and a CDN stylesheet; refactor these before enforcing a strict CSP. -->
+    <!-- SECURITY ACTIONS: Verify server-side role enforcement, protected storage, and server-generated audit records before using this portal with real accounts or incidents. Self-host pinned dependencies and configure CSP/security headers at the web server. This single-file page uses inline JavaScript/event handlers and a CDN stylesheet; refactor these before enforcing a strict CSP. -->
     <!-- ACTION: Compile Tailwind CSS and self-host the stylesheet for deployment. -->
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1526,6 +1526,13 @@
         let authClient = null;
         let supabaseLoadPromise = null;
 
+        // Escape untrusted text before placing it in HTML templates.
+        function escapeHTML(value) {
+            return String(value ?? '').replace(/[&<>"']/g, ch => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[ch]));
+        }
+
         function getSupabaseConfigError() {
             if (!/^https:\/\/[A-Za-z0-9-]+\.supabase\.co$/.test(SUPABASE_URL) ||
                 SUPABASE_URL.includes('YOUR_PROJECT_REF')) {
@@ -1542,7 +1549,7 @@
             if (authClient) return authClient;
             if (!window.supabase || typeof window.supabase.createClient !== 'function') return null;
             authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-                auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+                auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
             });
             return authClient;
         }
@@ -1736,25 +1743,25 @@
         }
 
         async function initializePortalAuth() {
+            // Always require an explicit sign-in on each page load. Do not restore
+            // browser sessions or accept auth tokens from the URL.
+            showLoginScreen();
             if (!authClient) {
                 showLoginScreen('Authentication is not configured. Add your Supabase project URL and publishable key.');
                 return;
             }
-            try {
-                const { data, error } = await authClient.auth.getSession();
-                if (error) throw error;
-                if (data.session?.user) showAuthenticatedPortal(data.session);
-                else showLoginScreen();
-            } catch (error) {
-                console.error('Could not restore authentication session.');
-                showLoginScreen('Could not restore your session. Please sign in again.');
-            }
 
-            // Keep this callback synchronous; do not await Supabase calls inside it.
+            // Clean up a session key written by an older version that persisted sessions.
+            // This is best-effort and does not replace server-side session revocation.
+            try {
+                localStorage.removeItem('sb-mfisjiyuqeigdcpfqkwn-auth-token');
+            } catch (_) { /* Storage may be unavailable in private browsing. */ }
+
+            // Keep this callback synchronous; only an explicit SIGNED_IN event opens the portal.
             const { data: listener } = authClient.auth.onAuthStateChange((event, session) => {
-                if (session?.user && ['INITIAL_SESSION', 'SIGNED_IN', 'TOKEN_REFRESHED', 'USER_UPDATED'].includes(event)) {
+                if (event === 'SIGNED_IN' && session?.user) {
                     showAuthenticatedPortal(session);
-                } else if (event === 'SIGNED_OUT' || !session) {
+                } else if (event === 'SIGNED_OUT') {
                     showLoginScreen();
                 }
             });
@@ -1999,7 +2006,7 @@
                 const choicesContainer = document.getElementById('sim-choices');
                 choicesContainer.innerHTML = stage.choices.map((choice, idx) => `
                     <button type="button" onclick="makeSimChoice(${idx})" class="w-full text-left p-4 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 rounded-xl transition text-xs text-slate-200 flex items-center justify-between group">
-                        <span>${choice.text}</span>
+                        <span>${escapeHTML(choice.text)}</span>
                         <i data-lucide="arrow-right" class="w-4 h-4 text-cyan-400 opacity-0 group-hover:opacity-100 transition"></i>
                     </button>
                 `).join('');
@@ -2230,12 +2237,12 @@
             results.classList.add('hidden');
             results.innerHTML = '';
             document.getElementById('quiz-retry').classList.add('hidden');
-            container.innerHTML = `<p class="text-sm text-slate-300">${quiz.title} • ${quiz.questions.length} questions</p>` +
+            container.innerHTML = `<p class="text-sm text-slate-300">${escapeHTML(quiz.title)} • ${quiz.questions.length} questions</p>` +
                 quiz.questions.map((item, i) => `<fieldset class="space-y-3 border-b border-slate-800 pb-5">
-                    <legend class="text-sm font-semibold text-white mb-3">${i + 1}. ${item.q}</legend>
+                    <legend class="text-sm font-semibold text-white mb-3">${i + 1}. ${escapeHTML(item.q)}</legend>
                     <div class="space-y-2">${item.a.map((answer, j) => `<label class="flex items-start gap-3 p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-cyan-500/50">
                         <input required type="radio" name="question-${i}" value="${j}" class="mt-0.5 accent-cyan-500">
-                        <span class="text-xs text-slate-200">${answer}</span></label>`).join('')}</div>
+                        <span class="text-xs text-slate-200">${escapeHTML(answer)}</span></label>`).join('')}</div>
                 </fieldset>`).join('') +
                 `<button type="submit" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl">Submit Quiz</button>`;
         }
@@ -2253,12 +2260,12 @@
                 const correct = Number.isInteger(selected) && selected === item.correct;
                 if (correct) score++;
                 return `<div class="text-left p-3 rounded-xl ${correct ? 'bg-emerald-500/10' : 'bg-rose-500/10'}">
-                    <p class="font-semibold ${correct ? 'text-emerald-300' : 'text-rose-300'}">${i + 1}. ${correct ? 'Correct' : 'Incorrect'} — ${item.q}</p>
-                    <p class="text-xs text-slate-300 mt-1">Correct answer: ${item.a[item.correct]}</p>
-                    <p class="text-xs text-slate-400 mt-1">${item.why}</p></div>`;
+                    <p class="font-semibold ${correct ? 'text-emerald-300' : 'text-rose-300'}">${i + 1}. ${correct ? 'Correct' : 'Incorrect'} — ${escapeHTML(item.q)}</p>
+                    <p class="text-xs text-slate-300 mt-1">Correct answer: ${escapeHTML(item.a[item.correct])}</p>
+                    <p class="text-xs text-slate-400 mt-1">${escapeHTML(item.why)}</p></div>`;
             }).join('');
             const result = document.getElementById('quiz-results');
-            result.innerHTML = `<h3 class="text-lg font-bold text-white">${quiz.title}: ${score}/${quiz.questions.length} (${Math.round(score / quiz.questions.length * 100)}%)</h3>
+            result.innerHTML = `<h3 class="text-lg font-bold text-white">${escapeHTML(quiz.title)}: ${score}/${quiz.questions.length} (${Math.round(score / quiz.questions.length * 100)}%)</h3>
                 <p class="text-xs text-slate-300">${score === quiz.questions.length ? 'Excellent work!' : score >= 3 ? 'Good effort. Review the explanations below.' : 'Review the learning material and try again.'}</p>${feedback}`;
             result.classList.remove('hidden');
             document.getElementById('quiz-retry').classList.remove('hidden');
