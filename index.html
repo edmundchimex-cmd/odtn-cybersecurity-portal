@@ -14,7 +14,7 @@
     <meta name="description" content="An interactive learning portal for cyber incident response, human factors, legal readiness, evidence handling, and operational resilience.">
     <meta name="theme-color" content="#070a14">
 
-    <!-- SECURITY ACTIONS: Verify server-side role enforcement, protected storage, and server-generated audit records before using this portal with real accounts or incidents. Self-host pinned dependencies and configure CSP/security headers at the web server. This single-file page uses inline JavaScript/event handlers and a CDN stylesheet; refactor these before enforcing a strict CSP. -->
+    <!-- SECURITY ACTIONS: No live AI service integration is present in this static training page. Verify server-side role enforcement, protected storage, and server-generated audit records before using this portal with real accounts or incidents. Self-host pinned dependencies and configure CSP/security headers at the web server. This single-file page uses inline JavaScript/event handlers and a CDN stylesheet; refactor these before enforcing a strict CSP. -->
     <!-- ACTION: Compile Tailwind CSS and self-host the stylesheet for deployment. -->
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,7 +24,7 @@
     <script src="https://unpkg.com/lucide@0.468.0"></script>
 
     <!-- Supabase Auth client (authentication only; do not put a service-role key here). -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 
     <script>
 
@@ -1171,7 +1171,7 @@
 
                     </div>
 
-                    <button onclick="exportAuditLog()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl transition font-mono border border-slate-700">Export CSV</button>
+                    <button type="button" disabled title="This page contains sample-only audit rows; export is disabled until a trusted server-side audit API is connected." class="px-3 py-1.5 bg-slate-800 text-slate-500 text-xs rounded-xl font-mono border border-slate-700 cursor-not-allowed">Sample Data · Export Disabled</button>
 
                 </div>
 
@@ -1445,17 +1445,29 @@
 
             iconBox.className = `p-3 rounded-2xl border ${data.iconContainerClass}`;
 
-            iconBox.innerHTML = `<i data-lucide="${data.icon}" class="w-6 h-6"></i>`;
+            // Icon names come from the fixed in-file data set; never from user input.
+            const allowedIcons = new Set(['brain', 'scale', 'shield-check', 'users', 'handshake', 'clipboard-check', 'heart-handshake', 'activity', 'book-open', 'target', 'lock', 'file-check', 'alert-triangle', 'check-circle', 'x']);
+            const icon = document.createElement('i');
+            icon.setAttribute('data-lucide', allowedIcons.has(data.icon) ? data.icon : 'shield-check');
+            icon.className = 'w-6 h-6';
+            iconBox.replaceChildren(icon);
 
-
-
+            // pillar data.body is authored static markup in this file, not user- or API-supplied HTML.
+            // Keep the trusted lesson formatting, and build takeaways with textContent.
             document.getElementById('pm-body').innerHTML = data.body;
 
-
-
             const list = document.getElementById('pm-list');
-
-            list.innerHTML = data.takeaways.map(t => `<li class="flex items-start gap-2"><span>•</span> <span>${t}</span></li>`).join('');
+            list.replaceChildren();
+            data.takeaways.forEach(t => {
+                const item = document.createElement('li');
+                item.className = 'flex items-start gap-2';
+                const bullet = document.createElement('span');
+                bullet.textContent = '•';
+                const text = document.createElement('span');
+                text.textContent = String(t);
+                item.append(bullet, text);
+                list.appendChild(item);
+            });
 
 
 
@@ -1524,14 +1536,6 @@
         const SUPABASE_URL = 'https://mfisjiyuqeigdcpfqkwn.supabase.co';
         const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_unBj7Ml0r5xkhH-KltkPmA_8EcK8o0f';
         let authClient = null;
-        let supabaseLoadPromise = null;
-
-        // Escape untrusted text before placing it in HTML templates.
-        function escapeHTML(value) {
-            return String(value ?? '').replace(/[&<>"']/g, ch => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-            }[ch]));
-        }
 
         function getSupabaseConfigError() {
             if (!/^https:\/\/[A-Za-z0-9-]+\.supabase\.co$/.test(SUPABASE_URL) ||
@@ -1542,7 +1546,7 @@
                 SUPABASE_PUBLISHABLE_KEY.includes('YOUR_SUPABASE_')) {
                 return 'Supabase publishable key is missing. Check SUPABASE_PUBLISHABLE_KEY.';
             }
-            return 'Supabase client library could not load. Check internet/CDN access and the browser console.';
+            return 'Supabase client library could not load. Verify the pinned SDK URL and network access.';
         }
 
         function createSupabaseClientIfAvailable() {
@@ -1554,20 +1558,6 @@
             return authClient;
         }
 
-        async function ensureSupabaseClient() {
-            if (createSupabaseClientIfAvailable()) return authClient;
-            if (!supabaseLoadPromise) {
-                supabaseLoadPromise = new Promise((resolve) => {
-                    const script = document.createElement('script');
-                    script.src = 'https://unpkg.com/@supabase/supabase-js@2';
-                    script.async = true;
-                    script.onload = () => resolve(createSupabaseClientIfAvailable());
-                    script.onerror = () => resolve(null);
-                    document.head.appendChild(script);
-                });
-            }
-            return await supabaseLoadPromise;
-        }
 
         createSupabaseClientIfAvailable();
 
@@ -1632,7 +1622,7 @@
             document.getElementById('login-error').classList.add('hidden');
             document.getElementById('password-recovery-popup').classList.add('hidden');
             document.getElementById('badge-user').textContent = user.email || 'Authenticated user';
-            // The selected role is only a simulation label; it does not grant privileges.
+            // The selected role is only a simulation label; it does not grant privileges. Enforce all real roles server-side.
             const roleInput = document.getElementById('login-role');
             document.getElementById('badge-role').textContent = roleInput.value || 'Simulation user';
             document.getElementById('login-overlay').classList.add('hidden');
@@ -1650,7 +1640,7 @@
             const submitButton = form.querySelector('button[type="submit"]');
             if (!form.reportValidity()) return;
 
-            const client = await ensureSupabaseClient();
+            const client = createSupabaseClientIfAvailable();
             if (!client) {
                 setLoginError(getSupabaseConfigError());
                 return;
@@ -2273,20 +2263,11 @@
         }
 
 
+        // Audit rows in this static training page are illustrative, not a real audit trail.
+        // Do not export them as if they were authoritative records. Production audit events
+        // must be written and authorized server-side, with integrity controls and retention.
         function exportAuditLog() {
-
-            const csv = "Timestamp,Actor,Action,Status\n03:42:11 PST,SYSTEM_EDR,LockBit Ransomware Alert,UNRESOLVED\n03:45:00 PST,operator@odtn-vancouver.ca,Portal Access Check,LOCAL RECORD";
-
-            const blob = new Blob([csv], { type: 'text/csv' });
-
-            const url = window.URL.createObjectURL(blob);
-
-            const a = document.createElement('a');
-
-            a.href = url;
-            a.download = 'odtn_mod5_audit_log.csv';
-            a.click();
-            window.setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+            alert('Audit export is disabled: this page contains sample data only. Connect a protected server-side audit API before enabling exports.');
         }
 
 
