@@ -1701,7 +1701,7 @@
             }
             document.getElementById('login-error').classList.add('hidden');
             document.getElementById('password-recovery-popup').classList.add('hidden');
-            document.getElementById('badge-user').textContent = user.email || 'Authenticated user';
+document.getElementById('badge-user').textContent = 'Authenticated user';
             // The selected role is only a simulation label; it does not grant privileges. Enforce all real roles server-side.
             const roleInput = document.getElementById('login-role');
             document.getElementById('badge-role').textContent = roleInput.value || 'Simulation user';
